@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::resources([
-   'training' => 'TrainingController',
-]);
+Route::get('/training/{any}', function () {
+    return view('app');
+})->where('any','.*');
