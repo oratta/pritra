@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Training;
+use App\WorkOut;
 use Illuminate\Http\Request;
 
-class TrainingController extends Controller
+class WorkOutController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,9 @@ class TrainingController extends Controller
      */
     public function index()
     {
-
-        return view('training.index');
-    }
+        $workOuts = WorkOut::all()->take(50);
+        return $workOuts;
+   }
 
     /**
      * Show the form for creating a new resource.
@@ -26,7 +26,6 @@ class TrainingController extends Controller
     public function create()
     {
         //
-        return view('training.create');
     }
 
     /**
@@ -43,10 +42,10 @@ class TrainingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Training  $training
+     * @param  \App\WorkOut  $workOut
      * @return \Illuminate\Http\Response
      */
-    public function show(Training $training)
+    public function show(WorkOut $workOut)
     {
         //
     }
@@ -54,10 +53,10 @@ class TrainingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Training  $training
+     * @param  \App\WorkOut  $workOut
      * @return \Illuminate\Http\Response
      */
-    public function edit(Training $training)
+    public function edit(WorkOut $workOut)
     {
         //
     }
@@ -66,10 +65,10 @@ class TrainingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Training  $training
+     * @param  \App\WorkOut  $workOut
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Training $training)
+    public function update(Request $request, WorkOut $workOut)
     {
         //
     }
@@ -77,10 +76,10 @@ class TrainingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Training  $training
+     * @param  \App\WorkOut  $workOut
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Training $training)
+    public function destroy(WorkOut $workOut)
     {
         //
     }
