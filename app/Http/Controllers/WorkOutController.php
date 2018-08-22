@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\WorkOut;
 use Illuminate\Http\Request;
+use function Psy\debug;
 
 class WorkOutController extends Controller
 {
@@ -25,7 +26,11 @@ class WorkOutController extends Controller
      */
     public function create()
     {
-        //
+        $menuStepList = config('pritra.menuStepList');
+        $menuList = config('pritra.menuList');
+        $strengthList = config('pritra.strengthList');
+
+        return view('workOut.create',compact('menuList','menuStepList', 'strengthList'));
     }
 
     /**

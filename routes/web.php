@@ -21,3 +21,9 @@ Route::get('/{any}', function () {
 Route::get('sample/vue2', function (){
     return view('sample.vue2');
 });
+
+Route::get('workout/', function(){
+    return view('workout/index');
+});
+
+Route::get('workout/create', 'WorkOutController@create');
