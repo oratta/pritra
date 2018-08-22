@@ -11,6 +11,13 @@
 |
 */
 
+/*
 Route::get('/{any}', function () {
-    return view('app');
+//    return view('workOut.app');
+    return view('sample.vue');
 })->where('any','.*');
+*/
+
+Route::get('sample/vue2', function (){
+    return view('sample.vue2');
+});

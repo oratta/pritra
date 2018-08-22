@@ -5,12 +5,12 @@ require('./bootstrap')
 
 Vue.use(VueRouter)
 
-Vue.component('navbar', require('./components/Layouts/Navbar.vue'))
+Vue.component('navbar', require('./components/layouts/Navbar.vue'))
 
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/', component: require('./components/Articles/Index.vue') },
+        { path: '/', component: require('./components/workOut/Index.vue') },
         { path: '/about', component: require('./components/About.vue') },
     ]
 })
