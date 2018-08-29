@@ -27,3 +27,9 @@ Route::get('workout/index', 'WorkOutController@index');
 
 Route::get('workout/create', 'WorkOutController@create');
 Route::post('workout/store', 'WorkOutController@store');
+
+Route::resource('menus', 'MenuController');
+Route::resource('steps', 'StepController');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
