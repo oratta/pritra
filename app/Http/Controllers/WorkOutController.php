@@ -8,6 +8,8 @@ use function Psy\debug;
 
 class WorkOutController extends Controller
 {
+    const TEMP_USER_ID = 1; //FIXME 開発中の仮ID
+
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +17,8 @@ class WorkOutController extends Controller
      */
     public function index()
     {
-        $workOuts = WorkOut::all()->take(50);
-        return $workOuts;
+        $workOutList = WorkOut::all()->take(50);
+        return view('workOut.index',compact('workOutList'));
    }
 
     /**
@@ -41,7 +43,16 @@ class WorkOutController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $workOut = new WorkOut;
+        $workOut->user_id = self::TEMP_USER_ID; //FIXME 仮
+        $workOut->menu_type = $request->input('menu_type');
+        $workOut->step = $request->input('step');
+        $workOut->count = $request->input('count');
+        $workOut->difficulty_type = $request->input('difficulty_type');
+
+        $workOut->save();
+
+        return view('workOut.stored', compact('workOut'));
     }
 
     /**

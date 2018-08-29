@@ -15,8 +15,13 @@
             回数
         </th>
     </tr>
+    @foreach($workOutList as $id=>$workOut)
+        <tr>
+            <td>{{ $workOut->timeStamp }}</td>
+            <td>{{ $workOut->menu_type }}</td>
+            <td>{{ $workOut->step }}</td>
+            <td>{{ $workOut->count }}</td>
+        </tr>
+    @endforeach
 </table>
-<?php
-    print_r(config('pritra.index1'));
-    print_r(config('pritra.index2.subindex1'));
-print_r(config('pritra.index2.subindex1.subvalue1'));
+<a href="{{url("/workout/create")}}">log</a>

@@ -1,19 +1,20 @@
 <h1>Log Workout</h1>
-<select class="parent" name="">
+{{Form::open(['action' => 'WorkOutController@store'])}}
+<select class="parent" name="menu_type">
     <option value="" selected="selected">メニューを選択</option>
     @foreach($menuList as $index => $menu)
         <option value="{{ $index }}">{{ $menu }}</option>
     @endforeach
 </select>
-<select class="children" name="" disabled>
+<select class="children" name="step" disabled>
     <option value="" selected="selected">ステップを選択</option>
     @foreach($menuStepList as $menuIndex => $stepList)
         @foreach($stepList as $stepNumber => $stepName)
-            <option value="{{$stepName}}" data-val="{{$menuIndex}}">{{$stepName}}</option>
+            <option value="{{$stepNumber}}" data-val="{{$menuIndex}}">{{$stepName}}</option>
         @endforeach
     @endforeach
 </select>
-<select>
+<select name="count">
     @for($i=0;$i<19;$i++)
         <option value="{{$i+1}}">{{$i+1}}</option>
     @endfor
@@ -22,11 +23,13 @@
         <option value="{{$i+1}}">{{$i+1}}</option>
     @endfor
 </select>
-<select>
+<select name="difficulty_type">
     @foreach($strengthList as $index => $strength)
         <option value="{{$index}}">{{$strength}}</option>
     @endforeach
 </select>
+{{Form::submit()}}
+{{Form::close()}}
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
