@@ -33,3 +33,5 @@ Route::resource('steps', 'StepController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('test/firebase', 'FirebaseTestController@tests');

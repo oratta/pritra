@@ -75,5 +75,21 @@
             @yield('content')
         </main>
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyC3XyXYjp1qNZDAbCwwMRX-OZKTdwu9HAE",
+            authDomain: "pritra-f3118.firebaseapp.com",
+            databaseURL: "https://pritra-f3118.firebaseio.com",
+            projectId: "pritra-f3118",
+            storageBucket: "pritra-f3118.appspot.com",
+            messagingSenderId: "4287174517"
+        };
+        firebase.initializeApp(config);
+    </script>
 </body>
 </html>

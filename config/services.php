@@ -35,4 +35,12 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'firebase' => [
+        'api_key' => 'AIzaSyC3XyXYjp1qNZDAbCwwMRX-OZKTdwu9HAE', //only used for JS integration
+        'auth_domain' => 'pritra-f3118.firebaseapp.com', //only used for JS integration
+        'database_url' => 'https://pritra-f3118.firebaseio.com',
+        'secret' => 'secret',
+        'storage_bucket' => 'pritra-f3118.appspot.com',
+    ]
+
 ];
