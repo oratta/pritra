@@ -21,9 +21,10 @@ Route::get('/{any}', function () {
 //Route::get('sample/vue2', function (){
 //    return view('sample.vue2');
 //});
+Route::get('/', 'WorkOutController@index');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', 'WorkoutController@index');
+    Route::get('/', 'WorkOutController@index');
 
     Route::prefix('workout')->group(function () {
         Route::get('/', 'WorkOutController@index');
