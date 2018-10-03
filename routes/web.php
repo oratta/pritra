@@ -22,19 +22,34 @@ Route::get('/{any}', function () {
 //    return view('sample.vue2');
 //});
 
-Route::get('/', 'WorkoutController@index');
-Route::get('workout/', 'WorkOutController@index');
-Route::get('workout/index', 'WorkOutController@index');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', 'WorkoutController@index');
 
-Route::get('workout/create', 'WorkOutController@create');
-Route::post('workout/store', 'WorkOutController@store');
+    Route::prefix('workout')->group(function () {
+        Route::get('/', 'WorkOutController@index');
+        Route::get('index', 'WorkOutController@index');
 
-Route::get('menus', 'MenuController@index');
-Route::get('menus/index', 'MenuController@index');
-Route::get('menus/show/{id}', 'MenuController@show');
-Route::get('steps', 'StepController@index');
-Route::get('steps/index', 'StepController@index');
-Route::get('steps/show/{id}', 'StepController@show');
+        Route::get('create', 'WorkOutController@create');
+        Route::post('store', 'WorkOutController@store');
+    });
+
+    Route::prefix('menus')->group(function () {
+        Route::get('/', 'MenuController@index');
+        Route::get('index', 'MenuController@index');
+        Route::get('show/{id}', 'MenuController@show');
+    });
+
+    Route::prefix('steps')->group(function () {
+        Route::get('/', 'StepController@index');
+        Route::get('index', 'StepController@index');
+        Route::get('show/{id}', 'StepController@show');
+    });
+});
+
+
+
+
+
 
 Auth::routes();
 
