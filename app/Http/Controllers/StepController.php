@@ -47,7 +47,8 @@ class StepController extends Controller
      */
     public function show($id)
     {
-        //
+        $step = Step::find($id);
+        return view('steps.show', compact('step'));
     }
 
     /**

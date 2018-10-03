@@ -11,6 +11,11 @@ class Menu extends Model
 
     public function steps()
     {
-        return $this->hasMany('App\Record');
+        return $this->hasMany('App\Step');
+    }
+
+    public function getImgUrl()
+    {
+        return "";
     }
 }

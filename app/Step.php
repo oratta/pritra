@@ -14,4 +14,9 @@ class Step extends Model
     {
         return $this->belongsTo('App\Menu');
     }
+
+    public function getImgUrl()
+    {
+        return "";
+    }
 }

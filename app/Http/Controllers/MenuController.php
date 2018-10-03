@@ -47,7 +47,8 @@ class MenuController extends Controller
      */
     public function show($id)
     {
-        //
+        $menu = Menu::find($id);
+        return view('menus.show', compact('menu'));
     }
 
     /**

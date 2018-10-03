@@ -28,10 +28,14 @@ Route::get('workout/index', 'WorkOutController@index');
 Route::get('workout/create', 'WorkOutController@create');
 Route::post('workout/store', 'WorkOutController@store');
 
-Route::resource('menus', 'MenuController');
-Route::resource('steps', 'StepController');
+Route::get('menus', 'MenuController@index');
+Route::get('menus/index', 'MenuController@index');
+Route::get('menus/show/{id}', 'MenuController@show');
+Route::get('steps', 'StepController@index');
+Route::get('steps/index', 'StepController@index');
+Route::get('steps/show/{id}', 'StepController@show');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 Route::get('test/firebase', 'FirebaseTestController@tests');

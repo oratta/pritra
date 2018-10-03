@@ -17,7 +17,7 @@
                 @foreach ($menus as $menu)
                     <tr>
                         <td>{{ $menu->id }}</td>
-                        <td><a href="{{ url('menus/'.$menu->id) }}">{{ $menu->name }}</a></td>
+                        <td><a href="{{ url('menus/show/'.$menu->id) }}">{{ $menu->name }}</a></td>
                     </tr>
                 @endforeach
                 </tbody>
