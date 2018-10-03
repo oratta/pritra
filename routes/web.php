@@ -18,10 +18,11 @@ Route::get('/{any}', function () {
 })->where('any','.*');
 */
 
-Route::get('sample/vue2', function (){
-    return view('sample.vue2');
-});
+//Route::get('sample/vue2', function (){
+//    return view('sample.vue2');
+//});
 
+Route::get('/', 'WorkoutController@index');
 Route::get('workout/', 'WorkOutController@index');
 Route::get('workout/index', 'WorkOutController@index');
 
@@ -37,5 +38,5 @@ Route::get('steps/show/{id}', 'StepController@show');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('test/firebase', 'FirebaseTestController@tests');
+//Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('test/firebase', 'FirebaseTestController@tests');
