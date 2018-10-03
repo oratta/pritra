@@ -17,8 +17,8 @@
 <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('workout') }}">
-                {{ config('app.name') }}
+            <a class="navbar-brand" href="{{ url('workout/create') }}">
+                {{ __('Training') }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -29,22 +29,21 @@
                 <ul class="navbar-nav mr-auto">
                     <!-- 「記事」と「ユーザー」へのリンク -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('workout/create') }}">{{ __('Posts') }}</a>
+                        <a class="nav-link" href="{{ url('workout/achievement') }}">{{ __('Achievement') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('workout') }}">{{ __('Users') }}</a>
+                        <a class="nav-link" href="{{ url('workout/objective') }}">{{ __('Objective') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('workout') }}">{{ __('Log') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('menus') }}">{{ __('Menu') }}</a>
                     </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
-                    <!-- 投稿ボタン -->
-                    <li class="nav-item">
-                        <a href="{{ url('workout/create') }}" id="new-post" class="btn btn-success">
-                            {{ __('New Post') }}
-                        </a>
-                    </li>
-
                     <!-- Authentication Links -->
                 @guest
                 <!-- 「ログイン」と「ユーザー登録」へのリンク -->
