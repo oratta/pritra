@@ -20,7 +20,7 @@ class WorkOutController extends Controller
      */
     public function index()
     {
-        $workOutList = WorkOut::all()->take(50);
+        $workOutList = WorkOut::get()->where('user_id', Auth::id())->take(50);
         return view('workOut.index',compact('workOutList'));
    }
 
