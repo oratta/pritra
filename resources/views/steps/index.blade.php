@@ -11,6 +11,7 @@
                 <tr>
                     <th>{{ __('ID') }}</th>
                     <th>{{ __('Name') }}</th>
+                    <th>{{ __('Menu_id') }}</th>
                     <th>{{ __('Menu') }}</th>
                 </tr>
                 </thead>
@@ -19,6 +20,7 @@
                     <tr>
                         <td>{{ $step->id }}</td>
                         <td><a href="{{ url('steps/show/'.$step->id) }}">{{ $step->name }}</a></td>
+                        <td>{{ $step->menu_id }}</td>
                         <td>{{ $step->menu->name }}</td>
                     </tr>
                 @endforeach

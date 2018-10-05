@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\WorkOut;
+use App\Menu;
+use App\Step;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use function Psy\debug;
@@ -31,8 +33,18 @@ class WorkOutController extends Controller
      */
     public function create()
     {
-        $menuStepList = config('pritra.menuStepList');
-        $menuList = config('pritra.menuList');
+        $menuNameList = Menu::pluck('name','id');
+        $stepNameList = Step::select('menu_id','id','name', 'step_number')
+                            ->get();
+
+        $stepList = [];
+        $stepNameList->each(function($step) use (&$stepList) {
+           if(!isset($stepList[$step->menu_id])) $stepList[$step->menu_id] = array();
+           $stepList[$step->menu_id][$step->step_number] = $step->name;
+        });
+
+        $menuStepList = $stepList;
+        $menuList = $menuNameList->toArray();
         $strengthList = config('pritra.strengthList');
 
         return view('workOut.create',compact('menuList','menuStepList', 'strengthList'));

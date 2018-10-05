@@ -315,7 +315,7 @@ class StepsTableSeeder extends Seeder
             ],
             [
                 'menu_id' => 3,
-                'step_number' => 4,
+                'step_number' => 10,
                 'name' => "ワンアーム・プルアップ",
                 'description' => '',
                 'rep1_start_count' => 1,
