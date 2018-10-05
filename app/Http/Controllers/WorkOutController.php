@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\WorkOut;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use function Psy\debug;
+use Debugbar;
+use Auth;
 
 class WorkOutController extends Controller
 {
@@ -35,6 +38,7 @@ class WorkOutController extends Controller
         return view('workOut.create',compact('menuList','menuStepList', 'strengthList'));
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -44,7 +48,7 @@ class WorkOutController extends Controller
     public function store(Request $request)
     {
         $workOut = new WorkOut;
-        $workOut->user_id = self::TEMP_USER_ID; //FIXME 仮
+        $workOut->user_id = Auth::id();
         $workOut->menu_type = $request->input('menu_type');
         $workOut->step = $request->input('step');
         $workOut->count = $request->input('count');
