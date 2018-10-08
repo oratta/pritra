@@ -45,7 +45,7 @@ class WorkOutController extends Controller
 
         $menuStepList = $stepList;
         $menuList = $menuNameList->toArray();
-        $strengthList = config('pritra.strengthList');
+        $strengthList = config('pritra.STRENGTH_LIST');
 
         return view('workOut.create',compact('menuList','menuStepList', 'strengthList'));
     }

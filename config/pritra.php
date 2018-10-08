@@ -6,7 +6,7 @@
  * Time: 11:15
  */
 return [
-    "strengthList" => array(
+    "STRENGTH_LIST" => array(
         1 => "物足りない",
         2 => "少しの負荷",
         3 => "適度な負荷",
