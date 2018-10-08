@@ -14,4 +14,34 @@ class WorkOut extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function menu()
+    {
+        return $this->belongsTo('App\Menu');
+    }
+
+    public function step()
+    {
+        return $this->belongsTo('App\Step');
+    }
+
+    /***
+     * 最後のワークアウトのログをメニューごとのリストとして返す
+     * @return Collection
+     */
+    public static function getLastLogList($userId)
+    {
+        $lastLogList = [];
+
+        for ($menuId = 1; $menuId < config('pritra.MENU_COUNT'); ++$menuId) {
+            $workOut = WorkOut::select('menu_id', 'step_id', 'count', 'difficulty_type', 'created_at')
+                                    ->where('menu_id','=', $menuId)
+                                    ->where('user_id', '=', $userId)
+                                    ->latest()
+                                    ->first();
+            $lastLogList[$menuId] = $workOut ? $workOut : null;
+        }
+
+        return $lastLogList;
+    }
 }

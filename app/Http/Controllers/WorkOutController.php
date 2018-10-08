@@ -43,11 +43,13 @@ class WorkOutController extends Controller
            $stepList[$step->menu_id][$step->step_number] = $step->name;
         });
 
+        $lastLogList = WorkOut::getLastLogList(Auth::id());
+
         $menuStepList = $stepList;
         $menuList = $menuNameList->toArray();
         $strengthList = config('pritra.STRENGTH_LIST');
 
-        return view('workOut.create',compact('menuList','menuStepList', 'strengthList'));
+        return view('workOut.create',compact('menuList','menuStepList', 'strengthList', 'lastLogList'));
     }
 
 

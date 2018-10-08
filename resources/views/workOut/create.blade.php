@@ -6,36 +6,74 @@
     <div class="container">
         <h1>{{ $title }}</h1>
         {{Form::open(['action' => 'WorkOutController@store'])}}
-        <select class="parent" name="menu_type">
-            <option value="" selected="selected">メニューを選択</option>
-            @foreach($menuList as $index => $menu)
-                <option value="{{ $index }}">{{ $menu }}</option>
-            @endforeach
-        </select>
-        <select class="children" name="step" disabled>
-            <option value="" selected="selected">ステップを選択</option>
-            @foreach($menuStepList as $menuIndex => $stepList)
-                @foreach($stepList as $stepNumber => $stepName)
-                    <option value="{{$stepNumber}}" data-val="{{$menuIndex}}">{{$stepName}}</option>
+        <div class="form-group">
+            <select class="parent form-control" name="menu_id">
+                <option value="" selected="selected">メニューを選択</option>
+                @foreach($menuList as $index => $menu)
+                    <option value="{{ $index }}">{{ $menu }}</option>
                 @endforeach
-            @endforeach
-        </select>
-        <select name="count">
-            @for($i=0;$i<19;$i++)
-                <option value="{{$i+1}}">{{$i+1}}</option>
-            @endfor
-            <option value="20" selected="selected">20</option>
-            @for($i=20;$i<50;$i++)
-                <option value="{{$i+1}}">{{$i+1}}</option>
-            @endfor
-        </select>
-        <select name="difficulty_type">
-            @foreach($strengthList as $index => $strength)
-                <option value="{{$index}}">{{$strength}}</option>
-            @endforeach
-        </select>
-        {{Form::submit()}}
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="children form-control" name="step_id" disabled>
+                <option value="" selected="selected">ステップを選択</option>
+                @foreach($menuStepList as $menuIndex => $stepList)
+                    @foreach($stepList as $stepNumber => $stepName)
+                        <option value="{{$stepNumber}}" data-val="{{$menuIndex}}">{{$stepName}}</option>
+                    @endforeach
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="count">
+                @for($i=0;$i<19;$i++)
+                    <option value="{{$i+1}}">{{$i+1}}</option>
+                @endfor
+                <option value="20" selected="selected">20</option>
+                @for($i=20;$i<50;$i++)
+                    <option value="{{$i+1}}">{{$i+1}}</option>
+                @endfor
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="difficulty_type">
+                @foreach($strengthList as $index => $strength)
+                    <option value="{{$index}}">{{$strength}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
         {{Form::close()}}
+        <h2>Last Training</h2>
+        <div class="row border border-primary">
+            @foreach($lastLogList as $menuId => $workOutLog)
+            <div class="col-sm">
+                <div class="row">
+                    {{ $menuList[$menuId] }}
+                </div>
+                @if($workOutLog)
+                <div class="row border-bottom-0">
+                    {{ $workOutLog->created_at }}
+                </div>
+                <div class="row border">
+                    <div class="col">
+                        {{ $workOutLog->step->name }}
+                    </div>
+                    <div class="col">
+                        {{ $workOutLog->count }}
+                    </div>
+                    <div class="col">
+                        {{ $strengthList[$workOutLog->difficulty_type] }}
+                    </div>
+                </div>
+                @else
+                    no log.
+                @endif
+            </div>
+            @endforeach
+        </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript">

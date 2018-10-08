@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             MenusTableSeeder::class,
             StepsTableSeeder::class,
             UsersTableSeeder::class,
+            WorkOutsTableSeeder::class,
         ]);
     }
 }
