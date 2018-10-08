@@ -16,8 +16,8 @@ class CreateWorkOutsTable extends Migration
         Schema::create('work_outs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->references('id')->on('users')->unsigned()->index();
-            $table->smallInteger('menu_type');
-            $table->smallInteger('step');
+            $table->smallInteger('menu_id');
+            $table->smallInteger('step_id');
             $table->smallInteger('count');
             $table->smallInteger('difficulty_type');
             $table->timestamps();

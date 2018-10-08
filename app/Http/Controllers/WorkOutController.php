@@ -61,8 +61,8 @@ class WorkOutController extends Controller
     {
         $workOut = new WorkOut;
         $workOut->user_id = Auth::id();
-        $workOut->menu_type = $request->input('menu_type');
-        $workOut->step = $request->input('step');
+        $workOut->menu_id = $request->input('menu_id');
+        $workOut->step_id = $request->input('step_id');
         $workOut->count = $request->input('count');
         $workOut->difficulty_type = $request->input('difficulty_type');
 
