@@ -4,7 +4,7 @@ namespace App\Model\UserData;
 
 use Illuminate\Database\Eloquent\Model;
 
-class WorkOut extends Model
+class Workout extends Model
 {
     protected $table = 'work_outs';
     protected $guarded = ['id','user_id'];
@@ -34,12 +34,12 @@ class WorkOut extends Model
         $lastLogList = [];
 
         for ($menuId = 1; $menuId < config('pritra.MENU_COUNT'); ++$menuId) {
-            $workOut = WorkOut::select('menu_master_id', 'step_master_id', 'count', 'difficulty_type', 'created_at')
+            $workout = Workout::select('menu_master_id', 'step_master_id', 'count', 'difficulty_type', 'created_at')
                                     ->where('menu_master_id','=', $menuId)
                                     ->where('user_id', '=', $userId)
                                     ->latest()
                                     ->first();
-            $lastLogList[$menuId] = $workOut ? $workOut : null;
+            $lastLogList[$menuId] = $workout ? $workout : null;
         }
 
         return $lastLogList;

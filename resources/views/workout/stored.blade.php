@@ -9,16 +9,16 @@ $title = __('Log Workout');
         <div class="table-bordered">
             <table class="table">
                 <tr>
-                    <td>menu</td><td>{{$workOut->menu->name}}</td>
+                    <td>menu</td><td>{{$workout->menu->name}}</td>
                 </tr>
                 <tr>
-                    <td>step</td><td>{{$workOut->step->name}}</td>
+                    <td>step</td><td>{{$workout->step->name}}</td>
                 </tr>
                 <tr>
-                    <td>count</td><td>{{$workOut->count}}</td>
+                    <td>count</td><td>{{$workout->count}}</td>
                 </tr>
                 <tr>
-                    <td>difficulty</td><td>{{$difficultyList[$workOut->difficulty_type]}}</td>
+                    <td>difficulty</td><td>{{$difficultyList[$workout->difficulty_type]}}</td>
                 </tr>
             </table>
         </div>

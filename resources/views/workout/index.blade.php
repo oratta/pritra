@@ -25,13 +25,13 @@
                         id
                     </th>
                 </tr>
-                @foreach($workOutList as $id=>$workOut)
+                @foreach($workoutList as $id=>$workout)
                     <tr>
-                        <td>{{ $workOut->timeStamp }}</td>
-                        <td>{{ $workOut->menu_type }}</td>
-                        <td>{{ $workOut->step }}</td>
-                        <td>{{ $workOut->count }}</td>
-                        <td>{{ $workOut->user->id }}</td>
+                        <td>{{ $workout->timeStamp }}</td>
+                        <td>{{ $workout->menu_type }}</td>
+                        <td>{{ $workout->step }}</td>
+                        <td>{{ $workout->count }}</td>
+                        <td>{{ $workout->user->id }}</td>
                     </tr>
                 @endforeach
             </table>

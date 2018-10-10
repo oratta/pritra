@@ -5,7 +5,7 @@
 @section('content')
     <div class="container">
         <h1>{{ $title }}</h1>
-        {{Form::open(['action' => 'WorkOutController@store'])}}
+        {{Form::open(['action' => 'WorkoutController@store'])}}
         <div class="form-group">
             <select class="parent form-control" name="menu_master_id">
                 <option value="" selected="selected">メニューを選択</option>
@@ -48,24 +48,24 @@
         {{Form::close()}}
         <h2>Last Training</h2>
         <div class="row border border-primary">
-            @foreach($lastLogList as $menuId => $workOutLog)
+            @foreach($lastLogList as $menuId => $workoutLog)
             <div class="col-sm">
                 <div class="row">
                     {{ $menuList[$menuId] }}
                 </div>
-                @if($workOutLog)
+                @if($workoutLog)
                 <div class="row border-bottom-0">
-                    {{ $workOutLog->created_at }}
+                    {{ $workoutLog->created_at }}
                 </div>
                 <div class="row border">
                     <div class="col">
-                        {{ $workOutLog->step->name }}
+                        {{ $workoutLog->step->name }}
                     </div>
                     <div class="col">
-                        {{ $workOutLog->count }}
+                        {{ $workoutLog->count }}
                     </div>
                     <div class="col">
-                        {{ $difficultyList[$workOutLog->difficulty_type] }}
+                        {{ $difficultyList[$workoutLog->difficulty_type] }}
                     </div>
                 </div>
                 @else

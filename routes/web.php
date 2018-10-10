@@ -13,7 +13,7 @@
 
 /*
 Route::get('/{any}', function () {
-//    return view('workOut.app');
+//    return view('workout.app');
     return view('sample.vue');
 })->where('any','.*');
 */
@@ -21,17 +21,17 @@ Route::get('/{any}', function () {
 //Route::get('sample/vue2', function (){
 //    return view('sample.vue2');
 //});
-Route::get('/', 'WorkOutController@index');
+Route::get('/', 'WorkoutController@index');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', 'WorkOutController@index');
+    Route::get('/', 'WorkoutController@index');
 
     Route::prefix('workout')->group(function () {
-        Route::get('/', 'WorkOutController@index');
-        Route::get('index', 'WorkOutController@index');
+        Route::get('/', 'WorkoutController@index');
+        Route::get('index', 'WorkoutController@index');
 
-        Route::get('create', 'WorkOutController@create');
-        Route::post('store', 'WorkOutController@store');
+        Route::get('create', 'WorkoutController@create');
+        Route::post('store', 'WorkoutController@store');
     });
 
     Route::prefix('menus')->group(function () {

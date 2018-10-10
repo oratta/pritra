@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\UserData\WorkOut;
+use App\Model\UserData\Workout;
 use App\Model\Master\MenuMaster;
 use App\Model\Master\StepMaster;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -11,7 +11,7 @@ use function Psy\debug;
 use Debugbar;
 use Auth;
 
-class WorkOutController extends Controller
+class WorkoutController extends Controller
 {
     const TEMP_USER_ID = 1; //FIXME 開発中の仮ID
 
@@ -22,8 +22,8 @@ class WorkOutController extends Controller
      */
     public function index()
     {
-        $workOutList = WorkOut::get()->where('user_id', Auth::id())->take(50);
-        return view('workOut.index',compact('workOutList'));
+        $workoutList = Workout::get()->where('user_id', Auth::id())->take(50);
+        return view('workout.index',compact('workoutList'));
    }
 
     /**
@@ -43,13 +43,13 @@ class WorkOutController extends Controller
            $stepList[$step->menu_master_id][$step->step_number] = $step->name;
         });
 
-        $lastLogList = WorkOut::getLastLogList(Auth::id());
+        $lastLogList = Workout::getLastLogList(Auth::id());
 
         $menuStepList = $stepList;
         $menuList = $menuNameList->toArray();
         $difficultyList = config('pritra.DIFFICULTY_LIST');
 
-        return view('workOut.create',compact('menuList','menuStepList', 'difficultyList', 'lastLogList'));
+        return view('workout.create',compact('menuList','menuStepList', 'difficultyList', 'lastLogList'));
     }
 
 
@@ -61,28 +61,28 @@ class WorkOutController extends Controller
      */
     public function store(Request $request)
     {
-        $workOut = new WorkOut;
-        $workOut->user_id = Auth::id();
-        $workOut->menu_master_id = $request->input('menu_master_id');
-        $workOut->step_master_id = $request->input('step_master_id');
-        $workOut->count = $request->input('count');
-        $workOut->difficulty_type = $request->input('difficulty_type');
+        $workout = new Workout;
+        $workout->user_id = Auth::id();
+        $workout->menu_master_id = $request->input('menu_master_id');
+        $workout->step_master_id = $request->input('step_master_id');
+        $workout->count = $request->input('count');
+        $workout->difficulty_type = $request->input('difficulty_type');
 
-        $workOut->save();
+        $workout->save();
 
-        return view('workOut.stored',
+        return view('workout.stored',
             array_merge([
                 'difficultyList' => config('pritra.DIFFICULTY_LIST')],
-                compact('workOut')));
+                compact('workout')));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Model\UserData\WorkOut  $workOut
+     * @param  \App\Model\UserData\Workout  $workout
      * @return \Illuminate\Http\Response
      */
-    public function show(WorkOut $workOut)
+    public function show(Workout $workout)
     {
         //
     }
@@ -90,10 +90,10 @@ class WorkOutController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Model\UserData\WorkOut  $workOut
+     * @param  \App\Model\UserData\Workout  $workout
      * @return \Illuminate\Http\Response
      */
-    public function edit(WorkOut $workOut)
+    public function edit(Workout $workout)
     {
         //
     }
@@ -102,10 +102,10 @@ class WorkOutController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\UserData\WorkOut  $workOut
+     * @param  \App\Model\UserData\Workout  $workout
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WorkOut $workOut)
+    public function update(Request $request, Workout $workout)
     {
         //
     }
@@ -113,10 +113,10 @@ class WorkOutController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Model\UserData\WorkOut  $workOut
+     * @param  \App\Model\UserData\Workout  $workout
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WorkOut $workOut)
+    public function destroy(Workout $workout)
     {
         //
     }
