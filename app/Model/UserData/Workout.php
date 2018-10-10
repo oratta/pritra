@@ -87,7 +87,7 @@ class Workout extends Model
     {
         $lastLogList = [];
 
-        for ($menuId = 1; $menuId < config('pritra.MENU_COUNT'); ++$menuId) {
+        for ($menuId = 1; $menuId <= config('pritra.MENU_COUNT'); ++$menuId) {
             $workout = Workout::select('menu_master_id', 'step_master_id', 'count', 'difficulty_type', 'created_at')
                                     ->where('menu_master_id','=', $menuId)
                                     ->where('user_id', '=', $userId)
