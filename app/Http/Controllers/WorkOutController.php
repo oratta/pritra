@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\WorkOut;
 use App\Model\Master\MenuMaster;
-use App\Step;
+use App\Model\Master\StepMaster;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use function Psy\debug;
@@ -34,7 +34,7 @@ class WorkOutController extends Controller
     public function create()
     {
         $menuNameList = MenuMaster::pluck('name','id');
-        $stepNameList = Step::select('menu_master_id','id','name', 'step_number')
+        $stepNameList = StepMaster::select('menu_master_id','id','name', 'step_number')
                             ->get();
 
         $stepList = [];
@@ -64,7 +64,7 @@ class WorkOutController extends Controller
         $workOut = new WorkOut;
         $workOut->user_id = Auth::id();
         $workOut->menu_master_id = $request->input('menu_master_id');
-        $workOut->step_id = $request->input('step_id');
+        $workOut->step_master_id = $request->input('step_master_id');
         $workOut->count = $request->input('count');
         $workOut->difficulty_type = $request->input('difficulty_type');
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStepsTable extends Migration
+class CreateStepMastersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStepsTable extends Migration
      */
     public function up()
     {
-        Schema::create('steps', function (Blueprint $table) {
+        Schema::create('step_masters', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedTinyInteger('menu_master_id');
             $table->unsignedInteger('step_number');
@@ -34,6 +34,6 @@ class CreateStepsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('steps');
+        Schema::dropIfExists('step_masters');
     }
 }

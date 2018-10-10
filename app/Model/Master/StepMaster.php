@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Model\Master;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Step extends Model
+class StepMaster extends Model
 {
-    protected $table = 'steps';
+    protected $table = 'step_masters';
     protected $guarded = ['id'];
     public $timestamps = true;
 

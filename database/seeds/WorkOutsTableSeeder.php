@@ -15,7 +15,7 @@ class WorkOutsTableSeeder extends Seeder
             [
                 'user_id'  => 1,
                 'menu_master_id' => 1,
-                'step_id' => 1,
+                'step_master_id' => 1,
                 'count' => 20,
                 'difficulty_type' => 1,
                 'created_at' => '2018-10-05 19:17:28'
@@ -23,7 +23,7 @@ class WorkOutsTableSeeder extends Seeder
             [
                 'user_id'  => 1,
                 'menu_master_id' => 1,
-                'step_id' => 1,
+                'step_master_id' => 1,
                 'count' => 20,
                 'difficulty_type' => 1,
                 'created_at' => '2018-10-05 19:20:28'

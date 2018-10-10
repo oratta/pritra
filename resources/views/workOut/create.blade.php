@@ -15,7 +15,7 @@
             </select>
         </div>
         <div class="form-group">
-            <select class="children form-control" name="step_id" disabled>
+            <select class="children form-control" name="step_master_id" disabled>
                 <option value="" selected="selected">ステップを選択</option>
                 @foreach($menuStepList as $menuIndex => $stepList)
                     @foreach($stepList as $stepNumber => $stepName)

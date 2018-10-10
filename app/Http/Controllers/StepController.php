@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Step;
+use App\Model\Master\StepMaster;
 
 class StepController extends Controller
 {
@@ -14,7 +14,7 @@ class StepController extends Controller
      */
     public function index()
     {
-        $steps = Step::all();
+        $steps = StepMaster::all();
         return view('steps.index', compact('steps'));
     }
 
@@ -47,7 +47,7 @@ class StepController extends Controller
      */
     public function show($id)
     {
-        $step = Step::find($id);
+        $step = StepMaster::find($id);
         return view('steps.show', compact('step'));
     }
 

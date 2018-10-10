@@ -11,7 +11,7 @@ class MenuMaster extends Model
 
     public function steps()
     {
-        return $this->hasMany('App\Step');
+        return $this->hasMany('App\Model\Master\StepMaster');
     }
 
     public function getImgUrl()

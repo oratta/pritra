@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class StepsTableSeeder extends Seeder
+class StepMastersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,7 @@ class StepsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('steps')->insert([
+        DB::table('step_masters')->insert([
             [
                 'menu_master_id' => 1,
                 'step_number' => 1,

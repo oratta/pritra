@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             MenuMastersTableSeeder::class,
-            StepsTableSeeder::class,
+            StepMastersTableSeeder::class,
             UsersTableSeeder::class,
             WorkOutsTableSeeder::class,
         ]);

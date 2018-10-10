@@ -17,7 +17,7 @@ class CreateWorkOutsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->references('id')->on('users')->unsigned()->index();
             $table->smallInteger('menu_master_id');
-            $table->smallInteger('step_id');
+            $table->smallInteger('step_master_id');
             $table->smallInteger('count');
             $table->smallInteger('difficulty_type');
             $table->timestamps();
