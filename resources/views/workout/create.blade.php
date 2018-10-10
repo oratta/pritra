@@ -48,24 +48,24 @@
         {{Form::close()}}
         <h2>Last Training</h2>
         <div class="row border border-primary">
-            @foreach($lastLogList as $menuId => $workoutLog)
+            @foreach($lastWorkoutSetList as $menuId => $workoutSet)
             <div class="col-sm">
                 <div class="row">
                     {{ $menuList[$menuId] }}
                 </div>
-                @if($workoutLog)
+                @if($workoutSet)
                 <div class="row border-bottom-0">
-                    {{ $workoutLog->created_at }}
+                    {{ $workoutSet->getStartTime() }} 〜 {{$workoutSet->getFinishTime()}}
                 </div>
                 <div class="row border">
                     <div class="col">
-                        {{ $workoutLog->step->name }}
-                    </div>
-                    <div class="col">
-                        {{ $workoutLog->count }}
-                    </div>
-                    <div class="col">
-                        {{ $difficultyList[$workoutLog->difficulty_type] }}
+                        <ul>
+                            @foreach($workoutSet->getWorkoutArray() as $workout)
+                                <li>
+                                step {{ $workout->step->step_number }} : {{ $workout->step->name }} : {{ $workout->count }} : {{ $difficultyList[$workout->difficulty_type] }}
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
                 @else

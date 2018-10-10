@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\UserData\Workout;
+use App\Model\Entity\WorkoutSet;
 use App\Model\Master\MenuMaster;
 use App\Model\Master\StepMaster;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -43,13 +44,13 @@ class WorkoutController extends Controller
            $stepList[$step->menu_master_id][$step->step_number] = $step->name;
         });
 
-        $lastLogList = Workout::getLastLogList(Auth::id());
+        $lastWorkoutSetList = WorkoutSet::getLastWorkoutSetList(Auth::id());
 
         $menuStepList = $stepList;
         $menuList = $menuNameList->toArray();
         $difficultyList = config('pritra.DIFFICULTY_LIST');
 
-        return view('workout.create',compact('menuList','menuStepList', 'difficultyList', 'lastLogList'));
+        return view('workout.create',compact('menuList','menuStepList', 'difficultyList', 'lastWorkoutSetList'));
     }
 
 
