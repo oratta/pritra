@@ -37,7 +37,7 @@
         </div>
         <div class="form-group">
             <select class="form-control" name="difficulty_type">
-                @foreach($strengthList as $index => $strength)
+                @foreach($difficultyList as $index => $strength)
                     <option value="{{$index}}">{{$strength}}</option>
                 @endforeach
             </select>
@@ -65,7 +65,7 @@
                         {{ $workOutLog->count }}
                     </div>
                     <div class="col">
-                        {{ $strengthList[$workOutLog->difficulty_type] }}
+                        {{ $difficultyList[$workOutLog->difficulty_type] }}
                     </div>
                 </div>
                 @else

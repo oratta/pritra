@@ -47,9 +47,9 @@ class WorkOutController extends Controller
 
         $menuStepList = $stepList;
         $menuList = $menuNameList->toArray();
-        $strengthList = config('pritra.STRENGTH_LIST');
+        $difficultyList = config('pritra.DIFFICULTY_LIST');
 
-        return view('workOut.create',compact('menuList','menuStepList', 'strengthList', 'lastLogList'));
+        return view('workOut.create',compact('menuList','menuStepList', 'difficultyList', 'lastLogList'));
     }
 
 
@@ -70,7 +70,10 @@ class WorkOutController extends Controller
 
         $workOut->save();
 
-        return view('workOut.stored', compact('workOut'));
+        return view('workOut.stored',
+            array_merge([
+                'difficultyList' => config('pritra.DIFFICULTY_LIST')],
+                compact('workOut')));
     }
 
     /**

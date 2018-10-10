@@ -6,12 +6,12 @@
  * Time: 11:15
  */
 return [
-    "STRENGTH_LIST" => array(
-        1 => "物足りない",
-        2 => "少しの負荷",
-        3 => "適度な負荷",
-        4 => "結構きつい負荷",
-        5 => "途中でリタイア",
+    "DIFFICULTY_LIST" => array(
+        1 => "Too Easy",
+        2 => "Low load",
+        3 => "Appropriate load",
+        4 => "High load",
+        5 => "Give up",
     ),
    'MENU_COUNT' => 6,
 ];
