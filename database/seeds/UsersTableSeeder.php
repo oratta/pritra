@@ -19,15 +19,9 @@ class UsersTableSeeder extends Seeder
                 'type' => 1,
             ],
             [
-                'name'  => 'hoge',
-                'email' => 'hoge@hoge.com',
+                'name'  => 'oratta',
+                'email' => 'oratta@oratta.com',
                 'password' => bcrypt('hogehoge'),
-                'type' => 0,
-            ],
-            [
-                'name'  => 'fuga',
-                'email' => 'fuga@fuga.com',
-                'password' => bcrypt('fugafuga'),
                 'type' => 0,
             ],
         ]);
