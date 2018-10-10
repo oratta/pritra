@@ -2,6 +2,7 @@
 
 namespace App\Model\UserData;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Workout extends Model
@@ -23,6 +24,59 @@ class Workout extends Model
     public function step()
     {
         return $this->belongsTo('App\Model\Master\StepMaster','step_master_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo('App\Model\UserData\Workout', 'parent_id');
+    }
+
+    /**
+     * Save the model to the database.
+     *
+     * @param  array  $options
+     * @return bool
+     */
+    public function save(array $options = [])
+    {
+        $this->setAttribute('parent_id',$this->getParentId());
+        return parent::save($options);
+    }
+
+    /**
+     * @param $userId
+     * @return int parent_id||null
+     */
+    private function getParentId()
+    {
+        $latestWorkout = Workout::select('id','parent_id', 'created_at')
+            ->where('user_id','=', $this->getAttribute('user_id'))
+            ->latest()
+            ->first();
+
+        if($latestWorkout->isNowWorkoutSet()){
+            if($latestWorkout->getAttribute('parent_id')){
+                return $latestWorkout->getAttribute('parent_id');
+            }else {
+                return $latestWorkout->id;
+            }
+        }
+        else {
+            return 0;
+        }
+    }
+
+    /**
+     * @param $latestWorkoutTime
+     * @return bool
+     */
+    private function isNowWorkoutSet()
+    {
+        $now = Carbon::now();
+        $latestTime = new Carbon($this->created_at);
+        $diffMin = $now->diffInMinutes($latestTime);
+
+        return $diffMin < config('pritra.WORKOUT_SET_TERM_MIN');
     }
 
     /***

@@ -20,6 +20,7 @@ class CreateWorkoutsTable extends Migration
             $table->smallInteger('step_master_id');
             $table->smallInteger('count');
             $table->smallInteger('difficulty_type');
+            $table->integer('parent_id')->default(0);
             $table->timestamps();
         });
     }

@@ -13,5 +13,6 @@ return [
         4 => "High load",
         5 => "Give up",
     ),
-   'MENU_COUNT' => 6,
+    'MENU_COUNT' => 6,
+    'WORKOUT_SET_TERM_MIN' => 60,
 ];
