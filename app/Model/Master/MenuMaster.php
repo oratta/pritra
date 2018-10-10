@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Model\Master;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class MenuMaster extends Model
 {
-    protected $table = 'menus';
+    protected $table = 'menu_masters';
     public $timestamps = true;
 
     public function steps()

@@ -15,7 +15,7 @@ class CreateStepsTable extends Migration
     {
         Schema::create('steps', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedTinyInteger('menu_id');
+            $table->unsignedTinyInteger('menu_master_id');
             $table->unsignedInteger('step_number');
             $table->string('name');
             $table->text('description');

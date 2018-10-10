@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\WorkOut;
-use App\Menu;
+use App\Model\Master\MenuMaster;
 use App\Step;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -33,14 +33,14 @@ class WorkOutController extends Controller
      */
     public function create()
     {
-        $menuNameList = Menu::pluck('name','id');
-        $stepNameList = Step::select('menu_id','id','name', 'step_number')
+        $menuNameList = MenuMaster::pluck('name','id');
+        $stepNameList = Step::select('menu_master_id','id','name', 'step_number')
                             ->get();
 
         $stepList = [];
         $stepNameList->each(function($step) use (&$stepList) {
-           if(!isset($stepList[$step->menu_id])) $stepList[$step->menu_id] = array();
-           $stepList[$step->menu_id][$step->step_number] = $step->name;
+           if(!isset($stepList[$step->menu_master_id])) $stepList[$step->menu_master_id] = array();
+           $stepList[$step->menu_master_id][$step->step_number] = $step->name;
         });
 
         $lastLogList = WorkOut::getLastLogList(Auth::id());
@@ -63,7 +63,7 @@ class WorkOutController extends Controller
     {
         $workOut = new WorkOut;
         $workOut->user_id = Auth::id();
-        $workOut->menu_id = $request->input('menu_id');
+        $workOut->menu_master_id = $request->input('menu_master_id');
         $workOut->step_id = $request->input('step_id');
         $workOut->count = $request->input('count');
         $workOut->difficulty_type = $request->input('difficulty_type');

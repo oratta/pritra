@@ -17,7 +17,7 @@ class WorkOut extends Model
 
     public function menu()
     {
-        return $this->belongsTo('App\Menu');
+        return $this->belongsTo('App\Model\Master\MenuMaster');
     }
 
     public function step()
@@ -34,8 +34,8 @@ class WorkOut extends Model
         $lastLogList = [];
 
         for ($menuId = 1; $menuId < config('pritra.MENU_COUNT'); ++$menuId) {
-            $workOut = WorkOut::select('menu_id', 'step_id', 'count', 'difficulty_type', 'created_at')
-                                    ->where('menu_id','=', $menuId)
+            $workOut = WorkOut::select('menu_master_id', 'step_id', 'count', 'difficulty_type', 'created_at')
+                                    ->where('menu_master_id','=', $menuId)
                                     ->where('user_id', '=', $userId)
                                     ->latest()
                                     ->first();

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Menu;
+use App\Model\Master\MenuMaster;
 
 class MenuController extends Controller
 {
@@ -14,7 +14,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::all();
+        $menus = MenuMaster::all();
         return view('menus.index', compact('menus'));
     }
 
@@ -47,7 +47,7 @@ class MenuController extends Controller
      */
     public function show($id)
     {
-        $menu = Menu::find($id);
+        $menu = MenuMaster::find($id);
         return view('menus.show', compact('menu'));
     }
 

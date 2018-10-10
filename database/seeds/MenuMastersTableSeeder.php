@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class MenusTableSeeder extends Seeder
+class MenuMastersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,7 @@ class MenusTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('menus')->insert([
+        DB::table('menu_masters')->insert([
             [
                 'name'  => 'プッシュアップ',
                 'description' => '',

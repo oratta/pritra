@@ -7,7 +7,7 @@
         <h1>{{ $title }}</h1>
         {{Form::open(['action' => 'WorkOutController@store'])}}
         <div class="form-group">
-            <select class="parent form-control" name="menu_id">
+            <select class="parent form-control" name="menu_master_id">
                 <option value="" selected="selected">メニューを選択</option>
                 @foreach($menuList as $index => $menu)
                     <option value="{{ $index }}">{{ $menu }}</option>
