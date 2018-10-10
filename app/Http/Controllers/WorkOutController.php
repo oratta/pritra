@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\WorkOut;
+use App\Model\UserData\WorkOut;
 use App\Model\Master\MenuMaster;
 use App\Model\Master\StepMaster;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -79,7 +79,7 @@ class WorkOutController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\WorkOut  $workOut
+     * @param  \App\Model\UserData\WorkOut  $workOut
      * @return \Illuminate\Http\Response
      */
     public function show(WorkOut $workOut)
@@ -90,7 +90,7 @@ class WorkOutController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\WorkOut  $workOut
+     * @param  \App\Model\UserData\WorkOut  $workOut
      * @return \Illuminate\Http\Response
      */
     public function edit(WorkOut $workOut)
@@ -102,7 +102,7 @@ class WorkOutController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\WorkOut  $workOut
+     * @param  \App\Model\UserData\WorkOut  $workOut
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, WorkOut $workOut)
@@ -113,7 +113,7 @@ class WorkOutController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\WorkOut  $workOut
+     * @param  \App\Model\UserData\WorkOut  $workOut
      * @return \Illuminate\Http\Response
      */
     public function destroy(WorkOut $workOut)
