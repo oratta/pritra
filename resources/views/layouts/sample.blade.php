@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@if (! Request::is('/')){{ $title }} | @endif{{ env('APP_NAME') }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -27,7 +27,6 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <!-- 「記事」と「ユーザー」へのリンク -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('workout/achievement') }}">{{ __('Achievement') }}</a>
                     </li>
@@ -50,9 +49,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                     </li>
+                    <!--
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                     </li>
+                    -->
                 @else
                     <!-- 「プロフィール」と「ログアウト」のドロップダウンメニュー -->
                         <li class="nav-item dropdown">
