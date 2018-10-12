@@ -64,8 +64,7 @@ class WorkoutSet extends Model
      */
     static public function getLastWorkoutSet($userId, $menuId)
     {
-        $lastWorkout = Workout::select('parent_id')
-            ->where('user_id', '=', $userId)
+        $lastWorkout = Workout::where('user_id', '=', $userId)
             ->where('menu_master_id','=', $menuId)
             ->latest()
             ->first();
@@ -73,7 +72,7 @@ class WorkoutSet extends Model
 
         if($lastWorkout->hasParent()){
             $workoutSetList = Workout::where([['user_id', '=', $userId], ['menu_master_id','=', $menuId],['parent_id',$lastWorkout->parent_id]])
-                ->orwhere('id', '=', $lastWorkout->parent_id)
+                ->orwhere([['user_id', '=', $userId], ['menu_master_id','=', $menuId],['id', '=', $lastWorkout->parent_id]])
                 ->get();
         }
         else {

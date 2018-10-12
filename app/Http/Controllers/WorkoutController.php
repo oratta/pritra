@@ -41,7 +41,7 @@ class WorkoutController extends Controller
         $stepList = [];
         $stepNameList->each(function($step) use (&$stepList) {
            if(!isset($stepList[$step->menu_master_id])) $stepList[$step->menu_master_id] = array();
-           $stepList[$step->menu_master_id][$step->step_number] = "step" . $step->step_number . ":" .$step->name;
+           $stepList[$step->menu_master_id][$step->id] = "step" . $step->step_number . ":" .$step->name;
         });
 
         $lastWorkoutSetList = WorkoutSet::getLastWorkoutSetList(Auth::id());

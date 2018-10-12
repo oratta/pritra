@@ -18,8 +18,8 @@
             <select class="children form-control" name="step_master_id" disabled>
                 <option value="" selected="selected">ステップを選択</option>
                 @foreach($menuStepList as $menuIndex => $stepList)
-                    @foreach($stepList as $stepNumber => $stepName)
-                        <option value="{{$stepNumber}}" data-val="{{$menuIndex}}">{{$stepName}}</option>
+                    @foreach($stepList as $stepId => $stepName)
+                        <option value="{{$stepId}}" data-val="{{$menuIndex}}">{{$stepName}}</option>
                     @endforeach
                 @endforeach
             </select>
