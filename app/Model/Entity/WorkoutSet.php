@@ -71,10 +71,15 @@ class WorkoutSet extends Model
             ->first();
         if(!$lastWorkout) return null;
 
-        $workoutSetList = Workout::where('user_id', '=', $userId)
-                            ->where('menu_master_id','=', $menuId)
-                            ->where('parent_id',$lastWorkout->parent_id)
-                            ->get();
+        if($lastWorkout->hasParent()){
+            $workoutSetList = Workout::where([['user_id', '=', $userId], ['menu_master_id','=', $menuId],['parent_id',$lastWorkout->parent_id]])
+                ->orwhere('id', '=', $lastWorkout->parent_id)
+                ->get();
+        }
+        else {
+            $workoutSetList = collect([$lastWorkout]);
+        }
+
         $workoutSet = new WorkoutSet;
         $workoutSet->setWorkoutList($workoutSetList);
 

@@ -31,6 +31,11 @@ class Workout extends Model
         return $this->belongsTo('App\Model\UserData\Workout', 'parent_id');
     }
 
+    public function hasParent()
+    {
+        return $this->parent_id ? true : false;
+    }
+
     /**
      * Save the model to the database.
      *
@@ -54,7 +59,7 @@ class Workout extends Model
             ->latest()
             ->first();
 
-        if($latestWorkout->isNowWorkoutSet()){
+        if($latestWorkout && $latestWorkout->isNowWorkoutSet()){
             if($latestWorkout->getAttribute('parent_id')){
                 return $latestWorkout->getAttribute('parent_id');
             }else {
