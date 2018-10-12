@@ -4,6 +4,11 @@
 @extends('layouts.sample')
 @section('content')
     <div class="container">
+        @if(Session::has('message'))
+            <div class="alert alert-primary" role="alert">
+            {{ session('message') }}
+            </div>
+        @endif
         <h1>{{ $title }}</h1>
         {{Form::open(['action' => 'WorkoutController@store'])}}
         <div class="form-group">

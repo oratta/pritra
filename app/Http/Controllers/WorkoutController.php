@@ -71,10 +71,15 @@ class WorkoutController extends Controller
 
         $workout->save();
 
-        return view('workout.stored',
-            array_merge([
-                'difficultyList' => config('pritra.DIFFICULTY_LIST')],
-                compact('workout')));
+        //FIXME move to view component
+        $diffList = config('pritra.DIFFICULTY_LIST');
+        $successMessage ="
+{$workout->menu->name}
+step{$workout->step->step_number}:{$workout->step->name}
+{$workout->count} reps : {$diffList[$workout->difficulty_type]}
+ !!";
+
+        return redirect('workout/create')->with('message', $successMessage);
     }
 
     /**
