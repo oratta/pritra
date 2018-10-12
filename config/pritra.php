@@ -8,9 +8,9 @@
 return [
     "DIFFICULTY_LIST" => array(
         1 => "Too Easy",
-        2 => "Low load",
-        3 => "Appropriate load",
-        4 => "High load",
+        2 => "Low ",
+        3 => "Appropriate ",
+        4 => "High ",
         5 => "Give up",
     ),
     'MENU_COUNT' => 6,

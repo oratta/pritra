@@ -46,12 +46,13 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
         {{Form::close()}}
+
         <h2>Last Training</h2>
-        <div class="row border border-primary">
+        <div class="align-content-sm-center border ">
             @foreach($lastWorkoutSetList as $menuId => $workoutSet)
             <div class="col-sm">
                 <div class="row">
-                    {{ $menuList[$menuId] }}
+                    <h5>{{ $menuList[$menuId] }}</h5>
                 </div>
                 @if($workoutSet)
                 <div class="row border-bottom-0">
@@ -59,10 +60,11 @@
                 </div>
                 <div class="row border">
                     <div class="col">
-                        <ul>
+                        <ul class="list-group">
                             @foreach($workoutSet->getWorkoutArray() as $workout)
-                                <li>
-                                step {{ $workout->step->step_number }} : {{ $workout->step->name }} : {{ $workout->count }} : {{ $difficultyList[$workout->difficulty_type] }}
+                                <li class="list-group-item">
+                                step {{ $workout->step->step_number }} : {{ $workout->step->name }} <br> {{ $workout->count }} reps
+                                <span class="badge badge-primary badge-pill">{{ $difficultyList[$workout->difficulty_type] }}</span>
                                 </li>
                             @endforeach
                         </ul>
