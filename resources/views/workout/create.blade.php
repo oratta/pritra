@@ -38,7 +38,11 @@
         <div class="form-group">
             <select class="form-control" name="difficulty_type">
                 @foreach($difficultyList as $index => $strength)
-                    <option value="{{$index}}">{{$strength}}</option>
+                    @if($index===3)
+                        <option value="{{$index}}" selected="selected">{{$strength}}</option>
+                    @else
+                        <option value="{{$index}}">{{$strength}}</option>
+                    @endif
                 @endforeach
             </select>
         </div>
