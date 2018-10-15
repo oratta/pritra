@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', 'WorkoutController@index');
         Route::get('index', 'WorkoutController@index');
 
-        Route::get('create', 'WorkoutController@create');
+        Route::get('create/{recomend?}', 'WorkoutController@create');
         Route::post('store', 'WorkoutController@store');
     });
 

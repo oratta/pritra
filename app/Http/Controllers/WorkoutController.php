@@ -32,8 +32,15 @@ class WorkoutController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($recommend = '')
     {
+        if($recommend){
+            list($selectMenuId, $selectStepId, $selectCount, $selectDifficulty) = explode('_', $recommend);
+        }
+        else {
+            list($selectMenuId, $selectStepId, $selectCount, $selectDifficulty) = [0,0,20,3];
+        }
+
         $menuNameList = MenuMaster::pluck('name','id');
         $stepNameList = StepMaster::select('menu_master_id','id','name', 'step_number')
                             ->get();
@@ -50,9 +57,11 @@ class WorkoutController extends Controller
         $menuList = $menuNameList->toArray();
         $difficultyList = config('pritra.DIFFICULTY_LIST');
 
-        return view('workout.create',compact('menuList','menuStepList', 'difficultyList', 'lastWorkoutSetList'));
-    }
 
+        return view('workout.create',
+            compact('menuList','menuStepList', 'difficultyList', 'lastWorkoutSetList',
+                'selectMenuId', 'selectStepId', 'selectCount', 'selectDifficulty'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -78,8 +87,9 @@ class WorkoutController extends Controller
 step{$workout->step->step_number}:{$workout->step->name}
 {$workout->count} reps : {$diffList[$workout->difficulty_type]}
  !!";
+        $paramString = [$workout->menu_master_id, $workout->step_master_id, $workout->count, $workout->difficulty_type];
 
-        return redirect('workout/create')->with('message', $successMessage);
+        return redirect('workout/create/' . implode('_',$paramString))->with('message', $successMessage);
     }
 
     /**

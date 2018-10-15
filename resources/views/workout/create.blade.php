@@ -12,30 +12,38 @@
         <h1>{{ $title }}</h1>
         {{Form::open(['action' => 'WorkoutController@store'])}}
         <div class="form-group">
-            <select class="parent form-control" name="menu_master_id">
+            <select id="menu_select" class="parent form-control" name="menu_master_id">
                 <option value="" selected="selected">メニューを選択</option>
                 @foreach($menuList as $index => $menu)
-                    <option value="{{ $index }}">{{ $menu }}</option>
+                    @if($selectMenuId==$index)
+                        <option value="{{ $index }}" selected="selected">{{ $menu }}</option>
+                    @else
+                        <option value="{{ $index }}">{{ $menu }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>
         <div class="form-group">
-            <select class="children form-control" name="step_master_id" disabled>
+            <select id="step_select" class="children form-control" name="step_master_id">
                 <option value="" selected="selected">ステップを選択</option>
                 @foreach($menuStepList as $menuIndex => $stepList)
                     @foreach($stepList as $stepId => $stepName)
-                        <option value="{{$stepId}}" data-val="{{$menuIndex}}">{{$stepName}}</option>
+                        @if($selectStepId==$stepId)
+                            <option value="{{$stepId}}" data-val="{{$menuIndex}}" selected="selected">{{$stepName}}</option>
+                        @else
+                            <option value="{{$stepId}}" data-val="{{$menuIndex}}">{{$stepName}}</option>
+                        @endif
                     @endforeach
                 @endforeach
             </select>
         </div>
         <div class="form-group">
             <select class="form-control" name="count">
-                @for($i=0;$i<19;$i++)
+                @for($i=0;$i<$selectCount-1;$i++)
                     <option value="{{$i+1}}">{{$i+1}}</option>
                 @endfor
-                <option value="20" selected="selected">20</option>
-                @for($i=20;$i<50;$i++)
+                <option value="{{$selectCount}}" selected="selected">{{$selectCount}}</option>
+                @for($i=$selectCount;$i<50;$i++)
                     <option value="{{$i+1}}">{{$i+1}}</option>
                 @endfor
             </select>
@@ -43,7 +51,7 @@
         <div class="form-group">
             <select class="form-control" name="difficulty_type">
                 @foreach($difficultyList as $index => $strength)
-                    @if($index===3)
+                    @if($index==$selectDifficulty)
                         <option value="{{$index}}" selected="selected">{{$strength}}</option>
                     @else
                         <option value="{{$index}}">{{$strength}}</option>
@@ -90,6 +98,31 @@
         <script type="text/javascript">
             var $children = $('.children');
             var original = $children.html();
+
+            $(function(){
+                var $menus = $('#menu_select');
+                var $steps = $('#step_select');
+                var $step = $('#step_select option:selected');
+
+                var menuId = $menus.val();
+                var stepMenuId = $step.data('val');
+
+                if(menuId != stepMenuId){
+                    $('#step_select').attr('disabled', 'disabled');
+                }
+                else{
+                    $children.html(original).find('option').each(function() {
+                        var eachStepMenuValue = $(this).data('val'); //data-valの値を取得
+
+                        if (menuId != eachStepMenuValue) {
+                            $(this).not(':first-child').remove();
+                        }
+
+                    });
+                }
+
+            });
+
 
             $('.parent').change(function() {
 
