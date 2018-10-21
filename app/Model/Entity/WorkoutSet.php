@@ -17,6 +17,11 @@ class WorkoutSet extends Model
     private $finishTime = null;
     private $workoutCount = 0;
 
+    /**
+     * @var Workout
+     */
+    public $nextLevelWorkout;
+
     public function getStartTime()
     {
         if(!$this->startTime) {
@@ -51,10 +56,32 @@ class WorkoutSet extends Model
         $lastLogList = [];
 
         for ($menuId = 1; $menuId <= config('pritra.MENU_COUNT'); ++$menuId) {
-            $lastLogList[$menuId] = static::getLastWorkoutSet($userId, $menuId);
+            $lastWorkout = static::getLastWorkoutSet($userId, $menuId);
+            if($lastWorkout instanceof  WorkoutSet)$lastWorkout->setNextLevelWorkoutSet();
+            $lastLogList[$menuId] = $lastWorkout;
         }
 
         return $lastLogList;
+    }
+
+    private function setNextLevelWorkoutSet(){
+        $minStepId = $this->workoutSetList->min('step_master_id');
+        $lowRepCount = 1000;
+        $minStepSetCount = 0;
+        $this->workoutSetList->each(function($workout) use (&$lowRepCount,&$minStepSetCount, $minStepId){
+            if($workout->step_master_id === $minStepId){
+                $minStepSetCount++;
+                if($lowRepCount > $workout->count){
+                    $lowRepCount = $workout->count;
+                }
+            }
+        });
+
+        $this->nextLevelWorkout = new Workout;
+        $this->nextLevelWorkout->step_master_id = $minStepId;
+        $this->nextLevelWorkout->menu_master_id = $this->workoutSetList->first()->menu_master_id;
+        $this->nextLevelWorkout->count = $lowRepCount+1;
+
     }
 
     /**

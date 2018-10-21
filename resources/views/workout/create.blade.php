@@ -84,6 +84,11 @@
                                 <span class="badge badge-primary badge-pill">{{ $difficultyList[$workout->difficulty_type] }}</span>
                                 </li>
                             @endforeach
+                            @if($workoutSet->nextLevelWorkout)
+                                <li class="list-group-item list-group-item-info">
+                                    NextStep {{ $workoutSet->nextLevelWorkout->step->step_number }} : {{ $workoutSet->nextLevelWorkout->step->name }} <br> {{ $workoutSet->nextLevelWorkout->count }} reps
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
