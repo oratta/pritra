@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 use App\Model\UserData\Workout;
+use App\Model\Entity\WorkoutLevel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -16,6 +17,11 @@ class WorkoutSet extends Model
     private $startTime = null;
     private $finishTime = null;
     private $workoutCount = 0;
+
+    /**
+     * @var WorkoutLevel
+     */
+    private $workoutLevel = null;
 
     /**
      * @var Workout
@@ -57,31 +63,49 @@ class WorkoutSet extends Model
 
         for ($menuId = 1; $menuId <= config('pritra.MENU_COUNT'); ++$menuId) {
             $lastWorkout = static::getLastWorkoutSet($userId, $menuId);
-            if($lastWorkout instanceof  WorkoutSet)$lastWorkout->setNextLevelWorkoutSet();
+            if($lastWorkout instanceof  WorkoutSet)$lastWorkout->setNextWorkoutLevel();
             $lastLogList[$menuId] = $lastWorkout;
         }
 
         return $lastLogList;
     }
 
-    private function setNextLevelWorkoutSet(){
-        $minStepId = $this->workoutSetList->min('step_master_id');
-        $lowRepCount = 1000;
-        $minStepSetCount = 0;
-        $this->workoutSetList->each(function($workout) use (&$lowRepCount,&$minStepSetCount, $minStepId){
-            if($workout->step_master_id === $minStepId){
-                $minStepSetCount++;
-                if($lowRepCount > $workout->count){
-                    $lowRepCount = $workout->count;
+    private function setWorkoutLevel(WorkoutLevel $workoutLevel = null){
+        if($workoutLevel){
+            $this->workoutLevel = $workoutLevel;
+        }
+        else {
+            $minStepId = $this->workoutSetList->min('step_master_id');
+            $lowRepCount = 1000;
+            $minWorkoutCount = 0;
+            $this->workoutSetList->each(function($workout) use (&$lowRepCount,&$minWorkoutCount, $minStepId){
+                if($workout->step_master_id === $minStepId){
+                    $minWorkoutCount++;
+                    if($lowRepCount > $workout->count){
+                        $lowRepCount = $workout->count;
+                    }
                 }
-            }
-        });
+            });
+            $this->workoutLevel = new WorkoutLevel;
+            $this->workoutLevel->stepId = $minStepId;
+            $this->workoutLevel->repCount = $lowRepCount;
+            $this->workoutLevel->workoutCount = $minWorkoutCount;
+        }
+    }
 
-        $this->nextLevelWorkout = new Workout;
-        $this->nextLevelWorkout->step_master_id = $minStepId;
-        $this->nextLevelWorkout->menu_master_id = $this->workoutSetList->first()->menu_master_id;
-        $this->nextLevelWorkout->count = $lowRepCount+1;
+    private function setNextWorkoutLevel(){
+        $this->setWorkoutLevel();
+        $this->nextLevelWorkout = $this->getNextMilestone();
+    }
 
+    /**
+     * @param $stepId
+     * @param $repCount
+     * @param $workoutCount
+     * @return WorkoutLevel
+     */
+    private function getNextMilestone(){
+        return $this->workoutLevel->getNextMilestone();
     }
 
     /**
@@ -109,6 +133,7 @@ class WorkoutSet extends Model
 
         $workoutSet = new WorkoutSet;
         $workoutSet->setWorkoutList($workoutSetList);
+
 
         return $workoutSet;
     }

@@ -13,6 +13,7 @@ class StepMastersTableSeeder extends Seeder
     {
         DB::table('step_masters')->insert([
             [
+                'id' => 1,
                 'menu_master_id' => 1,
                 'step_number' => 1,
                 'name' => "ウォール・プッシュアップ",
@@ -23,6 +24,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 50,
             ],
             [
+                'id' => 2,
                 'menu_master_id' => 1,
                 'step_number' => 2,
                 'name' => "インクライン・プッシュアップ",
@@ -33,6 +35,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 40,
             ],
             [
+                'id' => 3,
                 'menu_master_id' => 1,
                 'step_number' => 3,
                 'name' => "ニーリング・プッシュアップ",
@@ -43,6 +46,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 30,
             ],
             [
+                'id' => 4,
                 'menu_master_id' => 1,
                 'step_number' => 4,
                 'name' => "ハーフ・プッシュアップ",
@@ -53,6 +57,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 5,
                 'menu_master_id' => 1,
                 'step_number' => 5,
                 'name' => "フル・プッシュアップ",
@@ -63,6 +68,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 6,
                 'menu_master_id' => 1,
                 'step_number' => 6,
                 'name' => "クローズ・プッシュアップ",
@@ -73,6 +79,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 7,
                 'menu_master_id' => 1,
                 'step_number' => 7,
                 'name' => "アンイーブン・プッシュアップ",
@@ -83,6 +90,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 8,
                 'menu_master_id' => 1,
                 'step_number' => 8,
                 'name' => "ハーフ・ワンアーム・プッシュアップ",
@@ -93,6 +101,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 20,
             ],
             [
+                'id' => 9,
                 'menu_master_id' => 1,
                 'step_number' => 9,
                 'name' => "レバー・プッシュアップ",
@@ -103,6 +112,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 10,
                 'menu_master_id' => 1,
                 'step_number' => 10,
                 'name' => "ワンアーム・プッシュアップ",
@@ -113,6 +123,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 11,
                 'menu_master_id' => 2,
                 'step_number' => 1,
                 'name' => "ショルダースタンド・スクワット",
@@ -123,6 +134,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 50,
             ],
             [
+                'id' => 12,
                 'menu_master_id' => 2,
                 'step_number' => 2,
                 'name' => "ジャックナイフ・スクワット",
@@ -133,6 +145,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 40,
             ],
             [
+                'id' => 13,
                 'menu_master_id' => 2,
                 'step_number' => 3,
                 'name' => "サポーティッド・スクワット",
@@ -143,6 +156,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 30,
             ],
             [
+                'id' => 14,
                 'menu_master_id' => 2,
                 'step_number' => 4,
                 'name' => "ハーフ・スクワット",
@@ -153,6 +167,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 15,
                 'menu_master_id' => 2,
                 'step_number' => 5,
                 'name' => "フル・スクワット",
@@ -163,6 +178,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 16,
                 'menu_master_id' => 2,
                 'step_number' => 6,
                 'name' => "クローズ・スクワット",
@@ -173,6 +189,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 17,
                 'menu_master_id' => 2,
                 'step_number' => 7,
                 'name' => "アンイーブン・スクワット",
@@ -183,6 +200,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 18,
                 'menu_master_id' => 2,
                 'step_number' => 8,
                 'name' => "ハーフ・ワンレッグ・スクワット",
@@ -193,6 +211,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 19,
                 'menu_master_id' => 2,
                 'step_number' => 9,
                 'name' => "アシステッド・ワンレッグ・スクワット",
@@ -203,6 +222,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 20,
                 'menu_master_id' => 2,
                 'step_number' => 10,
                 'name' => "ワンレッグ・スクワット",
@@ -213,6 +233,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 21,
                 'menu_master_id' => 3,
                 'step_number' => 1,
                 'name' => "ヴァーチカル・プル",
@@ -223,6 +244,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 40,
             ],
             [
+                'id' => 22,
                 'menu_master_id' => 3,
                 'step_number' => 2,
                 'name' => "ホリゾンタル・プル",
@@ -233,16 +255,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 30,
             ],
             [
-                'menu_master_id' => 3,
-                'step_number' => 2,
-                'name' => "ヴァーチカル・プル",
-                'description' => '',
-                'set1_start_count' => 10,
-                'set2_start_count' => 15,
-                'set3_start_count' => 25,
-                'set3_master_count' => 30,
-            ],
-            [
+                'id' => 23,
                 'menu_master_id' => 3,
                 'step_number' => 3,
                 'name' => "ジャックナイフ・プル",
@@ -253,6 +266,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 20,
             ],
             [
+                'id' => 24,
                 'menu_master_id' => 3,
                 'step_number' => 4,
                 'name' => "ハーフ・プルアップ",
@@ -263,6 +277,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 15,
             ],
             [
+                'id' => 25,
                 'menu_master_id' => 3,
                 'step_number' => 5,
                 'name' => "フル・プルアップ",
@@ -273,6 +288,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 10,
             ],
             [
+                'id' => 26,
                 'menu_master_id' => 3,
                 'step_number' => 6,
                 'name' => "クローズ・プルアップ",
@@ -283,6 +299,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 15,
             ],
             [
+                'id' => 27,
                 'menu_master_id' => 3,
                 'step_number' => 7,
                 'name' => "アンイーブン・プルアップ",
@@ -294,6 +311,7 @@ class StepMastersTableSeeder extends Seeder
             ],
 
             [
+                'id' => 28,
                 'menu_master_id' => 3,
                 'step_number' => 8,
                 'name' => "ハーフ・ワンアーム・プルアップ",
@@ -304,6 +322,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 29,
                 'menu_master_id' => 3,
                 'step_number' => 9,
                 'name' => "アシステッド・ワンアーム・プルアップ",
@@ -314,6 +333,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 30,
                 'menu_master_id' => 3,
                 'step_number' => 10,
                 'name' => "ワンアーム・プルアップ",
@@ -324,6 +344,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 41,
                 'menu_master_id' => 4,
                 'step_number' => 1,
                 'name' => "ニー・タック",
@@ -334,6 +355,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 40,
             ],
             [
+                'id' => 42,
                 'menu_master_id' => 4,
                 'step_number' => 2,
                 'name' => "フラット・ニー・レイズ",
@@ -344,6 +366,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 35,
             ],
             [
+                'id' => 43,
                 'menu_master_id' => 4,
                 'step_number' => 3,
                 'name' => "フラット・ベント・レッグレイズ",
@@ -354,6 +377,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 30,
             ],
             [
+                'id' => 44,
                 'menu_master_id' => 4,
                 'step_number' => 4,
                 'name' => "フラット・フロッグ・レイズ",
@@ -364,6 +388,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 45,
                 'menu_master_id' => 4,
                 'step_number' => 5,
                 'name' => "フラット・ストレート・レッグレイズ",
@@ -374,6 +399,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 46,
                 'menu_master_id' => 4,
                 'step_number' => 6,
                 'name' => "ハンギング・ニー・レイズ",
@@ -384,6 +410,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 47,
                 'menu_master_id' => 4,
                 'step_number' => 7,
                 'name' => "ハンギング・ベント・レッグレイズ",
@@ -394,6 +421,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 48,
                 'menu_master_id' => 4,
                 'step_number' => 8,
                 'name' => "ハンギング・フロッグ・レイズ",
@@ -404,6 +432,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 49,
                 'menu_master_id' => 4,
                 'step_number' => 9,
                 'name' => "パーシャル・ストレート・レッグレイズ",
@@ -414,6 +443,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 50,
                 'menu_master_id' => 4,
                 'step_number' => 10,
                 'name' => "ハンギング・ストレート・レッグレイズ",
@@ -424,6 +454,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 51,
                 'menu_master_id' => 5,
                 'step_number' => 1,
                 'name' => "ショート・ブリッジ",
@@ -434,6 +465,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 50,
             ],
             [
+                'id' => 52,
                 'menu_master_id' => 5,
                 'step_number' => 2,
                 'name' => "ストレート・ブリッジ",
@@ -444,6 +476,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 40,
             ],
             [
+                'id' => 53,
                 'menu_master_id' => 5,
                 'step_number' => 3,
                 'name' => "アングルド・ブリッジ",
@@ -454,6 +487,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 30,
             ],
             [
+                'id' => 54,
                 'menu_master_id' => 5,
                 'step_number' => 4,
                 'name' => "ヘッド・ブリッジ",
@@ -464,6 +498,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 55,
                 'menu_master_id' => 5,
                 'step_number' => 5,
                 'name' => "ハーフ・ブリッジ",
@@ -474,6 +509,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 56,
                 'menu_master_id' => 5,
                 'step_number' => 6,
                 'name' => "フル・ブリッジ",
@@ -484,6 +520,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 57,
                 'menu_master_id' => 5,
                 'step_number' => 7,
                 'name' => "ウォールウォーキング・ブリッジ(下向き)",
@@ -494,6 +531,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 58,
                 'menu_master_id' => 5,
                 'step_number' => 8,
                 'name' => "ウォールウォーキング・ブリッジ(上向き)",
@@ -504,6 +542,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 59,
                 'menu_master_id' => 5,
                 'step_number' => 9,
                 'name' => "クロージング・ブリッジ",
@@ -514,6 +553,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 60,
                 'menu_master_id' => 5,
                 'step_number' => 10,
                 'name' => "スタンド・トゥ・スタンド・ブリッジ",
@@ -524,6 +564,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 61,
                 'menu_master_id' => 6,
                 'step_number' => 1,
                 'name' => "ウォール・ヘッドスタンド",
@@ -534,6 +575,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 62,
                 'menu_master_id' => 6,
                 'step_number' => 2,
                 'name' => "クロウ・スタンド",
@@ -544,6 +586,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 63,
                 'menu_master_id' => 6,
                 'step_number' => 3,
                 'name' => "ウォール・ハンドスタンド",
@@ -554,6 +597,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 64,
                 'menu_master_id' => 6,
                 'step_number' => 4,
                 'name' => "ハーフ・スタンド・プッシュアップ",
@@ -564,6 +608,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 65,
                 'menu_master_id' => 6,
                 'step_number' => 5,
                 'name' => "ハンドスタンド・プッシュアップ",
@@ -574,6 +619,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 66,
                 'menu_master_id' => 6,
                 'step_number' => 6,
                 'name' => "クローズ・ハンドスタンド・プッシュアップ",
@@ -584,6 +630,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 67,
                 'menu_master_id' => 6,
                 'step_number' => 7,
                 'name' => "アンイーブン・ハンドスタンド・プッシュアップ",
@@ -594,6 +641,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 68,
                 'menu_master_id' => 6,
                 'step_number' => 8,
                 'name' => "ハーフ・ワンアーム・ハンドスタンド・プッシュアップ",
@@ -604,6 +652,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 69,
                 'menu_master_id' => 6,
                 'step_number' => 9,
                 'name' => "レバー・ハンドスタンド・プッシュアップ",
@@ -614,6 +663,7 @@ class StepMastersTableSeeder extends Seeder
                 'set3_master_count' => 0,
             ],
             [
+                'id' => 70,
                 'menu_master_id' => 6,
                 'step_number' => 10,
                 'name' => "ワンアーム・ハンドスタンド・プッシュアップ",

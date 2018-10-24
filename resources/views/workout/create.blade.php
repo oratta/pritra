@@ -86,7 +86,11 @@
                             @endforeach
                             @if($workoutSet->nextLevelWorkout)
                                 <li class="list-group-item list-group-item-info">
-                                    NextStep {{ $workoutSet->nextLevelWorkout->step->step_number }} : {{ $workoutSet->nextLevelWorkout->step->name }} <br> {{ $workoutSet->nextLevelWorkout->count }} reps
+                                    NextStep<br>
+                                    @php if(!$workoutSet->nextLevelWorkout->step){dump($workoutSet->nextLevelWorkout);exit;} @endphp
+                                    step {{ $workoutSet->nextLevelWorkout->step->step_number }} : {{ $workoutSet->nextLevelWorkout->step->name }} <br>
+                                    {{ $workoutSet->nextLevelWorkout->repCount }} reps <br>
+                                    {{ $workoutSet->nextLevelWorkout->workoutCount }} set
                                 </li>
                             @endif
                         </ul>

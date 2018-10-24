@@ -14,5 +14,6 @@ return [
         5 => "Give up",
     ),
     'MENU_COUNT' => 6,
+    'STEP_COUNT' => 10,
     'WORKOUT_SET_TERM_MIN' => 60,
 ];
