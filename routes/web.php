@@ -46,7 +46,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('show/{id}', 'StepController@show');
     });
 
+
+});
+
+Route::middleware(['adminCheck'])->group(function(){
     Route::prefix('admin')->group(function(){
+        Route::get('index', 'AdminController@index');
         Route::get('/', 'AdminController@index');
         Route::post('add_user', 'AdminController@addUser');
     });

@@ -32,6 +32,7 @@
                     <th>{{ __('ID') }}</th>
                     <th>{{ __('Name') }}</th>
                     <th>{{ __('Email') }}</th>
+                    <th>{{ __('Type') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,6 +41,7 @@
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>{{ $user->type }}</td>
                     </tr>
                 @endforeach
                 </tbody>
