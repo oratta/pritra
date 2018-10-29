@@ -7,8 +7,8 @@
         <h1>{{ $title }}</h1>
         <h2>add user</h2>
         <div class="form-group">
-            <form>
-                <div class="form-group">
+            {{Form::open(['action' => 'AdminController@addUser'])}}
+            <div class="form-group">
                     <label>name</label>
                     <input type="text" name="name" class="form-control">
                 </div>
@@ -22,7 +22,28 @@
                     <input type="text" name="password" class="form-control">
                 </div>
                 <button type="submit">register</button>
-            </form>
+            {{Form::close()}}
+        </div>
+        <h2>view user</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>{{ __('ID') }}</th>
+                    <th>{{ __('Name') }}</th>
+                    <th>{{ __('Email') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($users as $user)
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 @endsection
