@@ -38,7 +38,7 @@
             </select>
         </div>
         <div class="form-group">
-            <select class="form-control" name="count">
+            <select id='count_select' class="form-control" name="count">
                 @for($i=0;$i<$selectCount-1;$i++)
                     <option value="{{$i+1}}">{{$i+1}}</option>
                 @endfor
@@ -49,7 +49,7 @@
             </select>
         </div>
         <div class="form-group">
-            <select class="form-control" name="difficulty_type">
+            <select id='difficulty_select' class="form-control" name="difficulty_type">
                 @foreach($difficultyList as $index => $strength)
                     @if($index==$selectDifficulty)
                         <option value="{{$index}}" selected="selected">{{$strength}}</option>
@@ -77,23 +77,23 @@
                 </div>
                 <div class="row border">
                     <div class="col">
-                        <ul class="list-group">
+                        <div class="list-group">
                             @foreach($workoutSet->getWorkoutArray() as $workout)
-                                <li class="list-group-item">
+                                <button class="list-group-item text-left click-input" data-menu="{{$workout->menu_master_id}}" data-step="{{$workout->step_master_id}}" data-reps="{{$workout->count}}" data-difficulty="{{$workout->difficulty_type}}">
                                 step {{ $workout->step->step_number }} : {{ $workout->step->name }} <br> {{ $workout->count }} reps
                                 <span class="badge badge-primary badge-pill">{{ $difficultyList[$workout->difficulty_type] }}</span>
-                                </li>
+                                </button>
                             @endforeach
                             @if($workoutSet->nextLevelWorkout)
-                                <li class="list-group-item list-group-item-info">
+                                <button class="list-group-item list-group-item-info text-left" data-menu="{{$workoutSet->nextLevelWorkout->menu_master_id}}" data-step="{{$workoutSet->nextLevelWorkout->step_master_id}}" data-reps="{{$workoutSet->nextLevelWorkout->count}}" data-difficulty="3">>
                                     NextStep<br>
                                     @php if(!$workoutSet->nextLevelWorkout->step){dump($workoutSet->nextLevelWorkout);exit;} @endphp
                                     step {{ $workoutSet->nextLevelWorkout->step->step_number }} : {{ $workoutSet->nextLevelWorkout->step->name }} <br>
                                     {{ $workoutSet->nextLevelWorkout->repCount }} reps <br>
                                     {{ $workoutSet->nextLevelWorkout->workoutCount }} set
-                                </li>
+                                </button>
                             @endif
-                        </ul>
+                        </div>
                     </div>
                 </div>
                 @else
@@ -110,7 +110,6 @@
 
             $(function(){
                 var $menus = $('#menu_select');
-                var $steps = $('#step_select');
                 var $step = $('#step_select option:selected');
 
                 var menuId = $menus.val();
@@ -131,6 +130,25 @@
                 }
 
             });
+
+            $('.click-input').click(function(){
+                $('#step_select option:selected').removeAttr('selected');
+                $('#menu_select option:selected').removeAttr('selected');
+                $('#count_select option:selected').removeAttr('selected');
+                $('#difficulty_select option:selected').removeAttr('selected');
+
+                var targetMenuId = $(this).data('menu');
+                var targetStepId = $(this).data('step');
+                var targetRepCount = $(this).data('reps');
+                var targetDifficulty = $(this).data('difficulty');
+
+                $('#menu_select').children('option[value="' + targetMenuId + '"]').attr('selected', 'selected');
+                var stepSelect = $children.html(original).children('option[value="' + targetStepId + '"]');
+                $('#step_select').removeAttr('disabled');
+                stepSelect.attr('selected', 'selected');
+                $('#count_select').children('option[value="' + targetRepCount + '"]').attr('selected', 'selected');
+                $('#difficulty_select').children('option[value="' + targetDifficulty + '"]').attr('selected', 'selected');
+            })
 
 
             $('.parent').change(function() {
