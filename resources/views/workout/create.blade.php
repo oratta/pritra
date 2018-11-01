@@ -135,9 +135,11 @@
                 var targetDifficulty = $(this).data('difficulty');
 
                 $('#menu_select').children('option[value="' + targetMenuId + '"]').attr('selected', 'selected');
-                var stepSelect = $stepSelect.html(originalStepSelect).children('option[value="' + targetStepId + '"]');
-                $('#step_select').removeAttr('disabled');
+
+                initSelect(targetMenuId);
+                var stepSelect = $stepSelect.children('option[value="' + targetStepId + '"]');
                 stepSelect.attr('selected', 'selected');
+
                 $('#count_select').children('option[value="' + targetRepCount + '"]').attr('selected', 'selected');
                 $('#difficulty_select').children('option[value="' + targetDifficulty + '"]').attr('selected', 'selected');
             })
