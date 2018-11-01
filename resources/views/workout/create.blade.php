@@ -12,7 +12,7 @@
         <h1>{{ $title }}</h1>
         {{Form::open(['action' => 'WorkoutController@store'])}}
         <div class="form-group">
-            <select id="menu_select" class="parent form-control" name="menu_master_id">
+            <select id="menu_select" class="form-control" name="menu_master_id">
                 <option value="" selected="selected">メニューを選択</option>
                 @foreach($menuList as $index => $menu)
                     @if($selectMenuId==$index)
@@ -24,7 +24,7 @@
             </select>
         </div>
         <div class="form-group">
-            <select id="step_select" class="children form-control" name="step_master_id">
+            <select id="step_select" class="form-control" name="step_master_id">
                 <option value="" selected="selected">ステップを選択</option>
                 @foreach($menuStepList as $menuIndex => $stepList)
                     @foreach($stepList as $stepId => $stepName)
@@ -105,8 +105,8 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript">
-            var $children = $('.children');
-            var original = $children.html();
+            var $stepSelect = $('#step_select');
+            var originalStepSelect = $stepSelect.html();
 
             $(function(){
                 var $menus = $('#menu_select');
@@ -119,7 +119,7 @@
                     $('#step_select').attr('disabled', 'disabled');
                 }
                 else{
-                    $children.html(original).find('option').each(function() {
+                    $stepSelect.html(originalStepSelect).find('option').each(function() {
                         var eachStepMenuValue = $(this).data('val'); //data-valの値を取得
 
                         if (menuId != eachStepMenuValue) {
@@ -143,7 +143,7 @@
                 var targetDifficulty = $(this).data('difficulty');
 
                 $('#menu_select').children('option[value="' + targetMenuId + '"]').attr('selected', 'selected');
-                var stepSelect = $children.html(original).children('option[value="' + targetStepId + '"]');
+                var stepSelect = $stepSelect.html(originalStepSelect).children('option[value="' + targetStepId + '"]');
                 $('#step_select').removeAttr('disabled');
                 stepSelect.attr('selected', 'selected');
                 $('#count_select').children('option[value="' + targetRepCount + '"]').attr('selected', 'selected');
@@ -151,11 +151,11 @@
             })
 
 
-            $('.parent').change(function() {
+            $('#menu_select').change(function() {
 
                 var val1 = $(this).val();
 
-                $children.html(original).find('option').each(function() {
+                $stepSelect.html(originalStepSelect).find('option').each(function() {
                     var val2 = $(this).data('val'); //data-valの値を取得
 
                     if (val1 != val2) {
@@ -165,9 +165,9 @@
                 });
 
                 if ($(this).val() == "") {
-                    $children.attr('disabled', 'disabled');
+                    $stepSelect.attr('disabled', 'disabled');
                 } else {
-                    $children.removeAttr('disabled');
+                    $stepSelect.removeAttr('disabled');
                 }
 
             });
