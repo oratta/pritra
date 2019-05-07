@@ -43,7 +43,7 @@
                     <option value="{{$i+1}}">{{$i+1}}</option>
                 @endfor
                 <option value="{{$selectCount}}" selected="selected">{{$selectCount}}</option>
-                @for($i=$selectCount;$i<50;$i++)
+                @for($i=$selectCount;$i<150;$i++)
                     <option value="{{$i+1}}">{{$i+1}}</option>
                 @endfor
             </select>
