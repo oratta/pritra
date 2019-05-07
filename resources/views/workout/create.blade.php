@@ -90,7 +90,7 @@
                                     @php if(!$workoutSet->nextLevelWorkout->step){dump($workoutSet->nextLevelWorkout);exit;} @endphp
                                     step {{ $workoutSet->nextLevelWorkout->step->step_number }} : {{ $workoutSet->nextLevelWorkout->step->name }} <br>
                                     {{ $workoutSet->nextLevelWorkout->repCount }} reps <br>
-                                    {{ $workoutSet->nextLevelWorkout->workoutCount }} set
+                                    {{ $workoutSet->nextLevelWorkout->setCount }} set
                                 </button>
                             @endif
                         </div>

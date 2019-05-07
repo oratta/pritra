@@ -24,7 +24,7 @@ class StepMaster extends Model
     /**
      * @return WorkoutLevel
      */
-    public function getNextMilestone($repCount, $rule = 0)
+    public function getNextLevel($repCount, $setCount = 0)
     {
         $nextRepCount = 0;
         $nextWorkoutCount = 0;
@@ -50,7 +50,7 @@ class StepMaster extends Model
             }
         }
 
-        return new WorkoutLevel(['stepId' => $this->id, 'repCount' => $nextRepCount, 'workoutCount' => $nextWorkoutCount]);
+        return new WorkoutLevel(['stepId' => $this->id, 'repCount' => $nextRepCount, 'setCount' => $nextWorkoutCount]);
     }
 
     private function getBeforeLastLevel()
@@ -58,10 +58,10 @@ class StepMaster extends Model
         $before = $this->getBefore();
         if(!$before) return null;
         if($before->set3_maser_count === 0){
-            return new WorkoutLevel(['stepId' => $before->id, 'repCount' => $before->set3_start_count, 'workoutCount'=>2]);
+            return new WorkoutLevel(['stepId' => $before->id, 'repCount' => $before->set3_start_count, 'setCount'=>2]);
         }
         else {
-            return new WorkoutLevel(['stepId' => $before->id, 'repCount' => $before->set3_master_count, 'workoutCount' => 3]);
+            return new WorkoutLevel(['stepId' => $before->id, 'repCount' => $before->set3_master_count, 'setCount' => 3]);
         }
 
     }
@@ -69,7 +69,7 @@ class StepMaster extends Model
     {
         $next = $this->getNext();
         if(!$next) return null;
-        return new WorkoutLevel(['stepId' => $next->id, 'repCount' => $next->set1_start_count, 'workoutCount' => 1]);
+        return new WorkoutLevel(['stepId' => $next->id, 'repCount' => $next->set1_start_count, 'setCount' => 1]);
 
     }
 

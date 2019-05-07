@@ -9,7 +9,7 @@ class WorkoutLevel extends Model
     private $stepNumber;
     private $stepId;
     private $repCount;
-    private $workoutCount;
+    private $setCount;
     protected $guarded = ['id'];
 
     public function step()
@@ -17,9 +17,9 @@ class WorkoutLevel extends Model
         return $this->belongsTo('App\Model\Master\StepMaster','stepId');
     }
 
-    public function getNextMilestone()
+    public function getNextLevel()
     {
-        return $this->step->getNextMilestone($this->getAttribute('repCount'), $this->getAttribute('workoutCount'));
+        return $this->step->getNextLevel($this->getAttribute('repCount'), $this->getAttribute('setCount'));
     }
 
 
