@@ -16,7 +16,7 @@ class WorkoutSet extends Model
 
     private $startTime = null;
     private $finishTime = null;
-    private $workoutCount = 0;
+    private $setCount = 0;
 
     /**
      * @var WorkoutLevel
@@ -89,23 +89,23 @@ class WorkoutSet extends Model
             $this->workoutLevel = new WorkoutLevel;
             $this->workoutLevel->stepId = $minStepId;
             $this->workoutLevel->repCount = $lowRepCount;
-            $this->workoutLevel->workoutCount = $minWorkoutCount;
+            $this->workoutLevel->setCount = $minWorkoutCount;
         }
     }
 
     private function setNextWorkoutLevel(){
         $this->setWorkoutLevel();
-        $this->nextLevelWorkout = $this->getNextMilestone();
+        $this->nextLevelWorkout = $this->getNextLevel();
     }
 
     /**
      * @param $stepId
      * @param $repCount
-     * @param $workoutCount
+     * @param $setCount
      * @return WorkoutLevel
      */
-    private function getNextMilestone(){
-        return $this->workoutLevel->getNextMilestone();
+    private function getNextLevel(){
+        return $this->workoutLevel->getNextLevel();
     }
 
     /**
