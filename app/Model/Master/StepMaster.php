@@ -24,56 +24,42 @@ class StepMaster extends Model
     /**
      * @return WorkoutLevel
      */
-    public function getNextLevel($repCount, $setCount = 0)
+    public function getAchievedLevel($repCount, $setCount = 0)
     {
         $nextRepCount = 0;
         $nextWorkoutCount = 0;
-        if($repCount < $this->set1_start_count){
-            return $this->getBeforeLastLevel();
-        }
-        else if($repCount < $this->set2_start_count){
-            $nextRepCount = $repCount+1;
-            $nextWorkoutCount = 1;
-        }
-        else if($repCount < $this->set3_start_count){
 
-            $nextRepCount = $repCount+1;
-            $nextWorkoutCount = 2;
-        }
-        else if($this->set3_start_count <= $repCount){
-            if($this->set3_master_count != 0 && $repCount < $this->set3_master_count){
-                $nextRepCount = $repCount+1;
-                $nextWorkoutCount = 3;
-            }
-            else {
-                return $this->getNextFirstLevel();
+        $levelNum = 0;
+        for ($i = 0; $i < 3; ++$i) {
+            $levelNum = $i + 1;
+            $isAchieved = $this->isAchieved($levelNum, $repCount, $setCount);
+            if (!$isAchieved) {
+                $levelNum--;
+                break;
             }
         }
-
-        return new WorkoutLevel(['stepId' => $this->id, 'repCount' => $nextRepCount, 'setCount' => $nextWorkoutCount]);
+        return $levelNum;
     }
 
-    private function getBeforeLastLevel()
+    public function getLevelInfo($level)
     {
-        $before = $this->getBefore();
-        if(!$before) return null;
-        if($before->set3_maser_count === 0){
-            return new WorkoutLevel(['stepId' => $before->id, 'repCount' => $before->set3_start_count, 'setCount'=>2]);
-        }
-        else {
-            return new WorkoutLevel(['stepId' => $before->id, 'repCount' => $before->set3_master_count, 'setCount' => 3]);
-        }
-
-    }
-    private function getNextFirstLevel()
-    {
-        $next = $this->getNext();
-        if(!$next) return null;
-        return new WorkoutLevel(['stepId' => $next->id, 'repCount' => $next->set1_start_count, 'setCount' => 1]);
-
+        $repCountColumn = "level" . $level . "_rep_count";
+        $setCountColumn = "level" . $level . "_set_count";
+        return ["repCount" => $this->$repCountColumn, "setCount" => $this->$setCountColumn];
     }
 
-    private function getBefore()
+    private function isAchieved($levelNum, $repCount, $setCount){
+        $repCountColumnName = "level" . $levelNum . "_rep_count";
+        $setCountColumnName = "level" . $levelNum . "_set_count";
+        if($this->$repCountColumnName  <= $repCount && $this->$setCountColumnName <= $setCount ){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function getBefore()
     {
         if($this->step_number === 1){
             return null;
@@ -81,7 +67,7 @@ class StepMaster extends Model
         return StepMaster::where([['menu_master_id', '=', $this->menu_master_id],['step_number', '=', $this->step_number - 1]])
             ->first();
     }
-    private function getNext()
+    public function getNext()
     {
         if($this->step_number === 10){
             return null;
