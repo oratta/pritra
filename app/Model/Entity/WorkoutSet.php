@@ -12,7 +12,7 @@ class WorkoutSet extends Model
     /**
      * @var Collection
      */
-    private $workoutSetList;
+    private $workoutList;
 
     private $startTime = null;
     private $finishTime = null;
@@ -31,7 +31,7 @@ class WorkoutSet extends Model
     public function getStartTime()
     {
         if(!$this->startTime) {
-            $this->startTime = $this->workoutSetList->first()->created_at;
+            $this->startTime = $this->workoutList->first()->created_at;
         }
 
         return $this->startTime;
@@ -40,7 +40,7 @@ class WorkoutSet extends Model
     public function getFinishTime()
     {
         if(!$this->finishTime) {
-            $this->finishTime = $this->workoutSetList->last()->created_at;
+            $this->finishTime = $this->workoutList->last()->created_at;
         }
         return $this->finishTime;
     }
@@ -50,7 +50,7 @@ class WorkoutSet extends Model
      */
     public function getWorkoutArray()
     {
-        return $this->workoutSetList->all();
+        return $this->workoutList->all();
     }
 
     /**
@@ -75,10 +75,10 @@ class WorkoutSet extends Model
             $this->workoutLevel = $workoutLevel;
         }
         else {
-            $minStepId = $this->workoutSetList->min('step_master_id');
+            $minStepId = $this->workoutList->min('step_master_id');
             $lowRepCount = 1000;
             $minWorkoutCount = 0;
-            $this->workoutSetList->each(function($workout) use (&$lowRepCount,&$minWorkoutCount, $minStepId){
+            $this->workoutList->each(function($workout) use (&$lowRepCount,&$minWorkoutCount, $minStepId){
                 if($workout->step_master_id === $minStepId){
                     $minWorkoutCount++;
                     if($lowRepCount > $workout->count){
@@ -122,27 +122,27 @@ class WorkoutSet extends Model
         if(!$lastWorkout) return null;
 
         if($lastWorkout->hasParent()){
-            $workoutSetList = Workout::with('step', 'menu')
+            $workoutList = Workout::with('step', 'menu')
                 ->where([['user_id', '=', $userId], ['menu_master_id','=', $menuId],['parent_id',$lastWorkout->parent_id]])
                 ->orwhere([['user_id', '=', $userId], ['menu_master_id','=', $menuId],['id', '=', $lastWorkout->parent_id]])
                 ->get();
         }
         else {
-            $workoutSetList = collect([$lastWorkout]);
+            $workoutList = collect([$lastWorkout]);
         }
 
         $workoutSet = new WorkoutSet;
-        $workoutSet->setWorkoutList($workoutSetList);
+        $workoutSet->setWorkoutList($workoutList);
 
 
         return $workoutSet;
     }
 
     /**
-     * @param Collection $workoutSetList
+     * @param Collection $workoutList
      */
-    private function setWorkoutList(Collection $workoutSetList)
+    private function setWorkoutList(Collection $workoutList)
     {
-        $this->workoutSetList = $workoutSetList;
+        $this->workoutList = $workoutList;
     }
 }
