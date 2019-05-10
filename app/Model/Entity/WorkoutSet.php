@@ -18,15 +18,24 @@ class WorkoutSet extends Model
     private $finishTime = null;
     private $setCount = 0;
 
-    /**
-     * @var WorkoutSetInfo
-     */
-    private $workoutLevel = null;
+    //    protected $stepId;
+    //    protected $repCount;
+    //    protected $setCount;
+    protected $guarded = ['id'];
+    private $level = null;
+
 
     /**
      * @var Workout
      */
     public $nextLevelWorkout;
+
+
+    public function step()
+    {
+        return $this->belongsTo('App\Model\Master\StepMaster','stepId');
+    }
+
 
     public function getStartTime()
     {
@@ -70,42 +79,26 @@ class WorkoutSet extends Model
         return $lastLogList;
     }
 
-    private function setWorkoutSetInfo(WorkoutSetInfo $workoutLevel = null){
-        if($workoutLevel){
-            $this->workoutLevel = $workoutLevel;
-        }
-        else {
-            $minStepId = $this->workoutList->min('step_master_id');
-            $lowRepCount = 1000;
-            $minWorkoutCount = 0;
-            $this->workoutList->each(function($workout) use (&$lowRepCount,&$minWorkoutCount, $minStepId){
-                if($workout->step_master_id === $minStepId){
-                    $minWorkoutCount++;
-                    if($lowRepCount > $workout->count){
-                        $lowRepCount = $workout->count;
-                    }
+    private function setWorkoutSetInfo(){
+        $minStepId = $this->workoutList->min('step_master_id');
+        $lowRepCount = 1000;
+        $minWorkoutCount = 0;
+        $this->workoutList->each(function($workout) use (&$lowRepCount,&$minWorkoutCount, $minStepId){
+            if($workout->step_master_id === $minStepId){
+                $minWorkoutCount++;
+                if($lowRepCount > $workout->count){
+                    $lowRepCount = $workout->count;
                 }
-            });
-            $this->workoutLevel = new WorkoutSetInfo;
-            $this->workoutLevel->stepId = $minStepId;
-            $this->workoutLevel->repCount = $lowRepCount;
-            $this->workoutLevel->setCount = $minWorkoutCount;
-        }
+            }
+        });
+        $this->stepId = $minStepId;
+        $this->repCount = $lowRepCount;
+        $this->setCount = $minWorkoutCount;
     }
 
     private function setNextWorkoutSetInfo(){
         $this->setWorkoutSetInfo();
         $this->nextLevelWorkout = $this->getNextLevel();
-    }
-
-    /**
-     * @param $stepId
-     * @param $repCount
-     * @param $setCount
-     * @return WorkoutSetInfo
-     */
-    private function getNextLevel(){
-        return $this->workoutLevel->getNextLevel();
     }
 
     /**
@@ -144,5 +137,65 @@ class WorkoutSet extends Model
     private function setWorkoutList(Collection $workoutList)
     {
         $this->workoutList = $workoutList;
+    }
+
+    /***********************************
+     * ここから移植
+     ***********************************/
+
+    /**
+     * return achieved level
+     * @return null
+     */
+    public function getLevel()
+    {
+        if (!$this->level) $this->setLevel();
+        return $this->level;
+    }
+
+    /**
+     * @return bool if fail to set level property, it return false
+     */
+    public function setLevel()
+    {
+        if($this->step && $this->repCount && $this->setCount){
+            $this->level = $this->step->getAchievedLevel($this->repCount, $this->setCount);
+            return true;
+        }
+        return false;
+    }
+
+
+
+    public function getNextLevel()
+    {
+        $achievedLevel = $this->step->getAchievedLevel($this->repCount, $this->setCount);
+
+        if($achievedLevel === config("pritra.MAX_LEVEL")){
+            // next step first level
+            return $this->getNextStepFirstLevel();
+        }
+        else if ($achievedLevel === 0){
+            // the one before steps max level
+            return $this->getBeforeStepLastLevel();
+        }
+        else {
+            // same step next level
+            $levelInfo = $this->step->getLevelInfo($achievedLevel+1);
+            return new WorkoutSet(['stepId' => $this->step->id, 'repCount' => $levelInfo["repCount"], "setCount" => $levelInfo["setCount"]]);
+        }
+    }
+
+    private function getBeforeStepLastLevel()
+    {
+        $beforeStep = $this->step->getBefore();
+        if(!$beforeStep) return null;
+        return new WorkoutSet(['stepId' => $beforeStep->id, 'repCount' => $beforeStep->level3_rep_count, 'setCount'=>$beforeStep->level3_set_count]);
+    }
+    private function getNextStepFirstLevel()
+    {
+        $nextStep = $this->step->getNext();
+        if(!$nextStep) return null;
+        return new WorkoutSet(['stepId' => $nextStep->id, 'repCount' => $nextStep->level1_rep_count, 'setCount' => $nextStep->level2_set_count]);
     }
 }

@@ -60,6 +60,7 @@ class Workout extends Model
             ->first();
 
         if($latestWorkout && $latestWorkout->isNowWorkoutSet()){
+            //join work out
             if($latestWorkout->getAttribute('parent_id')){
                 return $latestWorkout->getAttribute('parent_id');
             }else {
@@ -67,6 +68,7 @@ class Workout extends Model
             }
         }
         else {
+            //create workout set
             return 0;
         }
     }
