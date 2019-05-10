@@ -3,7 +3,7 @@
 namespace App\Model\Entity;
 
 use App\Model\UserData\Workout;
-use App\Model\Entity\WorkoutLevel;
+use App\Model\Entity\WorkoutSetInfo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -19,7 +19,7 @@ class WorkoutSet extends Model
     private $setCount = 0;
 
     /**
-     * @var WorkoutLevel
+     * @var WorkoutSetInfo
      */
     private $workoutLevel = null;
 
@@ -63,14 +63,14 @@ class WorkoutSet extends Model
 
         for ($menuId = 1; $menuId <= config('pritra.MENU_COUNT'); ++$menuId) {
             $lastWorkout = static::getLastWorkoutSet($userId, $menuId);
-            if($lastWorkout instanceof  WorkoutSet)$lastWorkout->setNextWorkoutLevel();
+            if($lastWorkout instanceof  WorkoutSet)$lastWorkout->setNextWorkoutSetInfo();
             $lastLogList[$menuId] = $lastWorkout;
         }
 
         return $lastLogList;
     }
 
-    private function setWorkoutLevel(WorkoutLevel $workoutLevel = null){
+    private function setWorkoutSetInfo(WorkoutSetInfo $workoutLevel = null){
         if($workoutLevel){
             $this->workoutLevel = $workoutLevel;
         }
@@ -86,15 +86,15 @@ class WorkoutSet extends Model
                     }
                 }
             });
-            $this->workoutLevel = new WorkoutLevel;
+            $this->workoutLevel = new WorkoutSetInfo;
             $this->workoutLevel->stepId = $minStepId;
             $this->workoutLevel->repCount = $lowRepCount;
             $this->workoutLevel->setCount = $minWorkoutCount;
         }
     }
 
-    private function setNextWorkoutLevel(){
-        $this->setWorkoutLevel();
+    private function setNextWorkoutSetInfo(){
+        $this->setWorkoutSetInfo();
         $this->nextLevelWorkout = $this->getNextLevel();
     }
 
@@ -102,7 +102,7 @@ class WorkoutSet extends Model
      * @param $stepId
      * @param $repCount
      * @param $setCount
-     * @return WorkoutLevel
+     * @return WorkoutSetInfo
      */
     private function getNextLevel(){
         return $this->workoutLevel->getNextLevel();

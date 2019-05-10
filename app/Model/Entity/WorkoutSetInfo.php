@@ -4,13 +4,36 @@ namespace App\Model\Entity;
 
 use Illuminate\Database\Eloquent\Model;
 
-class WorkoutLevel extends Model
+class WorkoutSetInfo extends Model
 {
-//    protected $stepNumber;
 //    protected $stepId;
 //    protected $repCount;
 //    protected $setCount;
     protected $guarded = ['id'];
+    private $level = null;
+
+    /**
+     * return achieved level
+     * @return null
+     */
+    public function getLevel()
+    {
+        if (!$this->level) $this->setLevel();
+        return $this->level;
+    }
+
+    /**
+     * @return bool if fail to set level property, it return false
+     */
+    public function setLevel()
+    {
+        if($this->step && $this->repCount && $this->setCount){
+            $this->level = $this->step->getAchievedLevel($this->repCount, $this->setCount);
+            return true;
+        }
+        return false;
+    }
+
 
     public function step()
     {
@@ -32,7 +55,7 @@ class WorkoutLevel extends Model
         else {
             // same step next level
             $levelInfo = $this->step->getLevelInfo($achievedLevel+1);
-            return new WorkoutLevel(['stepId' => $this->step->id, 'repCount' => $levelInfo["repCount"], "setCount" => $levelInfo["setCount"]]);
+            return new WorkoutSetInfo(['stepId' => $this->step->id, 'repCount' => $levelInfo["repCount"], "setCount" => $levelInfo["setCount"]]);
         }
     }
 
@@ -40,13 +63,13 @@ class WorkoutLevel extends Model
     {
         $beforeStep = $this->step->getBefore();
         if(!$beforeStep) return null;
-        return new WorkoutLevel(['stepId' => $beforeStep->id, 'repCount' => $beforeStep->level3_rep_count, 'setCount'=>$beforeStep->level3_set_count]);
+        return new WorkoutSetInfo(['stepId' => $beforeStep->id, 'repCount' => $beforeStep->level3_rep_count, 'setCount'=>$beforeStep->level3_set_count]);
     }
     private function getNextStepFirstLevel()
     {
         $nextStep = $this->step->getNext();
         if(!$nextStep) return null;
-        return new WorkoutLevel(['stepId' => $nextStep->id, 'repCount' => $nextStep->level1_rep_count, 'setCount' => $nextStep->level2_set_count]);
+        return new WorkoutSetInfo(['stepId' => $nextStep->id, 'repCount' => $nextStep->level1_rep_count, 'setCount' => $nextStep->level2_set_count]);
     }
 
 }
