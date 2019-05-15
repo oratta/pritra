@@ -73,7 +73,7 @@
                 </div>
                 @if($workoutSet)
                 <div class="row border-bottom-0">
-                    {{ $workoutSet->getStartTime() }} 〜 {{$workoutSet->getFinishTime()}}
+                    {{ $workoutSet->getStartTime() }} 〜 {{$workoutSet->getEndTime()}}
                 </div>
                 <div class="row border">
                     <div class="col">

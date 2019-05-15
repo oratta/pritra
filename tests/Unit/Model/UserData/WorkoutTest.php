@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Model\UserData;
 
+use App\Model\UserData\WorkoutSet;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -32,5 +33,12 @@ class WorkoutTest extends TestCase
         //日付違い
         $latestWorkout->created_at = Carbon::now()->addDay();
         $this->assertFalse($reflectionWorkout->invoke($latestWorkout));
+    }
+
+    public function testConstruct()
+    {
+        $workout = new Workout;
+        $this->assertEquals(-1, $workout->parent_id);
+        $this->assertEquals(0, $workout->workout_set_id);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\UserData\Workout;
-use App\Model\Entity\WorkoutSet;
+use App\Model\UserData\WorkoutSet;
 use App\Model\Master\MenuMaster;
 use App\Model\Master\StepMaster;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -77,8 +77,12 @@ class WorkoutController extends Controller
         $workout->step_master_id = $request->input('step_master_id');
         $workout->count = $request->input('count');
         $workout->difficulty_type = $request->input('difficulty_type');
+        $workout->setParentId();
+        $workout->setWorkoutSet();
 
-        $workout->save();
+        $workout->saveWorkoutSet(); //1st transaction
+        $workout->save(); //2nd transaction
+        $workout->saveWorkoutIdToWorkoutSet(); //3rd transaction
 
         //FIXME move to view component
         $diffList = config('pritra.DIFFICULTY_LIST');

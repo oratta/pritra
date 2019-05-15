@@ -1,29 +1,15 @@
 <?php
 
-namespace App\Model\Entity;
+namespace App\Model\UserData;
 
-use App\Model\UserData\Workout;
-use App\Model\Entity\WorkoutSetInfo;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class WorkoutSet extends Model
 {
-    /**
-     * @var Collection
-     */
-    private $workoutList;
-
-    private $startTime = null;
-    private $finishTime = null;
-    private $setCount = 0;
-
-    //    protected $stepId;
-    //    protected $repCount;
-    //    protected $setCount;
-    protected $guarded = ['id'];
-    private $level = null;
-
+    protected $table = "workout_sets";
+    protected $guarded = ["id"];
+    public $timestamps = true;
+    private $cache = [];
 
     /**
      * @var Workout
@@ -33,25 +19,37 @@ class WorkoutSet extends Model
 
     public function step()
     {
-        return $this->belongsTo('App\Model\Master\StepMaster','stepId');
+        return $this->belongsTo('App\Model\Master\StepMaster','min_step_master_id');
+    }
+
+    public function getWorkoutList($isForce = false)
+    {
+        if($isForce || !isset($this->cache[__METHOD__])){
+            $workoutIdList = explode(",",$this->workout_ids);
+            $workoutList = Workout::with('step', 'menu')
+                ->whereIn('id', $workoutIdList)->get();
+            $this->cache[__METHOD__] = $workoutList;
+        }
+
+        return $this->cache[__METHOD__];
     }
 
 
     public function getStartTime()
     {
-        if(!$this->startTime) {
-            $this->startTime = $this->workoutList->first()->created_at;
+        if(!$this->start_time) {
+            $this->start_time = $this->getWorkoutList()->first()->created_at;
         }
 
-        return $this->startTime;
+        return $this->start_time;
     }
 
-    public function getFinishTime()
+    public function getEndTime()
     {
-        if(!$this->finishTime) {
-            $this->finishTime = $this->workoutList->last()->created_at;
+        if(!$this->end_time) {
+            $this->end_time = $this->getWorkoutList()->last()->created_at;
         }
-        return $this->finishTime;
+        return $this->end_time;
     }
 
     /**
@@ -59,7 +57,7 @@ class WorkoutSet extends Model
      */
     public function getWorkoutArray()
     {
-        return $this->workoutList->all();
+        return $this->getWorkoutList()->all();
     }
 
     /**
@@ -80,10 +78,10 @@ class WorkoutSet extends Model
     }
 
     private function setWorkoutSetInfo(){
-        $minStepId = $this->workoutList->min('step_master_id');
+        $minStepId = $this->getWorkoutList()->min('step_master_id');
         $lowRepCount = 1000;
         $minWorkoutCount = 0;
-        $this->workoutList->each(function($workout) use (&$lowRepCount,&$minWorkoutCount, $minStepId){
+        $this->getWorkoutList()->each(function($workout) use (&$lowRepCount,&$minWorkoutCount, $minStepId){
             if($workout->step_master_id === $minStepId){
                 $minWorkoutCount++;
                 if($lowRepCount > $workout->count){
@@ -91,9 +89,10 @@ class WorkoutSet extends Model
                 }
             }
         });
-        $this->stepId = $minStepId;
-        $this->repCount = $lowRepCount;
-        $this->setCount = $minWorkoutCount;
+        $this->min_step_master_id = $minStepId;
+        $this->min_rep_count = $lowRepCount;
+        $this->set_count = $minWorkoutCount;
+        $this->setLevel();
     }
 
     private function setNextWorkoutSetInfo(){
@@ -108,26 +107,11 @@ class WorkoutSet extends Model
      */
     static public function getLastWorkoutSet($userId, $menuId)
     {
-        $lastWorkout = Workout::where('user_id', '=', $userId)
-            ->where('menu_master_id','=', $menuId)
-            ->latest()
-            ->first();
-        if(!$lastWorkout) return null;
-
-        if($lastWorkout->hasParent()){
-            $workoutList = Workout::with('step', 'menu')
-                ->where([['user_id', '=', $userId], ['menu_master_id','=', $menuId],['parent_id',$lastWorkout->parent_id]])
-                ->orwhere([['user_id', '=', $userId], ['menu_master_id','=', $menuId],['id', '=', $lastWorkout->parent_id]])
-                ->get();
-        }
-        else {
-            $workoutList = collect([$lastWorkout]);
-        }
-
-        $workoutSet = new WorkoutSet;
-        $workoutSet->setWorkoutList($workoutList);
-
-
+        $workoutSet = WorkoutSet::where('user_id', '=', $userId)
+                ->where('menu_master_id', '=', $menuId)
+                ->latest()
+                ->first();
+        if(!$workoutSet) return null;
         return $workoutSet;
     }
 
@@ -137,6 +121,13 @@ class WorkoutSet extends Model
     private function setWorkoutList(Collection $workoutList)
     {
         $this->workoutList = $workoutList;
+    }
+
+    public function addWorkout(Workout $workout)
+    {
+        $this->workout_ids += ",$workout->id";
+        $this->getWorkoutList()->add($workout);
+        $this->setWorkoutSetInfo();
     }
 
     /***********************************
@@ -158,8 +149,8 @@ class WorkoutSet extends Model
      */
     public function setLevel()
     {
-        if($this->step && $this->repCount && $this->setCount){
-            $this->level = $this->step->getAchievedLevel($this->repCount, $this->setCount);
+        if($this->step && $this->min_rep_count && $this->set_count){
+            $this->level = $this->step->getAchievedLevel($this->min_rep_count, $this->set_count);
             return true;
         }
         return false;
@@ -169,7 +160,7 @@ class WorkoutSet extends Model
 
     public function getNextLevel()
     {
-        $achievedLevel = $this->step->getAchievedLevel($this->repCount, $this->setCount);
+        $achievedLevel = $this->step->getAchievedLevel($this->min_rep_count, $this->set_count);
 
         if($achievedLevel === config("pritra.MAX_LEVEL")){
             // next step first level
@@ -182,7 +173,7 @@ class WorkoutSet extends Model
         else {
             // same step next level
             $levelInfo = $this->step->getLevelInfo($achievedLevel+1);
-            return new WorkoutSet(['stepId' => $this->step->id, 'repCount' => $levelInfo["repCount"], "setCount" => $levelInfo["setCount"]]);
+            return new WorkoutSet(['min_step_master_id' => $this->step->id, 'min_rep_count' => $levelInfo["repCount"], "set_count" => $levelInfo["setCount"]]);
         }
     }
 
@@ -190,12 +181,13 @@ class WorkoutSet extends Model
     {
         $beforeStep = $this->step->getBefore();
         if(!$beforeStep) return null;
-        return new WorkoutSet(['stepId' => $beforeStep->id, 'repCount' => $beforeStep->level3_rep_count, 'setCount'=>$beforeStep->level3_set_count]);
+        return new WorkoutSet(['min_step_master_id' => $beforeStep->id, 'min_rep_count' => $beforeStep->level3_rep_count, 'set_count'=>$beforeStep->level3_set_count]);
     }
     private function getNextStepFirstLevel()
     {
         $nextStep = $this->step->getNext();
         if(!$nextStep) return null;
-        return new WorkoutSet(['stepId' => $nextStep->id, 'repCount' => $nextStep->level1_rep_count, 'setCount' => $nextStep->level2_set_count]);
+        return new WorkoutSet(['min_step_master_id' => $nextStep->id, 'min_rep_count' => $nextStep->level1_rep_count, 'set_count' => $nextStep->level2_set_count]);
     }
+
 }
