@@ -89,8 +89,8 @@
                                     NextStep<br>
                                     @php if(!$workoutSet->nextLevelWorkout->step){dump($workoutSet->nextLevelWorkout);exit;} @endphp
                                     step {{ $workoutSet->nextLevelWorkout->step->step_number }} : {{ $workoutSet->nextLevelWorkout->step->name }} <br>
-                                    {{ $workoutSet->nextLevelWorkout->repCount }} reps <br>
-                                    {{ $workoutSet->nextLevelWorkout->setCount }} set
+                                    {{ $workoutSet->nextLevelWorkout->min_rep_count }} reps <br>
+                                    {{ $workoutSet->nextLevelWorkout->set_count }} set
                                 </button>
                             @endif
                         </div>
