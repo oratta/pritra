@@ -10,7 +10,7 @@ class Workout extends Model
     protected $table = 'work_outs';
     protected $guarded = ['id','user_id'];
     public $timestamps = true;
-    protected $workoutSet;
+    private $savedWorkoutSet;
 
     protected $attributes = [
         'parent_id' => -1,
@@ -82,33 +82,34 @@ class Workout extends Model
         if($this->parent_id === -1) throw new \Exception("don't call this function before setParentId");
 
         if($this->parent_id !== 0){
-            $this->workoutSet = $this->parent->workoutSet;
-            $this->workoutSet->addWorkout($this);
+            $this->savedWorkoutSet = $this->parent->workoutSet;
+            $this->savedWorkoutSet->addWorkout($this);
         }
         else{
-            $this->workoutSet = new WorkoutSet();
-            $this->workoutSet->user_id = $this->user_id;
-            $this->workoutSet->menu_master_id = $this->menu_master_id;
-            $this->workoutSet->workout_ids = "{$this->id}";
-            $this->workoutSet->start_time = now();
-            $this->workoutSet->end_time = now();
-            $this->workoutSet->min_step_master_id = $this->step_master_id;
-            $this->workoutSet->min_rep_count = $this->count;
-            $this->workoutSet->set_count = 1;
-            if(!$this->workoutSet->setLevel()) throw new \Exception("fail to Workout::setLevel");
+            $this->savedWorkoutSet = new WorkoutSet();
+            $this->savedWorkoutSet->user_id = $this->user_id;
+            $this->savedWorkoutSet->menu_master_id = $this->menu_master_id;
+            $this->savedWorkoutSet->workout_ids = "{$this->id}";
+            $this->savedWorkoutSet->start_time = now();
+            $this->savedWorkoutSet->end_time = now();
+            $this->savedWorkoutSet->min_step_master_id = $this->step_master_id;
+            $this->savedWorkoutSet->min_rep_count = $this->count;
+            $this->savedWorkoutSet->set_count = 1;
+            $this->savedWorkoutSet->addWorkout($this);
+            if(!$this->savedWorkoutSet->setLevel()) throw new \Exception("fail to Workout::setLevel");
         }
     }
 
     public function saveWorkoutSet()
     {
-        $this->workoutSet->save();
-        $this->workout_set_id = $this->workoutSet->id;
+        $this->savedWorkoutSet->save();
+        $this->workout_set_id = $this->savedWorkoutSet->id;
     }
 
     public function saveWorkoutIdToWorkoutSet()
     {
-        $this->workoutSet->workout_ids = "{$this->id}";
-        $this->workoutSet->save();
+        $this->savedWorkoutSet->workout_ids = $this->savedWorkoutSet->getWorkoutList()->implode('id',',');
+        $this->savedWorkoutSet->save();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Model\UserData;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class WorkoutSet extends Model
@@ -10,6 +11,7 @@ class WorkoutSet extends Model
     protected $guarded = ["id"];
     public $timestamps = true;
     private $cache = [];
+    private $workoutList;
 
     /**
      * @var Workout
@@ -24,14 +26,19 @@ class WorkoutSet extends Model
 
     public function getWorkoutList($isForce = false)
     {
-        if($isForce || !isset($this->cache[__METHOD__])){
+        if($isForce || !$this->workoutList){
             $workoutIdList = explode(",",$this->workout_ids);
             $workoutList = Workout::with('step', 'menu')
                 ->whereIn('id', $workoutIdList)->get();
-            $this->cache[__METHOD__] = $workoutList;
+            $this->workoutList = $workoutList;
         }
 
-        return $this->cache[__METHOD__];
+        return $this->workoutList;
+    }
+
+    public function setWorkoutList(Collection $workoutList)
+    {
+        $this->workoutList = $workoutList;
     }
 
 
@@ -89,6 +96,9 @@ class WorkoutSet extends Model
                 }
             }
         });
+        if($lowRepCount === 1000 && $minWorkoutCount === 0){
+            throw new \Exception("error to set WorkoutSetInfo");
+        }
         $this->min_step_master_id = $minStepId;
         $this->min_rep_count = $lowRepCount;
         $this->set_count = $minWorkoutCount;
@@ -115,18 +125,11 @@ class WorkoutSet extends Model
         return $workoutSet;
     }
 
-    /**
-     * @param Collection $workoutList
-     */
-    private function setWorkoutList(Collection $workoutList)
-    {
-        $this->workoutList = $workoutList;
-    }
-
     public function addWorkout(Workout $workout)
     {
-        $this->workout_ids += ",$workout->id";
-        $this->getWorkoutList()->add($workout);
+        $workoutList = $this->getWorkoutList();
+        $workoutList->add($workout);
+        $this->setWorkoutList($workoutList);
         $this->setWorkoutSetInfo();
     }
 
