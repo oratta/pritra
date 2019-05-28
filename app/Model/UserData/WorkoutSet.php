@@ -84,6 +84,23 @@ class WorkoutSet extends Model
         return $lastLogList;
     }
 
+    /**
+     * @param $userId
+     * @return array
+     */
+    static public function getBestWorkoutSetList($userId)
+    {
+        $bestLogList = [];
+
+        for ($menuId = 1; $menuId <= config('pritra.MENU_COUNT'); ++$menuId) {
+            $bestLogList[$menuId] = static::getBestWorkoutSet($userId, $menuId);
+        }
+
+        return $bestLogList;
+    }
+
+
+
     private function setWorkoutSetInfo(){
         $minStepId = $this->getWorkoutList()->min('step_master_id');
         $lowRepCount = 1000;
@@ -125,6 +142,21 @@ class WorkoutSet extends Model
         return $workoutSet;
     }
 
+    /**
+     * @param $userId
+     * @param $menuId
+     * @return WorkoutSet|null
+     */
+    static public function getBestWorkoutSet($userId, $menuId)
+    {
+        $workoutSet = WorkoutSet::where('user_id', '=', $userId)
+            ->where('menu_master_id', '=', $menuId)
+            ->orderBy('step_level', 'desc')
+            ->first();
+        if(!$workoutSet) return null;
+        return $workoutSet;
+    }
+
     public function addWorkout(Workout $workout)
     {
         $workoutList = $this->getWorkoutList();
@@ -154,6 +186,7 @@ class WorkoutSet extends Model
     {
         if($this->step && $this->min_rep_count && $this->set_count){
             $this->level = $this->step->getAchievedLevel($this->min_rep_count, $this->set_count);
+            $this->step_level = $this->min_step_master_id*100+$this->level;
             return true;
         }
         return false;

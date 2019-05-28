@@ -93,6 +93,14 @@
                                     {{ $workoutSet->nextLevelWorkout->set_count }} set
                                 </button>
                             @endif
+                            @if(isset($bestWorkoutSetList[$menuId]))
+                                <button class="list-group-item list-group-item-info text-left" data-menu="{{$bestWorkoutSetList[$menuId]->menu_master_id}}" data-step="{{$bestWorkoutSetList[$menuId]->step_master_id}}" data-reps="{{$bestWorkoutSetList[$menuId]->count}}" data-difficulty="3">>
+                                    BestStep<br>
+                                    step {{ $bestWorkoutSetList[$menuId]->step->step_number }} : {{ $bestWorkoutSetList[$menuId]->step->name }} <br>
+                                    {{ $bestWorkoutSetList[$menuId]->min_rep_count }} reps <br>
+                                    {{ $bestWorkoutSetList[$menuId]->set_count }} set
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>

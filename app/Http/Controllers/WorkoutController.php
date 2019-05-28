@@ -52,14 +52,14 @@ class WorkoutController extends Controller
         });
 
         $lastWorkoutSetList = WorkoutSet::getLastWorkoutSetList(Auth::id());
+        $bestWorkoutSetList = WorkoutSet::getBestWorkoutSetList(Auth::id());
 
         $menuStepList = $stepList;
         $menuList = $menuNameList->toArray();
         $difficultyList = config('pritra.DIFFICULTY_LIST');
 
-
         return view('workout.create',
-            compact('menuList','menuStepList', 'difficultyList', 'lastWorkoutSetList',
+            compact('menuList','menuStepList', 'difficultyList', 'lastWorkoutSetList', 'bestWorkoutSetList',
                 'selectMenuId', 'selectStepId', 'selectCount', 'selectDifficulty'));
     }
 

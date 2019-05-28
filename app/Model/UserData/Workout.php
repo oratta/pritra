@@ -58,7 +58,7 @@ class Workout extends Model
     {
         $parentId = 0;
         $latestWorkout = Workout::select('id','parent_id', 'created_at')
-            ->where('user_id','=', $this->getAttribute('user_id'))
+            ->where([['user_id','=', $this->getAttribute('user_id')],['menu_master_id','=',$this->menu_master_id]])
             ->latest()
             ->first();
 
@@ -75,7 +75,6 @@ class Workout extends Model
 
 
     /**
-     * TODO check that set default parent id = -1
      */
     public function setWorkoutSet()
     {
