@@ -53,6 +53,7 @@ class WorkoutController extends Controller
 
         $lastWorkoutSetList = WorkoutSet::getLastWorkoutSetList(Auth::id());
         $bestWorkoutSetList = WorkoutSet::getBestWorkoutSetList(Auth::id());
+        $progressBarInfoArray = $this->getProgressBarInfoArray($lastWorkoutSetList, $bestWorkoutSetList);
 
         $menuStepList = $stepList;
         $menuList = $menuNameList->toArray();
@@ -60,7 +61,20 @@ class WorkoutController extends Controller
 
         return view('workout.create',
             compact('menuList','menuStepList', 'difficultyList', 'lastWorkoutSetList', 'bestWorkoutSetList',
-                'selectMenuId', 'selectStepId', 'selectCount', 'selectDifficulty'));
+                'selectMenuId', 'selectStepId', 'selectCount', 'selectDifficulty', 'progressBarInfoArray'));
+    }
+
+    private function getProgressBarInfoArray(array $lastWorkoutSetList, array $bestWorkoutSetList)
+    {
+        $progressBarInfoArray = [];
+        for ($menuId = 1; $menuId <= config('pritra.MENU_COUNT'); ++$menuId) {
+            $progressBarInfo = [];
+            $progressBarInfo[0] = $lastWorkoutSetList[$menuId] ?? new WorkoutSet(["menu_master_id" => $menuId]);
+            $progressBarInfo[1] = $bestWorkoutSetList[$menuId] ?? new WorkoutSet(["menu_master_id" => $menuId]);
+            $progressBarInfoArray[$menuId] = $progressBarInfo;
+        }
+
+        return $progressBarInfoArray;
     }
 
     /**

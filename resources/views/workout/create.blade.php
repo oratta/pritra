@@ -78,7 +78,15 @@
                         </div>
                         {{Form::close()}}                        </div>
                     <div id="tab2" class="tab-pane">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/221808/photo2.jpg" alt="" class="img-fluid">
+                        <dl class="dl-horizontal">
+                            @foreach($progressBarInfoArray as $index => $progressBarInfo)
+                                <dt>{{$progressBarInfo[0]->menu->name}}</dt>
+                                <dd>
+                                    <div class="progress progress-bar" style="width:{{$progressBarInfo[0]->getProgressLevel()}}%;">{{$progressBarInfo[0]->getProgressLevel(true)}}</div>
+                                    <div class="progress progress-bar progress-bar-striped" style="width:{{$progressBarInfo[1]->getProgressLevel()}}%;color:red;">{{$progressBarInfo[1]->getProgressLevel(true)}}</div>
+                                </dd>
+                            @endforeach
+                        </dl>
                     </div>
                     <div id="tab3" class="tab-pane">
                         <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/221808/photo3.jpg" alt="" class="img-fluid">

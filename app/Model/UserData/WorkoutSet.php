@@ -18,6 +18,10 @@ class WorkoutSet extends Model
      */
     public $nextLevelWorkout;
 
+    public function menu()
+    {
+        return $this->belongsTo('App\Model\Master\MenuMaster','menu_master_id');
+    }
 
     public function step()
     {
@@ -224,6 +228,29 @@ class WorkoutSet extends Model
         $nextStep = $this->step->getNext();
         if(!$nextStep) return null;
         return new WorkoutSet(['min_step_master_id' => $nextStep->id, 'min_rep_count' => $nextStep->level1_rep_count, 'set_count' => $nextStep->level2_set_count]);
+    }
+
+    public function getProgressLevel($isText=false)
+    {
+
+        if($this->id){
+            //10step 3level = 100%
+            //(step -1)*10 + level*3
+            if($isText){
+                return "step".$this->step->step_number.": level".$this->level;
+            }
+            else{
+                return ($this->step->step_number -1)*10 + $this->level * 3;
+            }
+        }
+        else {
+            if($isText){
+                return "no workouts";
+            }
+            else{
+                return 0;
+            }
+        }
     }
 
 }
