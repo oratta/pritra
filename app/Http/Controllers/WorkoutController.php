@@ -87,10 +87,10 @@ class WorkoutController extends Controller
     {
         $workout = new Workout;
         $workout->user_id = Auth::id();
-        $workout->menu_master_id = $request->input('menu_master_id');
-        $workout->step_master_id = $request->input('step_master_id');
-        $workout->count = $request->input('count');
-        $workout->difficulty_type = $request->input('difficulty_type');
+        $workout->menu_master_id = (int)$request->input('menu_master_id');
+        $workout->step_master_id = (int)$request->input('step_master_id');
+        $workout->count = (int)$request->input('count');
+        $workout->difficulty_type = (int)$request->input('difficulty_type');
         $workout->setParentId();
         $workout->setWorkoutSet();
 
