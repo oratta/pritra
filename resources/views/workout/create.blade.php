@@ -9,60 +9,92 @@
             {{ session('message') }}
             </div>
         @endif
-        <h1>{{ $title }}</h1>
-        {{Form::open(['action' => 'WorkoutController@store'])}}
-        <div class="form-group">
-            <select id="menu_select" class="form-control" name="menu_master_id">
-                <option value="" selected="selected">メニューを選択</option>
-                @foreach($menuList as $index => $menu)
-                    @if($selectMenuId==$index)
-                        <option value="{{ $index }}" selected="selected">{{ $menu }}</option>
-                    @else
-                        <option value="{{ $index }}">{{ $menu }}</option>
-                    @endif
-                @endforeach
-            </select>
+        <div class="tab-pane-content">
+            <div class="p-3">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a href="#tab1" class="nav-link" data-toggle="tab">log</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tab2" class="nav-link" data-toggle="tab">achievement</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tab3" class="nav-link" data-toggle="tab">history</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane active">
+                        {{Form::open(['action' => 'WorkoutController@store'])}}
+                        <div class="form-group">
+                            <select id="menu_select" class="form-control" name="menu_master_id">
+                                <option value="" selected="selected">メニューを選択</option>
+                                @foreach($menuList as $index => $menu)
+                                    @if($selectMenuId==$index)
+                                        <option value="{{ $index }}" selected="selected">{{ $menu }}</option>
+                                    @else
+                                        <option value="{{ $index }}">{{ $menu }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select id="step_select" class="form-control" name="step_master_id">
+                                <option value="" selected="selected">ステップを選択</option>
+                                @foreach($menuStepList as $menuIndex => $stepList)
+                                    @foreach($stepList as $stepId => $stepName)
+                                        @if($selectStepId==$stepId)
+                                            <option value="{{$stepId}}" data-menu="{{$menuIndex}}" selected="selected">{{$stepName}}</option>
+                                        @else
+                                            <option value="{{$stepId}}" data-menu="{{$menuIndex}}">{{$stepName}}</option>
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select id='count_select' class="form-control" name="count">
+                                @for($i=0;$i<$selectCount-1;$i++)
+                                    <option value="{{$i+1}}">{{$i+1}}</option>
+                                @endfor
+                                <option value="{{$selectCount}}" selected="selected">{{$selectCount}}</option>
+                                @for($i=$selectCount;$i<150;$i++)
+                                    <option value="{{$i+1}}">{{$i+1}}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select id='difficulty_select' class="form-control" name="difficulty_type">
+                                @foreach($difficultyList as $index => $strength)
+                                    @if($index==$selectDifficulty)
+                                        <option value="{{$index}}" selected="selected">{{$strength}}</option>
+                                    @else
+                                        <option value="{{$index}}">{{$strength}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        {{Form::close()}}                        </div>
+                    <div id="tab2" class="tab-pane">
+                        <dl class="dl-horizontal">
+                            @foreach($progressBarInfoArray as $index => $progressBarInfo)
+                                <dt>{{$progressBarInfo[0]->menu->name}}</dt>
+                                <dd>
+                                    <div class="progress progress-bar" style="width:{{$progressBarInfo[0]->getProgressLevel()}}%;">{{$progressBarInfo[0]->getProgressLevel(true)}}</div>
+                                    <div class="progress progress-bar progress-bar-striped" style="width:{{$progressBarInfo[1]->getProgressLevel()}}%;color:red;">{{$progressBarInfo[1]->getProgressLevel(true)}}</div>
+                                </dd>
+                            @endforeach
+                        </dl>
+                    </div>
+                    <div id="tab3" class="tab-pane">
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/221808/photo3.jpg" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <select id="step_select" class="form-control" name="step_master_id">
-                <option value="" selected="selected">ステップを選択</option>
-                @foreach($menuStepList as $menuIndex => $stepList)
-                    @foreach($stepList as $stepId => $stepName)
-                        @if($selectStepId==$stepId)
-                            <option value="{{$stepId}}" data-menu="{{$menuIndex}}" selected="selected">{{$stepName}}</option>
-                        @else
-                            <option value="{{$stepId}}" data-menu="{{$menuIndex}}">{{$stepName}}</option>
-                        @endif
-                    @endforeach
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group">
-            <select id='count_select' class="form-control" name="count">
-                @for($i=0;$i<$selectCount-1;$i++)
-                    <option value="{{$i+1}}">{{$i+1}}</option>
-                @endfor
-                <option value="{{$selectCount}}" selected="selected">{{$selectCount}}</option>
-                @for($i=$selectCount;$i<150;$i++)
-                    <option value="{{$i+1}}">{{$i+1}}</option>
-                @endfor
-            </select>
-        </div>
-        <div class="form-group">
-            <select id='difficulty_select' class="form-control" name="difficulty_type">
-                @foreach($difficultyList as $index => $strength)
-                    @if($index==$selectDifficulty)
-                        <option value="{{$index}}" selected="selected">{{$strength}}</option>
-                    @else
-                        <option value="{{$index}}">{{$strength}}</option>
-                    @endif
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-        {{Form::close()}}
+
 
         <h2>Last Training</h2>
         <div class="align-content-sm-center border ">
@@ -73,7 +105,7 @@
                 </div>
                 @if($workoutSet)
                 <div class="row border-bottom-0">
-                    {{ $workoutSet->getStartTime() }} 〜 {{$workoutSet->getFinishTime()}}
+                    {{ $workoutSet->getStartTime() }} 〜 {{$workoutSet->getEndTime()}}
                 </div>
                 <div class="row border">
                     <div class="col">
@@ -89,8 +121,16 @@
                                     NextStep<br>
                                     @php if(!$workoutSet->nextLevelWorkout->step){dump($workoutSet->nextLevelWorkout);exit;} @endphp
                                     step {{ $workoutSet->nextLevelWorkout->step->step_number }} : {{ $workoutSet->nextLevelWorkout->step->name }} <br>
-                                    {{ $workoutSet->nextLevelWorkout->repCount }} reps <br>
-                                    {{ $workoutSet->nextLevelWorkout->setCount }} set
+                                    {{ $workoutSet->nextLevelWorkout->min_rep_count }} reps <br>
+                                    {{ $workoutSet->nextLevelWorkout->set_count }} set
+                                </button>
+                            @endif
+                            @if(isset($bestWorkoutSetList[$menuId]))
+                                <button class="list-group-item list-group-item-info text-left" data-menu="{{$bestWorkoutSetList[$menuId]->menu_master_id}}" data-step="{{$bestWorkoutSetList[$menuId]->step_master_id}}" data-reps="{{$bestWorkoutSetList[$menuId]->count}}" data-difficulty="3">>
+                                    BestStep<br>
+                                    step {{ $bestWorkoutSetList[$menuId]->step->step_number }} : {{ $bestWorkoutSetList[$menuId]->step->name }} <br>
+                                    {{ $bestWorkoutSetList[$menuId]->min_rep_count }} reps <br>
+                                    {{ $bestWorkoutSetList[$menuId]->set_count }} set
                                 </button>
                             @endif
                         </div>

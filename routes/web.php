@@ -46,6 +46,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('show/{id}', 'StepController@show');
     });
 
+    Route::prefix('sample')->group(function () {
+        Route::get('/', 'SampleController@index');
+        Route::get('index', 'SampleController@index');
+        Route::view('tab', 'sample.tab');
+    });
+
 
 });
 

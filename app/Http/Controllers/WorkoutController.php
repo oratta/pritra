@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\UserData\Workout;
-use App\Model\Entity\WorkoutSet;
+use App\Model\UserData\WorkoutSet;
 use App\Model\Master\MenuMaster;
 use App\Model\Master\StepMaster;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -52,15 +52,29 @@ class WorkoutController extends Controller
         });
 
         $lastWorkoutSetList = WorkoutSet::getLastWorkoutSetList(Auth::id());
+        $bestWorkoutSetList = WorkoutSet::getBestWorkoutSetList(Auth::id());
+        $progressBarInfoArray = $this->getProgressBarInfoArray($lastWorkoutSetList, $bestWorkoutSetList);
 
         $menuStepList = $stepList;
         $menuList = $menuNameList->toArray();
         $difficultyList = config('pritra.DIFFICULTY_LIST');
 
-
         return view('workout.create',
-            compact('menuList','menuStepList', 'difficultyList', 'lastWorkoutSetList',
-                'selectMenuId', 'selectStepId', 'selectCount', 'selectDifficulty'));
+            compact('menuList','menuStepList', 'difficultyList', 'lastWorkoutSetList', 'bestWorkoutSetList',
+                'selectMenuId', 'selectStepId', 'selectCount', 'selectDifficulty', 'progressBarInfoArray'));
+    }
+
+    private function getProgressBarInfoArray(array $lastWorkoutSetList, array $bestWorkoutSetList)
+    {
+        $progressBarInfoArray = [];
+        for ($menuId = 1; $menuId <= config('pritra.MENU_COUNT'); ++$menuId) {
+            $progressBarInfo = [];
+            $progressBarInfo[0] = $lastWorkoutSetList[$menuId] ?? new WorkoutSet(["menu_master_id" => $menuId]);
+            $progressBarInfo[1] = $bestWorkoutSetList[$menuId] ?? new WorkoutSet(["menu_master_id" => $menuId]);
+            $progressBarInfoArray[$menuId] = $progressBarInfo;
+        }
+
+        return $progressBarInfoArray;
     }
 
     /**
@@ -73,12 +87,16 @@ class WorkoutController extends Controller
     {
         $workout = new Workout;
         $workout->user_id = Auth::id();
-        $workout->menu_master_id = $request->input('menu_master_id');
-        $workout->step_master_id = $request->input('step_master_id');
-        $workout->count = $request->input('count');
-        $workout->difficulty_type = $request->input('difficulty_type');
+        $workout->menu_master_id = (int)$request->input('menu_master_id');
+        $workout->step_master_id = (int)$request->input('step_master_id');
+        $workout->count = (int)$request->input('count');
+        $workout->difficulty_type = (int)$request->input('difficulty_type');
+        $workout->setParentId();
+        $workout->setWorkoutSet();
 
-        $workout->save();
+        $workout->saveWorkoutSet(); //1st transaction
+        $workout->save(); //2nd transaction
+        $workout->saveWorkoutIdToWorkoutSet(); //3rd transaction
 
         //FIXME move to view component
         $diffList = config('pritra.DIFFICULTY_LIST');

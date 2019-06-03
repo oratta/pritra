@@ -2,7 +2,6 @@
 
 namespace App\Model\Master;
 
-use App\Model\Entity\WorkoutLevel;
 use Illuminate\Database\Eloquent\Model;
 
 class StepMaster extends Model
@@ -22,7 +21,6 @@ class StepMaster extends Model
     }
 
     /**
-     * @return WorkoutLevel
      */
     public function getAchievedLevel($repCount, $setCount = 0)
     {
