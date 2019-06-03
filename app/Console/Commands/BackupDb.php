@@ -4,14 +4,14 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class CopyProductDb extends Command
+class BackupDb extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'db:copyProduct 
+    protected $signature = 'db:backupProduct 
                             {dbName=productCopy : create db Name} 
                             {--F|force : delete db if same name db exists}';
 
@@ -73,16 +73,5 @@ class CopyProductDb extends Command
         dump($return);
         dump($arr);
         dump($arr2);
-
-        //drop db if force option
-        //if same name db exist
-        //if it can be contain a drop db command in a dump file, this operation is not necessary
-
-        //create db
-        //if it can be contain a create db command in a dump file, this operation is not necessary
-
-        //exec dump file
-
-        //delete dump file
     }
 }
