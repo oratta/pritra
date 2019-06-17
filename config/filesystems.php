@@ -63,6 +63,10 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
         ],
+        'snapshots' => [
+            'driver' => 'local',
+            'root' => database_path('snapshots'), // database/snapshots内に保存
+        ],
 
     ],
 
