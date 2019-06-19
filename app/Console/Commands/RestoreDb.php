@@ -57,13 +57,12 @@ class RestoreDb extends Command
         //apply the restore file
         $dockerDir = "./../laradock";
         chdir ( $dockerDir );
-        $dbContainerUser = env('DB_CONTAINER_USER');
         $dbContainer = env('DB_CONTAINER');
         $dbUser = env('DB_USERNAME');
         $dbPassword = env('DB_PASSWORD');
         $dbName = env("DB_DATABASE");
 
-        $restoreCommand = "cat $downloadPath | sudo docker-compose exec -T --user=$dbContainerUser $dbContainer /usr/bin/mysql -u $dbUser -p$dbPassword $dbName";
+        $restoreCommand = "cat $downloadPath | /usr/bin/mysql -h $dbContainer -u $dbUser -p$dbPassword $dbName";
         dump($restoreCommand);
         $return = exec($restoreCommand, $arr, $arr2);
         dump($return);
