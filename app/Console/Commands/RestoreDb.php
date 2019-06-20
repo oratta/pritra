@@ -41,26 +41,26 @@ class RestoreDb extends Command
     {
         //get a restore file
         $fileName = $this->argument('fileName');
-        $dropboxToken = env("PRODUCT_BACKUP_DROPBOX_TOKEN");
+        $dropboxToken = config("command.backup.dropbox.token");
+        $dropboxPath = config('command.backup.dropbox.path');
         $downloadPath =  "/tmp/$fileName";
-        $backupPath = env("PRODUCT_BACKUP_DROPBOX_PATH") . $fileName;
+
+        $backupPath = $dropboxPath . $fileName;
         $downloadCommand = 'curl -o ' . $downloadPath . ' -X POST https://content.dropboxapi.com/2/files/download \
     --header "Authorization: Bearer ' . $dropboxToken . '" \
     --header "Dropbox-API-Arg: {\"path\": \"' . $backupPath . '\"}"';
-
-        $return = exec($downloadCommand, $arr, $arr2);
         dump($downloadCommand);
+        $return = exec($downloadCommand, $arr, $arr2);
         dump($return);
         dump($arr);
         dump($arr2);
         
         //apply the restore file
-        $dockerDir = "./../laradock";
-        chdir ( $dockerDir );
-        $dbContainer = env('DB_CONTAINER');
-        $dbUser = env('DB_USERNAME');
-        $dbPassword = env('DB_PASSWORD');
-        $dbName = env("DB_DATABASE");
+        //TODO envが設定されていないときにエラーを発生させる
+        $dbContainer = config('command.container.db.name');
+        $dbUser = config('database.connections.mysql.username');
+        $dbPassword = config('database.connections.mysql.password');
+        $dbName = config("database.connections.mysql.database");
 
         $restoreCommand = "cat $downloadPath | /usr/bin/mysql -h $dbContainer -u $dbUser -p$dbPassword $dbName";
         dump($restoreCommand);
