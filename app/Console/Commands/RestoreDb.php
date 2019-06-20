@@ -56,13 +56,20 @@ class RestoreDb extends Command
         dump($arr2);
         
         //apply the restore file
-        //TODO envが設定されていないときにエラーを発生させる
         $dbHost = config('database.connections.mysql.host');
-        $dbUser = config('database.connections.mysql.username');
-        $dbPassword = config('database.connections.mysql.password');
-        $dbName = config("database.connections.mysql.database");
+        $dbUser = config('command.backup.database.admin.username');
+        $dbPassword = config('command.backup.database.admin.password');
+        $dbName = config('database.connections.mysql.database');
 
-        $restoreCommand = "cat $downloadPath | /usr/bin/mysql -h $dbHost -u $dbUser -p$dbPassword $dbName";
+        //reset GTIDs
+        $resetCommand = "/usr/bin/mysql -h $dbHost -u $dbUser -p$dbPassword $dbName -e \"RESET MASTER;\"";
+        dump($resetCommand);
+        $return = exec($resetCommand, $arr, $arr2);
+        dump($return);
+        dump($arr);
+        dump($arr2);
+
+        $restoreCommand = "cat $downloadPath | /usr/bin/mysql -h $dbHost -u $dbUser -p$dbPassword";
         dump($restoreCommand);
         $return = exec($restoreCommand, $arr, $arr2);
         dump($return);
