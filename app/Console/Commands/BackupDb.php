@@ -53,8 +53,9 @@ host = $dbHost";
         //create dump file
         $env = config('app.env');//env string
         $date = date('Ymd_His');
-        $outputFile = "/tmp/dump.$env.$date.sql";
-        $outputCommand = " > $outputFile";
+        $outputFileName = "dump.$env.$date.sql";
+        $outputFilePath = "/tmp/$outputFileName";
+        $outputCommand = " > $outputFilePath";
         $dumpCommand = "/usr/bin/mysqldump --defaults-extra-file=$configFilePath --all-databases --triggers --routines --events $outputCommand";
         dump($dumpCommand);
         $return = exec($dumpCommand, $arr, $arr2);
@@ -67,12 +68,12 @@ host = $dbHost";
 
         //upload to dropbox
         $dropboxToken = config("command.backup.dropbox.token");
-        $backupPath = config("command.backup.dropbox.path") . "dump.$date.sql";
+        $backupPath = config("command.backup.dropbox.path") . $outputFileName;
         $uploadCommand = 'curl -X POST https://content.dropboxapi.com/2/files/upload \
     --header "Authorization: Bearer ' . $dropboxToken .'" \
     --header "Dropbox-API-Arg: {\"path\": \"'.$backupPath. '\",\"mode\": \"add\",\"autorename\": true,\"mute\": false,\"strict_conflict\": false}" \
     --header "Content-Type: application/octet-stream" \
-    --data-binary @' . $outputFile;
+    --data-binary @' . $outputFilePath;
         dump($uploadCommand);
         $return = exec($uploadCommand, $arr, $arr2);
         dump($return);
