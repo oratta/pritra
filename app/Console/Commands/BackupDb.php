@@ -11,7 +11,7 @@ class BackupDb extends Command
      *
      * @var string
      */
-    protected $signature = 'db:backupProduct 
+    protected $signature = 'db:backup 
                             {dbName=productCopy : create db Name} 
                             {--F|force : delete db if same name db exists}';
 
@@ -39,37 +39,42 @@ class BackupDb extends Command
      */
     public function handle()
     {
+        //put login file
+        $dbUser= config("database.connections.mysql.username");
+        $dbPassword= config("database.connections.mysql.password");
+        $dbHost= config("database.connections.mysql.host");
+        $content = "[client]
+user = $dbUser
+password = $dbPassword
+host = $dbHost";
+        $configFilePath = '/tmp/.tmp.cnf';
+        file_put_contents($configFilePath, $content);
+
         //create dump file
-        $productHost = env('PRODUCT_HOST');
-        $productDbContainerUser = env('PRODUCT_DB_CONTAINER_USER');
-        $productDbContainer = env('PRODUCT_DB_CONTAINER');
-        $productDbName = env("PRODUCT_DB_NAME");
-        $productDbUser= env("PRODUCT_DB_USER");
-        $productDbPassword = env("PRODUCT_DB_PASSWORD");
-        $dumpCommand = "sudo docker-compose exec --user=$productDbContainerUser $productDbContainer /usr/bin/mysqldump -u $productDbUser --password=$productDbPassword $productDbName";
-        $productServerCommand = '"cd laradock;' . $dumpCommand . ';"';
+        $env = config('app.env');//env string
         $date = date('Ymd_His');
-        $outputFile = "/tmp/dump.$date.sql";
+        $outputFile = "/tmp/dump.$env.$date.sql";
         $outputCommand = " > $outputFile";
-        $sshCommand = "ssh $productHost -l oratta $productServerCommand $outputCommand";
-        $return = exec($sshCommand, $arr, $arr2);
-        dump($sshCommand);
+        $dumpCommand = "/usr/bin/mysqldump --defaults-extra-file=$configFilePath --all-databases --triggers --routines --events $outputCommand";
+        dump($dumpCommand);
+        $return = exec($dumpCommand, $arr, $arr2);
         dump($return);
         dump($arr);
         dump($arr2);
 
-        //upload to dropbox
+        //delete login file
+        unlink($configFilePath);
 
-        $dropboxToken = env("PRODUCT_BACKUP_DROPBOX_TOKEN");
-        $backupPath = env("PRODUCT_BACKUP_DROPBOX_PATH") . "dump.$date.sql";
+        //upload to dropbox
+        $dropboxToken = config("command.backup.dropbox.token");
+        $backupPath = config("command.backup.dropbox.path") . "dump.$date.sql";
         $uploadCommand = 'curl -X POST https://content.dropboxapi.com/2/files/upload \
     --header "Authorization: Bearer ' . $dropboxToken .'" \
     --header "Dropbox-API-Arg: {\"path\": \"'.$backupPath. '\",\"mode\": \"add\",\"autorename\": true,\"mute\": false,\"strict_conflict\": false}" \
     --header "Content-Type: application/octet-stream" \
     --data-binary @' . $outputFile;
-
-        $returnUpdate = exec($uploadCommand, $arr, $arr2);
         dump($uploadCommand);
+        $return = exec($uploadCommand, $arr, $arr2);
         dump($return);
         dump($arr);
         dump($arr2);
