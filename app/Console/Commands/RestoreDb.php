@@ -57,12 +57,12 @@ class RestoreDb extends Command
         
         //apply the restore file
         //TODO envが設定されていないときにエラーを発生させる
-        $dbContainer = config('command.container.db.name');
+        $dbHost = config('database.connections.mysql.host');
         $dbUser = config('database.connections.mysql.username');
         $dbPassword = config('database.connections.mysql.password');
         $dbName = config("database.connections.mysql.database");
 
-        $restoreCommand = "cat $downloadPath | /usr/bin/mysql -h $dbContainer -u $dbUser -p$dbPassword $dbName";
+        $restoreCommand = "cat $downloadPath | /usr/bin/mysql -h $dbHost -u $dbUser -p$dbPassword $dbName";
         dump($restoreCommand);
         $return = exec($restoreCommand, $arr, $arr2);
         dump($return);
