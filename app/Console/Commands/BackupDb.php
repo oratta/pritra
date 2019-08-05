@@ -20,7 +20,7 @@ class BackupDb extends Command
      *
      * @var string
      */
-    protected $description = 'Copy product db to the develop env';
+    protected $description = 'backup db to dropbox';
 
     /**
      * Create a new command instance.
