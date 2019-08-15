@@ -13,3 +13,4 @@ yarn-error.log
 .env
 hosts.yml
 firebase-debug\.log
+/env_files
