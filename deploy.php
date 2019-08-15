@@ -13,7 +13,7 @@ set('repository', 'https://github.com/oratta/pritra.git');
 set('git_tty', false);
 
 // Shared files/dirs between deploys
-add('shared_files', []);
+add('shared_files', ["env_files/.env.staging", "env_files/.env.production"]);
 add('shared_dirs', []);
 
 // Writable dirs by web server
@@ -23,7 +23,7 @@ add('writable_dirs', []);
 set('allow_anonymous_stats', false);
 
 // Hosts
-inventory('hosts.yml');
+inventory('env_files/hosts.yml');
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
@@ -54,7 +54,7 @@ task('overwrite-env', function () {
     $src = ".env.${stage}";
     $deployPath = get('deploy_path');
     $sharedPath = "${deployPath}/shared";
-    run("cp -f {{release_path}}/${src} ${sharedPath}/.env");
+    run("cp -f ${sharedPath}/env_files/${src} ${sharedPath}/.env");
 });
 
 /**
