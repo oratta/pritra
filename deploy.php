@@ -55,7 +55,9 @@ task('overwrite-env', function () {
     $src = ".env.${stage}";
     $deployPath = get('deploy_path');
     $sharedPath = "${deployPath}/shared";
-    run("cp -f ${sharedPath}/env_files/${src} ${sharedPath}/.env");
+    $destination = "${sharedPath}/env_files/${src}";
+    upload("env_files/$src", $destination);
+    run("cp -f $destination ${sharedPath}/.env");
 });
 
 /**
