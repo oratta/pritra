@@ -18,6 +18,7 @@ add('shared_dirs', []);
 
 // Writable dirs by web server
 add('writable_dirs', []);
+set('writable_mode', "chmod");
 
 // 統計情報を送信しない
 set('allow_anonymous_stats', false);
@@ -32,7 +33,7 @@ after('deploy:failed', 'deploy:unlock');
 after('deploy:shared', 'overwrite-env');
 
 // Migrate database before symlink new release.
-before('deploy:symlink', 'artisan:migrate');
+//before('deploy:symlink', 'artisan:migrate');
 
 
 // Tasks
@@ -62,20 +63,23 @@ task('overwrite-env', function () {
  */
 desc('Deploy your project');
 task('deploy:laravel', [
+    'laradock:test'
+]);
+task('deploy:laravel', [
     'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
     'deploy:shared',
-    'deploy:vendors',
+//    'deploy:vendors',
     'deploy:writable',
-    'artisan:storage:link',
-    'artisan:view:clear',
-    'artisan:cache:clear',
-    'artisan:config:cache',
-    'artisan:optimize',
-    'deploy:symlink',
+//    'artisan:storage:link',
+//    'artisan:view:clear',
+//    'artisan:cache:clear',
+//    'artisan:config:cache',
+//    'artisan:optimize',
+    'deploy:symlink',//この前にmigration
     'deploy:unlock',
     'cleanup',
 ]);
