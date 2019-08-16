@@ -24,7 +24,7 @@ set('writable_mode', "chmod");
 set('allow_anonymous_stats', false);
 
 // Hosts
-inventory('env_files/hosts.yml');
+inventory('env_files/deployer_hosts.yml');
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
