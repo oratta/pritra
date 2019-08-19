@@ -50,9 +50,10 @@ class Deploy extends Command
         $this->call("deploy:composer", ["stage" => $stage]);
 
         //artisan:storage:link
-
+        $this->call("deploy:view-clear", ["stage" => $stage]);
 
         //artisan:view:clear
+
 
         //artisan:cache:clear
 

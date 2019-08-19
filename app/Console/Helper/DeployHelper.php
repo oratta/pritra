@@ -55,4 +55,12 @@ class DeployHelper
         $sshScript = "ssh $this->hostName ";
         return $sshScript . '"' . $mainScript . '"';
     }
+
+    public function getExecScript($mainScript)
+    {
+        $inDockerScript = $this->getInDockerScript($mainScript);
+        $inHostScript = $this->getInHostScript($inDockerScript);
+        $sshScript = $this->getSshScript($inHostScript);
+        return $sshScript;
+    }
 }
