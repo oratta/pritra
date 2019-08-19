@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Deploy;
 
 use Illuminate\Console\Command;
 
@@ -11,9 +11,7 @@ class Deploy extends Command
      *
      * @var string
      */
-    protected $signature = 'deploy:all
-                            {stage}
-    ';
+    protected $signature = 'deploy:all {stage} {--composer-install} {--migrate}';
 
     /**
      * The console command description.
@@ -49,8 +47,10 @@ class Deploy extends Command
         dump($arr2);
 
         //composer install(option)
+        $this->call("deploy:composer", ["stage" => $stage]);
 
         //artisan:storage:link
+
 
         //artisan:view:clear
 
