@@ -50,16 +50,16 @@ class Deploy extends Command
         $this->call("deploy:composer", ["stage" => $stage]);
 
         //artisan:storage:link
-        $this->call("deploy:view-clear", ["stage" => $stage]);
+        //TODO strageを使う場合に機能追加
 
         //artisan:view:clear
-
+        $this->call("deploy:view-clear", ["stage" => $stage]);
 
         //artisan:cache:clear
+        $this->call("deploy:cache-clear", ["stage" => $stage]);
 
         //artisan:config:cache
-
-        //artisan:optimize
+        $this->call("deploy:config-cache", ["stage" => $stage]);
 
         //migrate (option)
 
