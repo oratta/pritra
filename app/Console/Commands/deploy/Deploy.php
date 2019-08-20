@@ -11,7 +11,7 @@ class Deploy extends Command
      *
      * @var string
      */
-    protected $signature = 'deploy:all {stage} {--composer-install} {--migrate}';
+    protected $signature = 'deploy {stage} {--composer-install} {--migrate}';
 
     /**
      * The console command description.
@@ -49,9 +49,6 @@ class Deploy extends Command
         //composer install(option)
         $this->call("deploy:composer", ["stage" => $stage]);
 
-        //artisan:storage:link
-        //TODO strageを使う場合に機能追加
-
         //artisan:view:clear
         $this->call("deploy:view-clear", ["stage" => $stage]);
 
@@ -60,8 +57,5 @@ class Deploy extends Command
 
         //artisan:config:cache
         $this->call("deploy:config-cache", ["stage" => $stage]);
-
-        //migrate (option)
-
     }
 }
