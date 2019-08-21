@@ -14,10 +14,7 @@ trait DeployCommand{
 
         dump('exec:' . $execScript);
         if(!$dryRun){
-            $return = exec($execScript, $arr, $arr2);
-            dump($return);
-            dump($arr);
-            dump($arr2);
+            system($execScript);
         }
     }
 }
