@@ -21,6 +21,14 @@ Route::get('/{any}', function () {
 //Route::get('sample/vue2', function (){
 //    return view('sample.vue2');
 //});
+
+// APIのURL以外のリクエストに対してはindexテンプレートを返す
+// 画面遷移はフロントエンドのVueRouterが制御する
+Route::get('/{any?}', function () {
+    return view('index');
+})->where('any', '.+');
+
+
 Route::get('/', 'WorkoutController@index');
 
 Route::middleware(['auth'])->group(function () {

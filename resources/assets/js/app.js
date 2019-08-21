@@ -1,21 +1,19 @@
+import './bootstrap'
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import router from './router'
+import store from './store'
+import App from './App.vue'
 
-require('./bootstrap')
+const createApp = async () => {
+    await store.dispatch('auth/currentUser')
 
-Vue.use(VueRouter)
+    new Vue({
+        el: '#app',
+        router,
+        store,
+        components: { App },
+        template: '<App />'
+    })
+}
 
-Vue.component('navbar', require('./components/layouts/Navbar.vue'))
-
-const router = new VueRouter({
-    mode: 'history',
-    routes: [
-        { path: '/', component: require('./components/workOut/Index.vue') },
-        { path: '/about', component: require('./components/About.vue') },
-    ]
-})
-
-const app = new Vue({
-    router,
-    el: '#app'
-})
+createApp()
