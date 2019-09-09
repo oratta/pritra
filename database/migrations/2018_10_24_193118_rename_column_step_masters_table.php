@@ -15,8 +15,14 @@ class RenameColumnStepMastersTable extends Migration
     {
         Schema::table('step_masters', function (Blueprint $table) {
             $table->renameColumn('rep1_start_count', 'set1_start_count');
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
             $table->renameColumn('rep2_start_count', 'set2_start_count');
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
             $table->renameColumn('rep3_start_count', 'set3_start_count');
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
             $table->renameColumn('rep3_master_count', 'set3_master_count');
         });
     }
@@ -30,8 +36,14 @@ class RenameColumnStepMastersTable extends Migration
     {
         Schema::table('step_masters', function (Blueprint $table) {
             $table->renameColumn('set1_start_count', 'rep1_start_count');
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
             $table->renameColumn('set2_start_count', 'rep2_start_count');
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
             $table->renameColumn('set3_start_count', 'rep3_start_count');
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
             $table->renameColumn('set3_master_count', 'rep3_master_count');
         });
     }

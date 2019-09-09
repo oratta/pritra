@@ -12,10 +12,6 @@ use \Mockry as m;
 
 class WorkoutTest extends TestCase
 {
-    public function tearDown()
-    {
-//        m::close();
-    }
     /**
      * A basic test example.
      *

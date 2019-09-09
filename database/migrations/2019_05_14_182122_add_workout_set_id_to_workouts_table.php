@@ -14,7 +14,7 @@ class AddWorkoutSetIdToWorkoutsTable extends Migration
     public function up()
     {
         Schema::table('work_outs', function (Blueprint $table) {
-            $table->unsignedInteger('workout_set_id');
+            $table->unsignedInteger('workout_set_id')->nullable();
         });
     }
 
