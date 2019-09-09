@@ -418,7 +418,7 @@ class StepMastersTableSeeder extends Seeder
                 'level2_rep_count' => 11,
                 'level2_set_count' => 2,
                 'level3_rep_count' => 15,
-                'level3_set_count' => 3,
+                'level3_set_count' => 2,
             ],
             [
                 'id' => 25,
@@ -435,7 +435,7 @@ class StepMastersTableSeeder extends Seeder
                 'level2_rep_count' => 8,
                 'level2_set_count' => 2,
                 'level3_rep_count' => 10,
-                'level3_set_count' => 3,
+                'level3_set_count' => 2,
             ],
             [
                 'id' => 26,
