@@ -9,7 +9,7 @@
         "ext-intl": "*",
         "doctrine/dbal": "^2.8",
         "fideloper/proxy": "^4.0",
-        "laravel/framework": "5.6.*",
+        "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.6",
         "spatie/laravel-db-snapshots": "^1.2",
