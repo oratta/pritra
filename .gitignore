@@ -14,3 +14,4 @@ yarn-error.log
 hosts.yml
 firebase-debug\.log
 /env_files
+.DS_Store
