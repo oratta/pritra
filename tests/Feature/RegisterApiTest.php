@@ -30,7 +30,5 @@ class RegisterApiTest extends TestCase
         $response
             ->assertStatus(201)
             ->assertJson(['name' => $user->name]);
-
-        $this->assertDatabaseHas('user_categories', ['user_id' => $user->id]);
     }
 }
