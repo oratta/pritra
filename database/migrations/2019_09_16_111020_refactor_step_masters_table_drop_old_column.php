@@ -15,8 +15,14 @@ class RefactorStepMastersTableDropOldColumn extends Migration
     {
         Schema::table('step_masters', function (Blueprint $table) {
             $table->dropColumn('set1_start_count');
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
             $table->dropColumn('set2_start_count');
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
             $table->dropColumn('set3_start_count');
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
             $table->dropColumn('set3_master_count');
         });
     }

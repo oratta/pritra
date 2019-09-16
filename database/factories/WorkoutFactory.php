@@ -23,9 +23,11 @@ $factory->define(Workout::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(Workout::class,'withParent', [
+$factory->state(Workout::class,'withParent', function($faker){
+    return [
         'parent_id' => factory(Workout::class)->create()->id,
-]);
+    ];
+});
 
 $factory->afterCreating(Workout::class, function ($workout, $faker) {
     if($workout->hasParent()){
