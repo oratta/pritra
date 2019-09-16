@@ -46,21 +46,30 @@ class WorkoutSet extends Model
     }
 
 
-    public function getStartTime()
+    public function getStartTimeAttribute()
     {
         if(!$this->start_time) {
-            $this->start_time = $this->getWorkoutList()->first()->created_at;
+            $this->setStartTime();
         }
 
         return $this->start_time;
     }
+    private function setStartTime()
+    {
+        $this->start_time = $this->getWorkoutList()->first()->created_at;
+    }
 
-    public function getEndTime()
+    public function getEndTimeAttribute()
     {
         if(!$this->end_time) {
-            $this->end_time = $this->getWorkoutList()->last()->created_at;
+            $this->setEndTime();
         }
         return $this->end_time;
+    }
+
+    private function setEndTime()
+    {
+        $this->end_time = $this->getWorkoutList()->last()->created_at;
     }
 
     /**
@@ -105,7 +114,7 @@ class WorkoutSet extends Model
 
 
 
-    private function setWorkoutSetInfo(){
+    public function setWorkoutSetInfo(){
         $minStepId = $this->getWorkoutList()->min('step_master_id');
         $lowRepCount = 1000;
         $minWorkoutCount = 0;
@@ -124,6 +133,8 @@ class WorkoutSet extends Model
         $this->min_rep_count = $lowRepCount;
         $this->set_count = $minWorkoutCount;
         $this->setLevel();
+        $this->setStartTime();
+        $this->setEndTime();
     }
 
     private function setNextWorkoutSetInfo(){
