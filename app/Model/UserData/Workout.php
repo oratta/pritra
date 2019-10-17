@@ -48,7 +48,9 @@ class Workout extends Model
 
     public function save(array $options = [])
     {
-        if(!$this->workout_set_id) throw new \Exception("set workout_set_id before to save Workout");
+        if(!$this->workout_set_id){
+            $this->setWorkoutSet();
+        }
         if($this->paret_id === -1) throw new \Exception("set parent_id before to save a Workout inctance");
         return parent::save($options);
     }
@@ -95,7 +97,9 @@ class Workout extends Model
             $this->savedWorkoutSet->min_rep_count = $this->count;
             $this->savedWorkoutSet->set_count = 1;
             $this->savedWorkoutSet->addWorkout($this);
-            if(!$this->savedWorkoutSet->setLevel()) throw new \Exception("fail to Workout::setLevel");
+            if(!$this->savedWorkoutSet->setLevel()){
+                throw new \Exception("fail to Workout::setLevel");
+            }
         }
     }
 

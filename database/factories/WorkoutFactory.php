@@ -5,19 +5,21 @@
 use App\Model;
 use App\Model\Master\MenuMaster;
 use App\Model\Master\StepMaster;
-use App\Model\UserData\User;
 use App\Model\UserData\WorkoutSet;
+use App\Model\UserData\User;
 use App\Model\UserData\Workout;
 use Faker\Generator as Faker;
 
 $factory->define(Workout::class, function (Faker $faker) {
-    $userId = factory(App\Model\UserData\User::class)->create()->id;
-    $menuId = factory(MenuMaster::class)->create()->id;
+    $menuId = mt_rand(1,MenuMaster::MASTER_COUNT);
+    $stepIdMin = ($menuId-1)*StepMaster::STEP_NUMBER_MAX+1;
+    $stepIdMax = $menuId*StepMaster::STEP_NUMBER_MAX;
+    $stepId = mt_rand($stepIdMin, $stepIdMax);
     return [
 //        'id',
-        'user_id' => $userId,
+        'user_id' => factory(App\Model\UserData\User::class)->create()->id,
         'menu_master_id' => $menuId,
-        'step_master_id'=> factory(StepMaster::class)->create(['menu_master_id' => $menuId])->id,
+        'step_master_id'=> $stepId,
         'count' => mt_rand(1,50),
         'difficulty_type' => mt_rand(1, count(config('pritra.DIFFICULTY_LIST'))),
     ];
@@ -31,15 +33,21 @@ $factory->state(Workout::class,'withParent', function($faker){
 
 $factory->afterCreating(Workout::class, function ($workout, $faker) {
     if($workout->hasParent()){
-        $workoutIds = "$this->parent_id,$this->id";
+        $workout->parent->workoutSet->addWorkout($workout);
     }
     else {
-        $workoutIds = "$this->id";
+        $workoutIds = "$workout->id";
+        $workout->workoutSet()->save(factory(WorkoutSet::class)->create([
+            'user_id' => $workout->user_id,
+            'menu_master_id' => $workout->menu_master_id,
+            'workout_ids'=> $workoutIds,
+            //'start_time',
+            //'end_time,
+            'min_step_master_id' => $workout->menu_master_id,
+            'min_rep_count' => $this->count,
+            'set_count' => 1,
+        ]));
     }
-    $workout->workoutSet()->save(factory(WorkoutSet::class)->create([
-        'workout_ids'=> $workoutIds,
-        'menu_master_id' => $this->menu_master_id,
-    ]));
 
     $workout->workoutSet->setWorkoutSetInfo();
     $workout->workoutSet->save();

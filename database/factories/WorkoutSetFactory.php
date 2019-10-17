@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\WorkoutSet;
+use App\Model\UserData\WorkoutSet;
 use Faker\Generator as Faker;
 
 $factory->define(WorkoutSet::class, function (Faker $faker) {
@@ -11,8 +11,8 @@ $factory->define(WorkoutSet::class, function (Faker $faker) {
         'user_id' => factory(App\Model\UserData\User::class)->create()->id,
         'menu_master_id' => factory(\App\Model\Master\MenuMaster::class)->create()->id,
 //        'workout_ids',
-//        'start_time',
-//        'end_time',
+        'start_time' => now(),
+        'end_time' => now(),
 //        'min_step_master_id',
 //        'min_rep_count',
 //        'set_count',

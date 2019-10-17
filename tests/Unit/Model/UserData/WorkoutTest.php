@@ -12,15 +12,7 @@ use \Mockry as m;
 
 class WorkoutTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $this->assertTrue(true);
-    }
+    use RefreshDatabase;
 
     public function testIsNowWorkoutSet()
     {
@@ -61,10 +53,15 @@ class WorkoutTest extends TestCase
         /*
          * has parent pattern
          */
+        $parent = factory(Workout::class)->create(
+            [
+                'id' => $parentId,
+                'parent_id' => 0,
+                ]);
         $workout = new Workout;
         $workout->parent_id = $parentId;
         $workout->setWorkoutSet();
-        $this->assertEquals("", $this->workout->workoutSet->workout_ids);
+        $this->assertEquals("$parentId,$workout->id", $workout->workoutSet->workout_ids);
 
         /*
          * has no parent pattern

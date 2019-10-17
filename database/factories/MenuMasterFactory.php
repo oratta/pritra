@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\MenuMaster;
+use App\Model\Master\MenuMaster;
 use Faker\Generator as Faker;
 
 $factory->define(MenuMaster::class, function (Faker $faker) {
