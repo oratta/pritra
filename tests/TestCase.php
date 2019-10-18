@@ -20,4 +20,14 @@ abstract class TestCase extends BaseTestCase
         $method->setAccessible(true);
         return $method;
     }
+
+    public function setUp() : void
+    {
+        parent::setUp();
+
+        $uses = array_flip(class_uses_recursive(static::class));
+        if(isset($uses[SeedingDatabase::class])){
+            $this->seedingDatabase();
+        }
+    }
 }

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class StepMaster extends Model
 {
+    const MASTER_COUNT = 60;
+    const STEP_NUMBER_MAX = 10;
     protected $table = 'step_masters';
     protected $guarded = ['id'];
     public $timestamps = true;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -21,13 +22,6 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/workout/';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -43,8 +37,14 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    protected function loggedOut(\Illuminate\Http\Request $request)
+    protected function loggedOut(Request $request)
     {
-        return redirect(config('app.homePath'));
+        $request->session()->regenerate();
+        return response()->json();
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        return $user;
     }
 }

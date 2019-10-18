@@ -4,6 +4,7 @@ namespace Tests\Unit\Model\UserData;
 
 use App\Model\UserData\WorkoutSet;
 use Carbon\Carbon;
+use Tests\SeedingDatabase;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,19 +13,8 @@ use \Mockry as m;
 
 class WorkoutTest extends TestCase
 {
-    public function tearDown()
-    {
-//        m::close();
-    }
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $this->assertTrue(true);
-    }
+    use RefreshDatabase;
+    use SeedingDatabase;
 
     public function testIsNowWorkoutSet()
     {
@@ -65,14 +55,21 @@ class WorkoutTest extends TestCase
         /*
          * has parent pattern
          */
+        $parent = factory(Workout::class)->create(
+            [
+                'id' => $parentId,
+                'parent_id' => 0,
+                ]);
         $workout = new Workout;
         $workout->parent_id = $parentId;
         $workout->setWorkoutSet();
-        $this->assertEquals("", $this->workout->workoutSet->workout_ids);
+        $this->assertEquals($parent->workout_set_id, $workout->workout_set_id);
 
         /*
          * has no parent pattern
          */
-
+        $workout = factory(Workout::class)->create(['parent_id' => 0]);
+        $workout->setWorkoutSet();
+        $this->assertDatabaseHas('workout_sets', ['id' => $workout->workout_set_id]);
     }
 }

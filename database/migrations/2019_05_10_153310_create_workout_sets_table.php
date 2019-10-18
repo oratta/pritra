@@ -17,7 +17,7 @@ class CreateWorkoutSetsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger("user_id");
             $table->unsignedTinyInteger("menu_master_id");
-            $table->string("workout_ids");
+            $table->string("workout_ids")->nullable();
             $table->dateTime("start_time");
             $table->dateTime("end_time");
             $table->unsignedSmallInteger("min_step_master_id");

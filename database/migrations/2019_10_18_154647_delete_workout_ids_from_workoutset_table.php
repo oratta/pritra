@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddWorkoutSetIdToWorkoutsTable extends Migration
+class DeleteWorkoutIdsFromWorkoutsetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddWorkoutSetIdToWorkoutsTable extends Migration
      */
     public function up()
     {
-        Schema::table('work_outs', function (Blueprint $table) {
-            $table->unsignedInteger('workout_set_id')->nullable();
+        Schema::table('workout_sets', function (Blueprint $table) {
+            $table->dropColumn('workout_ids');
         });
     }
 
@@ -25,8 +25,8 @@ class AddWorkoutSetIdToWorkoutsTable extends Migration
      */
     public function down()
     {
-        Schema::table('work_outs', function (Blueprint $table) {
-            $table->dropColumn('workout_set_id');
+        Schema::table('workout_sets', function (Blueprint $table) {
+            $table->string("workout_ids")->nullable();
         });
     }
 }
