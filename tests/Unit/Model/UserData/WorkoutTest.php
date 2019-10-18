@@ -63,11 +63,13 @@ class WorkoutTest extends TestCase
         $workout = new Workout;
         $workout->parent_id = $parentId;
         $workout->setWorkoutSet();
-        $this->assertEquals("$parentId,$workout->id", $workout->workoutSet->workout_ids);
+        $this->assertEquals($parent->workout_set_id, $workout->workout_set_id);
 
         /*
          * has no parent pattern
          */
-
+        $workout = factory(Workout::class)->create(['parent_id' => 0]);
+        $workout->setWorkoutSet();
+        $this->assertDatabaseHas('workout_sets', ['id' => $workout->workout_set_id]);
     }
 }

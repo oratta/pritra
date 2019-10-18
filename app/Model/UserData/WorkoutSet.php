@@ -10,8 +10,6 @@ class WorkoutSet extends Model
     protected $table = "workout_sets";
     protected $guarded = ["id"];
     public $timestamps = true;
-    private $cache = [];
-    private $workoutList;
 
     /**
      * @var Workout
@@ -28,23 +26,10 @@ class WorkoutSet extends Model
         return $this->belongsTo('App\Model\Master\StepMaster','min_step_master_id');
     }
 
-    public function getWorkoutList($isForce = false)
+    public function workouts()
     {
-        if($isForce || !$this->workoutList){
-            $workoutIdList = explode(",",$this->workout_ids);
-            $workoutList = Workout::with('step', 'menu')
-                ->whereIn('id', $workoutIdList)->get();
-            $this->workoutList = $workoutList;
-        }
-
-        return $this->workoutList;
+        return $this->hasMany('App\Model\UserData\Workout');
     }
-
-    public function setWorkoutList(Collection $workoutList)
-    {
-        $this->workoutList = $workoutList;
-    }
-
 
     public function getStartTimeAttribute()
     {
@@ -56,7 +41,10 @@ class WorkoutSet extends Model
     }
     private function setStartTime()
     {
-        $this->start_time = $this->getWorkoutList()->first()->created_at;
+        if(!$startTime = $this->workouts->first()->created_at){
+            $startTime = now();
+        }
+        $this->start_time = $startTime;
     }
 
     public function getEndTimeAttribute()
@@ -69,15 +57,15 @@ class WorkoutSet extends Model
 
     private function setEndTime()
     {
-        $this->end_time = $this->getWorkoutList()->last()->created_at;
+        if(!$endTime = $this->workouts->last()->created_at){
+            $endTime = now();
+        }
+        $this->end_time = $endTime;
     }
 
-    /**
-     * @return array
-     */
-    public function getWorkoutArray()
+    public function setWorkoutsAttribute(Collection $workouts)
     {
-        return $this->getWorkoutList()->all();
+        $this->relations['workouts'] = $workouts;
     }
 
     /**
@@ -115,10 +103,10 @@ class WorkoutSet extends Model
 
 
     public function setWorkoutSetInfo(){
-        $minStepId = $this->getWorkoutList()->min('step_master_id');
+        $minStepId = $this->workouts->min('step_master_id');
         $lowRepCount = 1000;
         $minWorkoutCount = 0;
-        $this->getWorkoutList()->each(function($workout) use (&$lowRepCount,&$minWorkoutCount, $minStepId){
+        $this->workouts->each(function($workout) use (&$lowRepCount,&$minWorkoutCount, $minStepId){
             if($workout->step_master_id === $minStepId){
                 $minWorkoutCount++;
                 if($lowRepCount > $workout->count){
@@ -174,9 +162,9 @@ class WorkoutSet extends Model
 
     public function addWorkout(Workout $workout)
     {
-        $workoutList = $this->getWorkoutList();
+        $workoutList = $this->workouts;
         $workoutList->add($workout);
-        $this->setWorkoutList($workoutList);
+        $this->workouts = $workoutList;
         $this->setWorkoutSetInfo();
     }
 

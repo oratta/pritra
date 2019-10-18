@@ -51,7 +51,7 @@ class Workout extends Model
         if(!$this->workout_set_id){
             $this->setWorkoutSet();
         }
-        if($this->paret_id === -1) throw new \Exception("set parent_id before to save a Workout inctance");
+        if($this->paret_id === -1) throw new \Exception("set parent_id before to save a Workout instance");
         return parent::save($options);
     }
 
@@ -75,6 +75,10 @@ class Workout extends Model
         $this->parent_id = $parentId;
     }
 
+    public function setWorkoutSetAttribute(WorkoutSet $workoutSet)
+    {
+        $this->relations['workoutSet'] = $workoutSet;
+    }
 
     /**
      */
@@ -83,36 +87,21 @@ class Workout extends Model
         if($this->parent_id === -1) throw new \Exception("don't call this function before setParentId");
 
         if($this->parent_id !== 0){
-            $this->savedWorkoutSet = $this->parent->workoutSet;
-            $this->savedWorkoutSet->addWorkout($this);
+            $this->parent->workoutSet->addWorkout($this);
+            $this->parent->workoutSet->save();
+            $this->workoutSet()->associate($this->parent->workoutSet);
         }
         else{
-            $this->savedWorkoutSet = new WorkoutSet();
-            $this->savedWorkoutSet->user_id = $this->user_id;
-            $this->savedWorkoutSet->menu_master_id = $this->menu_master_id;
-            $this->savedWorkoutSet->workout_ids = "{$this->id}";
-            $this->savedWorkoutSet->start_time = now();
-            $this->savedWorkoutSet->end_time = now();
-            $this->savedWorkoutSet->min_step_master_id = $this->step_master_id;
-            $this->savedWorkoutSet->min_rep_count = $this->count;
-            $this->savedWorkoutSet->set_count = 1;
-            $this->savedWorkoutSet->addWorkout($this);
-            if(!$this->savedWorkoutSet->setLevel()){
-                throw new \Exception("fail to Workout::setLevel");
-            }
+            $workoutSet = new WorkoutSet(
+                [
+                    'user_id' => $this->user_id,
+                    'menu_master_id' => $this->menu_master_id,
+                ]
+            );
+            $workoutSet->addWorkout($this);
+            $workoutSet->save();
+            $this->workoutSet()->associate($workoutSet);
         }
-    }
-
-    public function saveWorkoutSet()
-    {
-        $this->savedWorkoutSet->save();
-        $this->workout_set_id = $this->savedWorkoutSet->id;
-    }
-
-    public function saveWorkoutIdToWorkoutSet()
-    {
-        $this->savedWorkoutSet->workout_ids = $this->savedWorkoutSet->getWorkoutList()->implode('id',',');
-        $this->savedWorkoutSet->save();
     }
 
     /**

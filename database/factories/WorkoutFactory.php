@@ -30,29 +30,3 @@ $factory->state(Workout::class,'withParent', function($faker){
         'parent_id' => factory(Workout::class)->create()->id,
     ];
 });
-
-$factory->afterCreating(Workout::class, function ($workout, $faker) {
-    if($workout->hasParent()){
-        $workout->parent->workoutSet->addWorkout($workout);
-        $workout->workoutSet->setWorkoutSetInfo();
-        $workout->workoutSet->save();
-    }
-    else {
-        $workoutIds = "$workout->id";
-        $workoutSet = factory(WorkoutSet::class)->make([
-            'user_id' => $workout->user_id,
-            'menu_master_id' => $workout->menu_master_id,
-            'workout_ids'=> $workoutIds,
-            //'start_time',
-            //'end_time,
-            'min_step_master_id' => $workout->menu_master_id,
-            'min_rep_count' => $workout->count,
-            'set_count' => 1,
-        ]);
-        $workoutSet->setWorkoutSetInfo();
-        $workoutSet->save();
-        $workout->workoutSet()->associate($workoutSet);
-        $workout->save();
-    }
-
-});
