@@ -19,10 +19,10 @@ class CreateStepMastersTable extends Migration
             $table->unsignedInteger('step_number');
             $table->string('name');
             $table->text('description');
-            $table->unsignedInteger('rep1_start_count');
-            $table->unsignedInteger('rep2_start_count');
-            $table->unsignedInteger('rep3_start_count');
-            $table->unsignedInteger('rep3_master_count');
+            $table->unsignedInteger('rep1_start_count')->default(0);
+            $table->unsignedInteger('rep2_start_count')->default(0);
+            $table->unsignedInteger('rep3_start_count')->default(0);
+            $table->unsignedInteger('rep3_master_count')->default(0);
             $table->timestamps();
         });
     }

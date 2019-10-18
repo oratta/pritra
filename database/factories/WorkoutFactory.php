@@ -34,21 +34,25 @@ $factory->state(Workout::class,'withParent', function($faker){
 $factory->afterCreating(Workout::class, function ($workout, $faker) {
     if($workout->hasParent()){
         $workout->parent->workoutSet->addWorkout($workout);
+        $workout->workoutSet->setWorkoutSetInfo();
+        $workout->workoutSet->save();
     }
     else {
         $workoutIds = "$workout->id";
-        $workout->workoutSet()->save(factory(WorkoutSet::class)->create([
+        $workoutSet = factory(WorkoutSet::class)->make([
             'user_id' => $workout->user_id,
             'menu_master_id' => $workout->menu_master_id,
             'workout_ids'=> $workoutIds,
             //'start_time',
             //'end_time,
             'min_step_master_id' => $workout->menu_master_id,
-            'min_rep_count' => $this->count,
+            'min_rep_count' => $workout->count,
             'set_count' => 1,
-        ]));
+        ]);
+        $workoutSet->setWorkoutSetInfo();
+        $workoutSet->save();
+        $workout->workoutSet()->associate($workoutSet);
+        $workout->save();
     }
 
-    $workout->workoutSet->setWorkoutSetInfo();
-    $workout->workoutSet->save();
 });

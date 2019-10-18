@@ -39,7 +39,6 @@ trait InsertFromCsv{
         $indexArray = array_shift($contentArray);
         $indexArray = explode(',', $indexArray);
         foreach($indexArray as $key => $index) $indexArray[$key] = trim($index);
-        dump($indexArray);
         $returnArray = [];
         foreach ($contentArray as $index => $recode) {
             $recodeArray = explode(',', $recode);

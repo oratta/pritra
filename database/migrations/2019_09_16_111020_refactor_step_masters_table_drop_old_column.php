@@ -35,10 +35,16 @@ class RefactorStepMastersTableDropOldColumn extends Migration
     public function down()
     {
         Schema::table('step_masters', function (Blueprint $table) {
-            $table->unsignedInteger('set1_start_count');
-            $table->unsignedInteger('set2_start_count');
-            $table->unsignedInteger('set3_start_count');
-            $table->unsignedInteger('set3_master_count');
+            $table->unsignedInteger('set1_start_count')->default(0);
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
+            $table->unsignedInteger('set2_start_count')->default(0);
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
+            $table->unsignedInteger('set3_start_count')->default(0);
+        });
+        Schema::table('step_masters', function (Blueprint $table) {
+            $table->unsignedInteger('set3_master_count')->default(0);
         });
     }
 }

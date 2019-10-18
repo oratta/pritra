@@ -4,6 +4,7 @@ namespace Tests\Unit\Model\UserData;
 
 use App\Model\UserData\WorkoutSet;
 use Carbon\Carbon;
+use Tests\SeedingDatabase;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,6 +14,7 @@ use \Mockry as m;
 class WorkoutTest extends TestCase
 {
     use RefreshDatabase;
+    use SeedingDatabase;
 
     public function testIsNowWorkoutSet()
     {
