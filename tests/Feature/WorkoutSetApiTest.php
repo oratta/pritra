@@ -2,13 +2,27 @@
 
 namespace Tests\Feature;
 
+use App\Model\UserData\User;
 use App\Model\UserData\WorkoutSet;
+use Illuminate\Support\Facades\Hash;
+use Tests\SeedingDatabase;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class WorkoutSetControllerApiTest extends TestCase
+class WorkoutSetApiTest extends TestCase
 {
+    use RefreshDatabase;
+    use SeedingDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // テストユーザー作成
+        $this->user = factory(User::class)->create(["password" => Hash::make("secret")]);
+    }
+
     /**
      * @test
      */
