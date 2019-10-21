@@ -20,3 +20,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'api'], function(){
     Route::get('list', 'WorkoutController@list');
 });
+
+//ワークアウトの記録
+Route::post('workouts')->name('workouts.post');
+
+//ワークアウト候補の取得
+Route::get('workout_sets?recommend&best', 'WorkoutSetController@index')->name('workout_sets.recommend');
+
+//ワークアウト履歴
+//※ 検索クエリで取得件数などを調整する
+Route::get('workout_sets');
+
+//ワークアウト目標の決定
+Route::put('workout_sets');
+
