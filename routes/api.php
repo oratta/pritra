@@ -21,16 +21,18 @@ Route::group(['middleware' => 'api'], function(){
     Route::get('list', 'WorkoutController@list');
 });
 
-//ワークアウトの記録
-Route::post('workouts')->name('workouts.post');
-
 //ワークアウト候補の取得
-Route::get('workout_sets?recommend&best', 'WorkoutSetController@index')->name('workout_sets.recommend');
+Route::get('workout_sets', 'WorkoutSetController@index');
 
-//ワークアウト履歴
-//※ 検索クエリで取得件数などを調整する
-Route::get('workout_sets');
 
-//ワークアウト目標の決定
-Route::put('workout_sets');
+////ワークアウトの記録
+//Route::post('workouts')->name('workouts.post');
+//
+//
+////ワークアウト履歴
+////※ 検索クエリで取得件数などを調整する
+//Route::get('workout_sets');
+//
+////ワークアウト目標の決定
+//Route::put('workout_sets');
 

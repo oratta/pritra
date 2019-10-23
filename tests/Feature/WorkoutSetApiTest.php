@@ -30,19 +30,42 @@ class WorkoutSetApiTest extends TestCase
     {
         //データがない状態
         $response = $this->actingAs($this->user)
-            ->json('GET', '/workout_sets?best');
+            ->json('GET', 'api/workout_sets?best');
         $response->assertStatus(200);
 
-        foreach($response->data as $workoutSet){
-            $this->assertEquals(0, $workoutSet->level);
-            $this->assertEquals(0, $workoutSet->step_level);
-        }
+        $expected = [
+            1 => [
+                'level' => 0,
+                'step_level' => 0,
+            ],
+            2 => [
+                'level' => 0,
+                'step_level' => 0,
+            ],
+            3 => [
+                'level' => 0,
+                'step_level' => 0,
+            ],
+            4 => [
+                'level' => 0,
+                'step_level' => 0,
+            ],
+            5 => [
+                'level' => 0,
+                'step_level' => 0,
+            ],
+            6 => [
+                'level' => 0,
+                'step_level' => 0,
+            ],
+        ];
+        $response->assertJson($expected);
 
         //データを入れる
         $workout = factory(Workout::class)->create(['menu_master_id' => 1]);
 
         $response = $this->actingAs($this->user)
-            ->json('GET', '/workout_sets?best');
+            ->json('GET', 'api/workout_sets?best');
         $response->assertStatus(200);
 
         foreach($response->data as $workoutSet){
