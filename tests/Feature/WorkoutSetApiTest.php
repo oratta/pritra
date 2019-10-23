@@ -62,7 +62,7 @@ class WorkoutSetApiTest extends TestCase
         $response->assertJson($expected);
 
         //データを入れる
-        $workout = factory(Workout::class)->create(['menu_master_id' => 1]);
+        $workout = factory(\App\Model\UserData\Workout::class)->create(['menu_master_id' => 1, 'parent_id' => 0]);
 
         $response = $this->actingAs($this->user)
             ->json('GET', 'api/workout_sets?best');
