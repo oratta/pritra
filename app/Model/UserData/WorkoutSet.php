@@ -11,10 +11,10 @@ class WorkoutSet extends Model
     protected $guarded = ["id"];
     public $timestamps = true;
 
-    protected $appends = [
-        'start_time',
-        'end_time'
-    ];
+//    protected $appends = [
+//        'start_time',
+//        'end_time'
+//    ];
 
     /**
      * @var Workout
@@ -46,11 +46,11 @@ class WorkoutSet extends Model
     }
     private function setStartTime()
     {
-        $startTime = null;
         if($this->workouts->first() instanceof Workout && $this->workouts->first()->created_at){
-            $startTime = now();
+            $startTime = $this->workouts->first()->created_at;
+        }else {
+            $this->start_time = now();
         }
-        $this->start_time = $startTime;
     }
 
     public function getEndTimeAttribute($value)
@@ -63,11 +63,12 @@ class WorkoutSet extends Model
 
     private function setEndTime()
     {
-        $endTime = null;
         if($this->workouts->last() instanceof Workout && $this->workouts->last()->created_at){
-            $endTime = now();
+            $this->end_time = $this->workouts->last()->created_at;
         }
-        $this->end_time = $endTime;
+        else {
+            $this->end_time = now();
+        }
     }
 
     public function setWorkoutsAttribute(Collection $workouts)
@@ -168,10 +169,10 @@ class WorkoutSet extends Model
                 [
                     'user_id' => $userId,
                     'menu_master_id' => $menuId,
-                    'start_time' => now(),
-                    'end_time' => now(),
                     'min_step_master_id' => 0,
                     'min_rep_count' => 0,
+                    'end_time' => now(),
+                    'start_time' => now(),
                     'set_count' => 0,
                     'level' => 0,
                     'step_level' => 0

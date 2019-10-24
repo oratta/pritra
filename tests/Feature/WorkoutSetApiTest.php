@@ -68,15 +68,12 @@ class WorkoutSetApiTest extends TestCase
             ->json('GET', 'api/workout_sets?best');
         $response->assertStatus(200);
 
-        foreach($response->data as $workoutSet){
-            if($workoutSet->menu_master_id === 1){
-                $this->assertEquals($workout->step_master_id, $workoutSet->min_step_master_id);
-                $this->assertEquals($workout->rep_count, $workoutSet->min_rep_count);
-            }
-            else {
-                $this->assertEquals(0, $workoutSet->level);
-                $this->assertEquals(0, $workoutSet->step_level);
-            }
-        }
+        $expected = [
+            $workout->menu_master_id => [
+                'min_step_master_id' => $workout->step_master_id,
+                'min_rep_count' => $workout->rep_count,
+            ],
+        ];
+        $response->assertJson($expected);
     }
 }
