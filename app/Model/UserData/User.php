@@ -43,8 +43,8 @@ class User extends Authenticatable
 
     public function getRecommendedWorkoutSets()
     {
-        $recommendWorkoutSets = $this->getBestWorkoutSets()->map(function($workoutSet){
-            return $workoutSet->getNextLevelWorkoutSets();
+        $recommendWorkoutSets = $this->getBestWorkoutSets()->map(function(WorkoutSet $workoutSet){
+            return $workoutSet->getNextLevel();
         });
 
         return $recommendWorkoutSets;

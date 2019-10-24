@@ -9,7 +9,7 @@ class WorkoutSetController extends Controller
 {
 
     /**
-     * @var User
+     * @var \App\Model\UserData\User
      */
     protected $user;
 
@@ -27,7 +27,7 @@ class WorkoutSetController extends Controller
         if($this->__isRequestBestWorkoutSets($request)){
             return $this->indexBest();
         }
-        else if($this->__isRequestRecommendWokroutSets($request)){
+        else if($this->__isRequestRecommendedWorkoutSets($request)){
             return $this->indexRecommend();
         }
     }
@@ -38,13 +38,18 @@ class WorkoutSetController extends Controller
     }
 
     protected function indexRecommend(){
-        return $this->user->getRecommendWorkoutSets();
+        return $this->user->getRecommendedWorkoutSets();
     }
 
     private function __isRequestBestWorkoutSets(Request $request)
     {
         $inputAll = $request->input();
         return key_exists('best', $inputAll);
+    }
 
+    private function __isRequestRecommendedWorkoutSets(Request $request)
+    {
+        $inputAll = $request->input();
+        return key_exists('recommend', $inputAll);
     }
 }

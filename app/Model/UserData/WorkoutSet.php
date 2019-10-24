@@ -216,9 +216,7 @@ class WorkoutSet extends Model
         }
         return false;
     }
-
-
-
+    
     public function getNextLevel()
     {
         $achievedLevel = $this->step->getAchievedLevel($this->min_rep_count, $this->set_count);
@@ -234,7 +232,10 @@ class WorkoutSet extends Model
         else {
             // same step next level
             $levelInfo = $this->step->getLevelInfo($achievedLevel+1);
-            return new WorkoutSet(['min_step_master_id' => $this->step->id, 'min_rep_count' => $levelInfo["repCount"], "set_count" => $levelInfo["setCount"]]);
+            $workoutSet = new WorkoutSet(['min_step_master_id' => $this->step->id, 'min_rep_count' => $levelInfo["repCount"], "set_count" => $levelInfo["setCount"]]);
+            $workoutSet->setLevel();
+
+            return $workoutSet;
         }
     }
 
@@ -242,13 +243,19 @@ class WorkoutSet extends Model
     {
         $beforeStep = $this->step->getBefore();
         if(!$beforeStep) return null;
-        return new WorkoutSet(['min_step_master_id' => $beforeStep->id, 'min_rep_count' => $beforeStep->level3_rep_count, 'set_count'=>$beforeStep->level3_set_count]);
+        $workoutSet = new WorkoutSet(['min_step_master_id' => $beforeStep->id, 'min_rep_count' => $beforeStep->level3_rep_count, 'set_count'=>$beforeStep->level3_set_count]);
+        $workoutSet->setLevel();
+
+        return $workoutSet;
     }
     private function getNextStepFirstLevel()
     {
         $nextStep = $this->step->getNext();
         if(!$nextStep) return null;
-        return new WorkoutSet(['min_step_master_id' => $nextStep->id, 'min_rep_count' => $nextStep->level1_rep_count, 'set_count' => $nextStep->level2_set_count]);
+        $workoutSet = new WorkoutSet(['min_step_master_id' => $nextStep->id, 'min_rep_count' => $nextStep->level1_rep_count, 'set_count' => $nextStep->level2_set_count]);
+        $workoutSet->setlevel();
+
+        return $workoutSet;
     }
 
     public function getProgressLevel($isText=false)
