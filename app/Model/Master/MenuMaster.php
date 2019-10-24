@@ -20,4 +20,9 @@ class MenuMaster extends Model
     {
         return "";
     }
+
+    static public function getFirstStepMasterId($menuMasterId)
+    {
+        return StepMaster::STEP_NUMBER_MAX * ($menuMasterId - 1) + 1;
+    }
 }

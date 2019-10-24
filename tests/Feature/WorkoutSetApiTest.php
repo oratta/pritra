@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Model\Master\MenuMaster;
 use App\Model\UserData\User;
 use App\Model\UserData\WorkoutSet;
 use Illuminate\Support\Facades\Hash;
@@ -94,27 +95,11 @@ class WorkoutSetApiTest extends TestCase
         $expected = [
             1 => [
                 'level' => 1,
-                'step_level' => 101,
+                'step_level' => MenuMaster::getFirstStepMasterId(1)*100 + 1,
             ],
             2 => [
                 'level' => 1,
-                'step_level' => 101,
-            ],
-            3 => [
-                'level' => 1,
-                'step_level' => 101,
-            ],
-            4 => [
-                'level' => 1,
-                'step_level' => 101,
-            ],
-            5 => [
-                'level' => 1,
-                'step_level' => 101,
-            ],
-            6 => [
-                'level' => 1,
-                'step_level' => 101,
+                'step_level' => MenuMaster::getFirstStepMasterId(2)*100 + 1,
             ],
         ];
         $response->assertJson($expected);
@@ -124,7 +109,8 @@ class WorkoutSetApiTest extends TestCase
             'menu_master_id' => 1,
             'parent_id' => 0,
             'user_id' => $this->user->id,
-            //TODO level1 workout count & step id
+            'step_master_id' => MenuMaster::getFirstStepMasterId(1),
+            'count' => 10
         ]);
 
         $response = $this->actingAs($this->user)

@@ -2,6 +2,7 @@
 
 namespace App\Model\UserData;
 
+use App\Model\Master\MenuMaster;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -105,7 +106,7 @@ class WorkoutSet extends Model
             $bestLogList[$menuId] = static::getBestWorkoutSet($userId, $menuId);
         }
 
-        return $bestLogList;
+        return collect($bestLogList);
     }
 
 
@@ -169,7 +170,7 @@ class WorkoutSet extends Model
                 [
                     'user_id' => $userId,
                     'menu_master_id' => $menuId,
-                    'min_step_master_id' => 0,
+                    'min_step_master_id' => MenuMaster::getFirstStepMasterId($menuId),
                     'min_rep_count' => 0,
                     'end_time' => now(),
                     'start_time' => now(),
@@ -216,7 +217,7 @@ class WorkoutSet extends Model
         }
         return false;
     }
-    
+
     public function getNextLevel()
     {
         $achievedLevel = $this->step->getAchievedLevel($this->min_rep_count, $this->set_count);
@@ -225,7 +226,7 @@ class WorkoutSet extends Model
             // next step first level
             return $this->getNextStepFirstLevel();
         }
-        else if ($achievedLevel === 0){
+        else if ($achievedLevel === 0 && $this->step->getBefore()){
             // the one before steps max level
             return $this->getBeforeStepLastLevel();
         }
@@ -237,6 +238,11 @@ class WorkoutSet extends Model
 
             return $workoutSet;
         }
+    }
+
+    private function getFirstLevel()
+    {
+
     }
 
     private function getBeforeStepLastLevel()
