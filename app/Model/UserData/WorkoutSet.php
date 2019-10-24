@@ -47,7 +47,7 @@ class WorkoutSet extends Model
     private function setStartTime()
     {
         if($this->workouts->first() instanceof Workout && $this->workouts->first()->created_at){
-            $startTime = $this->workouts->first()->created_at;
+            $this->start_time = $this->workouts->first()->created_at;
         }else {
             $this->start_time = now();
         }
