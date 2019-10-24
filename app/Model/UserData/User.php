@@ -40,4 +40,13 @@ class User extends Authenticatable
     {
         return WorkoutSet::getBestWorkoutSetList($this->id);
     }
+
+    public function getRecommendedWorkoutSets()
+    {
+        $recommendWorkoutSets = $this->getBestWorkoutSets()->map(function($workoutSet){
+            return $workoutSet->getNextLevelWorkoutSets();
+        });
+
+        return $recommendWorkoutSets;
+    }
 }

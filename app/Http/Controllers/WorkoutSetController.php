@@ -24,12 +24,21 @@ class WorkoutSetController extends Controller
 
     public function index(Request $request)
     {
-        if($this->__isRequestBestWorkoutSets($request)) return $this->indexBest();
+        if($this->__isRequestBestWorkoutSets($request)){
+            return $this->indexBest();
+        }
+        else if($this->__isRequestRecommendWokroutSets($request)){
+            return $this->indexRecommend();
+        }
     }
 
     protected function indexBest()
     {
         return $this->user->getBestWorkoutSets();
+    }
+
+    protected function indexRecommend(){
+        return $this->user->getRecommendWorkoutSets();
     }
 
     private function __isRequestBestWorkoutSets(Request $request)
