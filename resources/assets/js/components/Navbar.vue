@@ -1,8 +1,8 @@
 <template>
     <nav class="navbar">
-        <RouterLink class="navbar__brand" to="/">
+        <router-link class="navbar__brand" to="/">
             Vuesplash
-        </RouterLink>
+        </router-link>
         <div class="navbar__menu">
             <div v-if="isLogin" class="navbar__item">
                 <button class="button" @click="showForm = !showForm">
@@ -14,9 +14,9 @@
                 {{ username }}
             </span>
             <div v-else class="navbar__item">
-                <RouterLink class="button button--link" to="/login">
+                <router-link class="button button--link" to="/login">
                     Login / Register
-                </RouterLink>
+                </router-link>
             </div>
         </div>
         <PhotoForm v-model="showForm" />

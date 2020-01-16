@@ -6,7 +6,7 @@
         <main>
             <div class="container">
                 <Message />
-                <RouterView />
+                <router-view />
             </div>
         </main>
         <Footer />

@@ -10,7 +10,7 @@
                 ref="image"
             >
         </figure>
-        <RouterLink
+        <router-link
             class="photo__overlay"
             :to="`/photos/${item.id}`"
             :title="`View the photo by ${item.owner.name}`"
@@ -36,7 +36,7 @@
             <div class="photo__username">
                 {{ item.owner.name }}
             </div>
-        </RouterLink>
+        </router-link>
     </div>
 </template>
 

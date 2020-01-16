@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import PhotoList from './pages/PhotoList.vue'
-import Login from './pages/Login.vue'
-import SystemError from './pages/errors/System.vue'
-import NotFound from './pages/errors/NotFound.vue'
-import PhotoDetail from './pages/PhotoDetail.vue'
+import PhotoList from '../pages/PhotoList.vue'
+import Login from '../pages/Login.vue'
+import SystemError from '../pages/errors/System.vue'
+import NotFound from '../pages/errors/NotFound.vue'
+import PhotoDetail from '../pages/PhotoDetail.vue'
 
-import store from './store'
+import store from '../store'
 
 //
 Vue.use(VueRouter)
@@ -48,7 +48,7 @@ const routes = [
 
 ]
 
-const router = new VueRouter({
+const index = new VueRouter({
     mode: 'history',
     scrollBehavior () {
         return { x:0, y:0}
@@ -56,4 +56,4 @@ const router = new VueRouter({
     routes
 })
 
-export default router
+export default index
