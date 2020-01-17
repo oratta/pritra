@@ -1,59 +1,34 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Home from '../pages/Home.vue'
 
-import PhotoList from '../pages/PhotoList.vue'
-import Login from '../pages/Login.vue'
-import SystemError from '../pages/errors/System.vue'
-import NotFound from '../pages/errors/NotFound.vue'
-import PhotoDetail from '../pages/PhotoDetail.vue'
-
-import store from '../store'
-
-//
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: '/',
-        component: PhotoList,
-        props: route => {
-            const page = route.query.page
-            return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1 }
-        }
+        name: 'home',
+        component: Home
     },
     {
-        path: '/photos/:id',
-        component: PhotoDetail,
-        props: true
+        path: '/about',
+        name: 'about',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "about" */ '../pages/About.vue')
     },
     {
-        path: '/login',
-        component: Login,
-        beforeEnter (to, from, next) {
-            if (store.getters['auth/check']) {
-                next('/')
-            } else {
-                next()
-            }
-        }
-    },
-    {
-        path: '/500',
-        component: SystemError
-    },
-    {
-        path: "*",
-        component: NotFound
+        path: '/enterprise',
+        name: 'enterprise',
+        component: () => import('../pages/Enterprise.vue')
     }
-
 ]
 
-const index = new VueRouter({
+const router = new VueRouter({
     mode: 'history',
-    scrollBehavior () {
-        return { x:0, y:0}
-    },
+    base: process.env.BASE_URL,
     routes
 })
 
-export default index
+export default router

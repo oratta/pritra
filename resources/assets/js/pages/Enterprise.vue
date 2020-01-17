@@ -1,5 +1,5 @@
 <template>
     <div>
-        This page describe who we are.
+        <h1>Vuetify for enterprise</h1>
     </div>
 </template>
