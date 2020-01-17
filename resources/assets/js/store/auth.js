@@ -31,7 +31,7 @@ const actions = {
     // 会員登録
     async register (context, data) {
         context.commit('setApiStatus', null)
-        const response = await axios.post('/api/register', data)
+        const response = await axios.post('/api/auth/register', data)
 
         if (response.status === CREATED) {
             context.commit('setApiStatus', true)
@@ -50,7 +50,7 @@ const actions = {
     // ログイン
     async login (context, data) {
         context.commit('setApiStatus', null)
-        const response = await axios.post('/api/login', data)
+        const response = await axios.post('/api/auth/login', data)
 
         if (response.status === OK) {
             context.commit('setApiStatus', true)
@@ -69,7 +69,7 @@ const actions = {
     // ログアウト
     async logout (context) {
         context.commit('setApiStatus', null)
-        const response = await axios.post('/api/logout')
+        const response = await axios.post('/api/auth/logout')
 
         if (response.status === OK) {
             context.commit('setApiStatus', true)
@@ -84,7 +84,7 @@ const actions = {
     // ログインユーザーチェック
     async currentUser (context) {
         context.commit('setApiStatus', null)
-        const response = await axios.get('/api/user')
+        const response = await axios.get('/api/auth/user')
         const user = response.data || null
 
         if (response.status === OK) {
