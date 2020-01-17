@@ -1,5 +1,3 @@
-import { getCookieValue } from './util'
-
 window.axios = require('axios')
 
 // Ajaxリクエストであることを示すヘッダーを付与する
