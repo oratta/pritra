@@ -4,6 +4,7 @@ import Home from '../pages/Home.vue'
 import About from '../pages/About.vue'
 import Enterprise from '../pages/Enterprise.vue'
 import SetMenu from '../pages/SetMenu.vue'
+import Sample from '../pages/Sample.vue'
 
 Vue.use(VueRouter)
 
@@ -12,6 +13,11 @@ const routes = [
         path: '/set_menu',
         name: 'set_menu',
         component: SetMenu,
+    },
+    {
+        path: '/sample',
+        name: 'sample',
+        component: Sample,
     },
     {
         path: '/',
