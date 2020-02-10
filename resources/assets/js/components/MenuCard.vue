@@ -78,124 +78,37 @@
         <div class="menu-card__info_box" v-show="isInfoBox">
             <div class="level_box">
                 <div class="level_box__title">
-                    <v-icon>mdi-run</v-icon>Push Up
+                    <v-icon>mdi-run</v-icon>{{menuName}}
                 </div>
-                <div class="level_box__card">
-                    <div class="level_box__card__step_name">1:FullPush</div>
+                <div class="level_box__card"
+                    v-for="step in steps" :key=step.stepNumber
+                >
+                    <div class="level_box__card__step_name">S{{step.stepNumber}} {{step.name}}</div>
                     <ul>
-                        <li>
-                            Lv1 : 10 × 2
-                        </li>
-                        <li>
-                            Lv2 : 15 × 2
-                        </li>
-                        <li>
-                            Lv3 : 20 × 3
+                        <li v-for="level in step.levels" :key="level.levelNumber">
+                            Lv{{level.id}} : {{level.rep}} × {{level.set}}
                         </li>
                     </ul>
                 </div>
-                <div class="level_box__card">
-                    <div class="level_box__card__step_name">1:FullPush</div>
-                    <ul>
-                        <li>
-                            Lv1 : 10 × 2
-                        </li>
-                        <li>
-                            Lv2 : 15 × 2
-                        </li>
-                        <li>
-                            Lv3 : 20 × 3
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="level_box__card">
-                    <div class="level_box__card__step_name">1:FullPush</div>
-                    <ul>
-                        <li>
-                            Lv1 : 10 × 2
-                        </li>
-                        <li>
-                            Lv2 : 15 × 2
-                        </li>
-                        <li>
-                            Lv3 : 20 × 3
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="level_box__card">
-                    <div class="level_box__card__step_name">1:FullPush</div>
-                    <ul>
-                        <li>
-                            Lv1 : 10 × 2
-                        </li>
-                        <li>
-                            Lv2 : 15 × 2
-                        </li>
-                        <li>
-                            Lv3 : 20 × 3
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="level_box__card">
-                    <div class="level_box__card__step_name">1:FullPush</div>
-                    <ul>
-                        <li>
-                            Lv1 : 10 × 2
-                        </li>
-                        <li>
-                            Lv2 : 15 × 2
-                        </li>
-                        <li>
-                            Lv3 : 20 × 3
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="level_box__card">
-                    <div class="level_box__card__step_name">1:FullPush</div>
-                    <ul>
-                        <li>
-                            Lv1 : 10 × 2
-                        </li>
-                        <li>
-                            Lv2 : 15 × 2
-                        </li>
-                        <li>
-                            Lv3 : 20 × 3
-                        </li>
-                    </ul>
-                </div>
-
             </div>
             <div class="history_box">
                 <div class="history_box__title">
                     <v-icon>mdi-panda</v-icon>Best
                 </div>
                 <div class="history_box__card">
-                    <div class="history_box__card__step_name">Step1 FullPush</div>
-                    <div class="history_box__card__count">15 × 2</div>
-                    <div class="history_box__card__time">2019/02/10 9:24</div>
+                    <div class="history_box__card__step_name">S{{historyWorkout.best.stepNumber}} {{historyWorkout.best.stepName}}</div>
+                    <div class="history_box__card__count">{{historyWorkout.best.rep}} × {{historyWorkout.best.set}}</div>
+                    <div class="history_box__card__time">{{historyWorkout.best.date}}</div>
                 </div>
                 <div class="history_box__title">
                     <v-icon>mdi-history</v-icon>Recent
                 </div>
-                <div class="history_box__card">
-                    <div class="history_box__card__step_name">Step1 FullPush</div>
-                    <div class="history_box__card__count">15 × 2</div>
-                    <div class="history_box__card__time">2019/02/10 9:24</div>
-                </div>
-                <div class="history_box__card">
-                    <div class="history_box__card__step_name">Step1 FullPush</div>
-                    <div class="history_box__card__count">15 × 2</div>
-                    <div class="history_box__card__time">2019/02/10 9:24</div>
-                </div>
-                <div class="history_box__card">
-                    <div class="history_box__card__step_name">Step1 FullPush</div>
-                    <div class="history_box__card__count">15 × 2</div>
-                    <div class="history_box__card__time">2019/02/10 9:24</div>
+                <div class="history_box__card"
+                    v-for="i in [0,1,2]"
+                >
+                    <div class="history_box__card__step_name">S{{historyWorkout.recent[i].stepNumber}} {{historyWorkout.recent[i].stepName}}</div>
+                    <div class="history_box__card__count">{{historyWorkout.recent[i].rep}} × {{historyWorkout.recent[i].set}}</div>
+                    <div class="history_box__card__time">{{historyWorkout.recent[i].date}}</div>
                 </div>
             </div>
         </div>
@@ -206,6 +119,108 @@ export default{
     data(){
         return {
             isInfoBox: false,
+            menuName: 'Push Up',
+            steps:[
+                {
+                    name: 'Wall Push Up',
+                    stepNumber:1,
+                    levels:[
+                        {
+                            levelNumber:1,
+                            rep: 5,
+                            set: 1,
+                        },
+                        {
+                            levelNumber:2,
+                            rep: 10,
+                            set: 1,
+                        },
+                        {
+                            levelNumber:3,
+                            rep: 10,
+                            set: 2,
+                        },
+
+                    ]
+                },
+                {
+                    name: 'Half Push Up',
+                    stepNumber:2,
+                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
+                },
+                {
+                    name: 'Half Push Up',
+                    stepNumber:3,
+                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
+                },
+                {
+                    name: 'Half Push Up',
+                    stepNumber:4,
+                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
+                },
+                {
+                    name: 'Half Push Up',
+                    stepNumber:5,
+                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
+                },
+                {
+                    name: 'Half Push Up',
+                    stepNumber:6,
+                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
+                },
+                {
+                    name: 'Half Push Up',
+                    stepNumber:7,
+                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
+                },
+                {
+                    name: 'Half Push Up',
+                    stepNumber:8,
+                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
+                },
+                {
+                    name: 'Half Push Up',
+                    stepNumber:9,
+                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
+                },
+                {
+                    name: 'Half Push Up',
+                    stepNumber:10,
+                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
+                },
+            ],
+            historyWorkout: {
+                'best': {
+                    stepNumber: 1,
+                    stepName: 'FullPush',
+                    rep: 15,
+                    set: 2,
+                    date: '2019/02/01 9:24',
+                },
+                'recent':[
+                    {
+                        stepNumber: 1,
+                        stepName: 'FullPush',
+                        rep: 15,
+                        set: 2,
+                        date: '2019/02/01 9:24',
+                    },
+                    {
+                        stepNumber: 2,
+                        stepName: 'HalfPush',
+                        rep: 15,
+                        set: 3,
+                        date: '2019/01/01 9:24',
+                    },
+                    {
+                        stepNumber: 1,
+                        stepName: 'FullPush',
+                        rep: 20,
+                        set: 2,
+                        date: '2018/12/01 9:24',
+                    },
+                ]
+            }
         }
     },
 }
