@@ -6,6 +6,7 @@ import Enterprise from '../pages/Enterprise.vue'
 import SetMenu from '../pages/SetMenu.vue'
 import Sample from '../pages/Sample.vue'
 
+
 Vue.use(VueRouter)
 
 const routes = [
