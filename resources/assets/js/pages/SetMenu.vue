@@ -63,7 +63,7 @@
                                     <v-btn
                                             size="small"
                                     >
-                                        History
+                                        Info
                                     </v-btn>
                                 </v-card-actions>
                                 <div class="spacer"></div>
@@ -80,35 +80,126 @@
                     </form>
                     <div class="menu-card__info_box">
                         <div class="level_box">
-                            Level1 : 10 × 2 set
-                            Level2 : 15 × 2 set
-                            Level3 : 20 × 3 set
+                            <div class="level_box__title">
+                                <v-icon>mdi-run</v-icon>Push Up
+                            </div>
+                            <div class="level_box__card">
+                                <div class="level_box__card__step_name">1:FullPush</div>
+                                <ul>
+                                    <li>
+                                        Lv1 : 10 × 2
+                                    </li>
+                                    <li>
+                                        Lv2 : 15 × 2
+                                    </li>
+                                    <li>
+                                        Lv3 : 20 × 3
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="level_box__card">
+                                <div class="level_box__card__step_name">1:FullPush</div>
+                                <ul>
+                                    <li>
+                                        Lv1 : 10 × 2
+                                    </li>
+                                    <li>
+                                        Lv2 : 15 × 2
+                                    </li>
+                                    <li>
+                                        Lv3 : 20 × 3
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="level_box__card">
+                                <div class="level_box__card__step_name">1:FullPush</div>
+                                <ul>
+                                    <li>
+                                        Lv1 : 10 × 2
+                                    </li>
+                                    <li>
+                                        Lv2 : 15 × 2
+                                    </li>
+                                    <li>
+                                        Lv3 : 20 × 3
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="level_box__card">
+                                <div class="level_box__card__step_name">1:FullPush</div>
+                                <ul>
+                                    <li>
+                                        Lv1 : 10 × 2
+                                    </li>
+                                    <li>
+                                        Lv2 : 15 × 2
+                                    </li>
+                                    <li>
+                                        Lv3 : 20 × 3
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="level_box__card">
+                                <div class="level_box__card__step_name">1:FullPush</div>
+                                <ul>
+                                    <li>
+                                        Lv1 : 10 × 2
+                                    </li>
+                                    <li>
+                                        Lv2 : 15 × 2
+                                    </li>
+                                    <li>
+                                        Lv3 : 20 × 3
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="level_box__card">
+                                <div class="level_box__card__step_name">1:FullPush</div>
+                                <ul>
+                                    <li>
+                                        Lv1 : 10 × 2
+                                    </li>
+                                    <li>
+                                        Lv2 : 15 × 2
+                                    </li>
+                                    <li>
+                                        Lv3 : 20 × 3
+                                    </li>
+                                </ul>
+                            </div>
+
                         </div>
                         <div class="history_box">
-                            Best:
-                            　Step1: FullPush
-                            　　15 × 2 set
-                            　 　→ 1st 20
-                            　 　→ 2nd 15
-                            　　@2019/02/10 9:24
-                            Recent:
-                            　Step1: FullPush
-                            　　15 × 2 set
-                            　 　→ 1st 20
-                            　 　→ 2nd 15
-                            　　@2019/02/10 9:24
-
-                            　Step1: FullPush
-                            　　15 × 2 set
-                            　 　→ 1st 20
-                            　 　→ 2nd 15
-                            　　@2019/02/10 9:24
-
-                            　Step1: FullPush
-                            　　15 × 2 set
-                            　 　→ 1st 20
-                            　 　→ 2nd 15
-                            　　@2019/02/10 9:24
+                            <div class="history_box__title">
+                                <v-icon>mdi-panda</v-icon>Best
+                            </div>
+                            <div class="history_box__card">
+                                <div class="history_box__card__step_name">Step1 FullPush</div>
+                                <div class="history_box__card__count">15 × 2</div>
+                                <div class="history_box__card__time">2019/02/10 9:24</div>
+                            </div>
+                            <div class="history_box__title">
+                                <v-icon>mdi-history</v-icon>Recent
+                            </div>
+                            <div class="history_box__card">
+                                <div class="history_box__card__step_name">Step1 FullPush</div>
+                                <div class="history_box__card__count">15 × 2</div>
+                                <div class="history_box__card__time">2019/02/10 9:24</div>
+                            </div>
+                            <div class="history_box__card">
+                                <div class="history_box__card__step_name">Step1 FullPush</div>
+                                <div class="history_box__card__count">15 × 2</div>
+                                <div class="history_box__card__time">2019/02/10 9:24</div>
+                            </div>
+                            <div class="history_box__card">
+                                <div class="history_box__card__step_name">Step1 FullPush</div>
+                                <div class="history_box__card__count">15 × 2</div>
+                                <div class="history_box__card__time">2019/02/10 9:24</div>
+                            </div>
                         </div>
                     </div>
                 </v-card>
