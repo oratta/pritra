@@ -1,20 +1,20 @@
 <template>
     <v-card class="menu-card">
         <v-card-subtitle>
-            Push Up
+            {{menuName}}
         </v-card-subtitle>
         <v-img
                 src="https://hercules-beetle.com/wp-content/uploads/2017/03/full-pushup-01.png"
                 height="200px"></v-img>
         <v-card-title>
-            Full Pull Up
+            {{recommendWorkoutSet.stepName}}
         </v-card-title>
         <form>
             <div class="menu-card__form_training_set">
                 <div class="menu-card__form_training_set__input">
                     <div class="count_box">
                         <div class="count">
-                            20
+                            {{recommendWorkoutSet.rep}}
                         </div>
                         <div class="count_label">
                             reps
@@ -120,6 +120,11 @@ export default{
         return {
             isInfoBox: false,
             menuName: 'Push Up',
+            recommendWorkoutSet: {
+                stepName: 'S4 Full Push Up',
+                rep: 20,
+                set: 3,
+            },
             steps:[
                 {
                     name: 'Wall Push Up',
@@ -223,5 +228,8 @@ export default{
             }
         }
     },
+    props: {
+
+    }
 }
 </script>
