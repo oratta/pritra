@@ -30,9 +30,6 @@
         <v-content>
             <router-view />
         </v-content>
-        <v-footer color="primary" dark app>
-            Vuetify
-        </v-footer>
     </v-app>
 </template>
 
