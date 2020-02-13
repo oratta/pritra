@@ -20,9 +20,12 @@
     .mini_menu_card {
       height:160px;
       margin: 10px;
+      align-items: center;
+      justify-content: center;
 
       .remove_btn{
         margin:5px;
+        text-align:center;
       }
     }
   }
