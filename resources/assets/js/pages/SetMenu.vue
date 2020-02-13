@@ -27,6 +27,9 @@
         </v-row>
         <div class="cart" v-show="isShowCart">
             ここにカート用のフッターが表示されるよ
+            <div class="training_start_btn">
+                <v-btn color="primary">Start</v-btn>
+            </div>
         </div>
     </v-container>
 </template>
