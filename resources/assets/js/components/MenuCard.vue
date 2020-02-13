@@ -68,6 +68,7 @@
                         <v-btn
                                 color="accent"
                                 size="small"
+                                @click="$emit('set-menu')"
                         >
                             Set
                         </v-btn>
