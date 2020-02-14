@@ -230,7 +230,10 @@ export default{
         }
     },
     props: {
-
-    }
+        isAdd: {
+            type:Boolean,
+            requiered:true,
+        },
+    },
 }
 </script>

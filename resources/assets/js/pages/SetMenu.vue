@@ -2,36 +2,13 @@
     <v-container class="set-menu">
         <h1>Set Menu</h1>
         <v-row>
-            <v-col lg="4" md="4" sm="6" cols="12" >
+            <v-col lg="4" md="4" sm="6" cols="12"
+                   v-for="menuCard in menuCardInfo"
+                   :key="menuCard.menuId"
+            >
                 <MenuCard
-                    v-on:set-menu="setMenu"
-                ></MenuCard>
-            </v-col>
-            <v-col lg="4" md="4" sm="6" cols="12" >
-                <MenuCard
-                        v-on:set-menu="setMenu"
-                ></MenuCard>
-            </v-col>
-            <v-col lg="4" md="4" sm="6" cols="12" >
-                <MenuCard
-                        v-on:set-menu="setMenu"
-                ></MenuCard>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col lg="4" md="4" sm="6" cols="12" >
-                <MenuCard
-                        v-on:set-menu="setMenu"
-                ></MenuCard>
-            </v-col>
-            <v-col lg="4" md="4" sm="6" cols="12" >
-                <MenuCard
-                        v-on:set-menu="setMenu"
-                ></MenuCard>
-            </v-col>
-            <v-col lg="4" md="4" sm="6" cols="12" >
-                <MenuCard
-                        v-on:set-menu="setMenu"
+                    v-on:set-menu="setMenu(menuCard.menuId)"
+                    v-bind:is-add="addFlags[menuCard.menuId]"
                 ></MenuCard>
             </v-col>
         </v-row>
@@ -39,7 +16,7 @@
             ここにカート用のフッターが表示されるよ
             <div class="mini_menu_card" v-for="miniCard in miniCardInfo">
                 <v-card>
-                    <v-card-title>PushUp</v-card-title>
+                    <v-card-title>{{miniCard}}PushUp</v-card-title>
                     <v-card-text>Full Push Up</v-card-text>
                     <v-card-text>20×2</v-card-text>
                     <div class="remove_btn">
@@ -63,16 +40,33 @@ export default {
     data(){
         return {
             isShowCart: false,
-            miniCardInfo: [1,2],
+            miniCardInfo: [],
+            menuCardInfo: [
+                {"menuId":1},
+                {"menuId":2},
+                {"menuId":3},
+                {"menuId":4},
+                {"menuId":5},
+                {"menuId":6},
+            ],
+            addFlags: {
+                1:false,
+                2:false,
+                3:false,
+                4:false,
+                5:false,
+                6:false,
+            }
         }
     },
     methods:{
-        setMenu: function(){
-            this.isShowCart = !this.isShowCart;
-            this.addMiniCard();
+        setMenu: function(menuId){
+            this.isShowCart = true;
+            this.addFlags[menuId] = true;
+            this.addMiniCard(menuId);
         },
-        addMiniCard: function(){
-            this.miniCardInfo.push(3);
+        addMiniCard: function(menuId){
+            this.miniCardInfo.push(menuId);
         }
     }
 }
