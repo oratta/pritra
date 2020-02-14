@@ -8,7 +8,7 @@
             >
                 <MenuCard
                     v-on:set-menu="setMenu(menuCard.menuId)"
-                    v-bind:is-add="addFlags[menuCard.menuId]"
+                    :is-add="addFlags[menuCard.menuId]"
                 ></MenuCard>
             </v-col>
         </v-row>
@@ -20,7 +20,7 @@
                     <v-card-text>Full Push Up</v-card-text>
                     <v-card-text>20×2</v-card-text>
                     <div class="remove_btn">
-                        <v-btn small>Remove</v-btn>
+                        <v-btn small @click="removeMenu(miniCard)">Remove</v-btn>
                     </div>
                 </v-card>
             </div>
@@ -40,7 +40,7 @@ export default {
     data(){
         return {
             isShowCart: false,
-            miniCardInfo: [],
+            miniCardInfo: {},
             menuCardInfo: [
                 {"menuId":1},
                 {"menuId":2},
@@ -65,9 +65,18 @@ export default {
             this.addFlags[menuId] = true;
             this.addMiniCard(menuId);
         },
+        removeMenu: function(menuId){
+            this.addFlags[menuId] = false;
+            delete this.miniCardInfo[menuId];
+            if(Object.keys(this.miniCardInfo).length <=0){
+                this.isShowCart = false;
+            }
+        },
         addMiniCard: function(menuId){
-            this.miniCardInfo.push(menuId);
-        }
+            this.miniCardInfo[menuId]=menuId;
+        },
+
+
     }
 }
 </script>
