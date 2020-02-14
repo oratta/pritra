@@ -3,79 +3,88 @@
         <v-card-subtitle>
             {{menuName}}
         </v-card-subtitle>
-        <v-img
-                src="https://hercules-beetle.com/wp-content/uploads/2017/03/full-pushup-01.png"
-                height="200px"></v-img>
+        <div class="menu-card__img__box">
+            <img class="menu-card__img"
+                    src="https://hercules-beetle.com/wp-content/uploads/2017/03/full-pushup-01.png"
+            ></img>
+            <img v-if="isAdd"
+                   class="menu-card__img"
+                   src="https://cdn.pixabay.com/photo/2014/10/07/10/43/ok-477504_960_720.png"
+            ></img>
+        </div>
         <v-card-title>
             {{recommendWorkoutSet.stepName}}
         </v-card-title>
-        <form>
-            <div class="menu-card__form_training_set">
-                <div class="menu-card__form_training_set__input">
-                    <div class="count_box">
-                        <div class="count">
-                            {{recommendWorkoutSet.rep}}
-                        </div>
-                        <div class="count_label">
-                            reps
-                        </div>
+        <div class="menu-card__form_training_set">
+            <div class="menu-card__form_training_set__input">
+                <div class="count_box">
+                    <div class="count">
+                        {{recommendWorkoutSet.rep}}
                     </div>
-                    <div class="button_up_down">
-                        <div class="button_up_down__up">
-                            <v-btn icon small>
-                                <v-icon small>mdi-arrow-up-bold</v-icon>
-                            </v-btn>
-                        </div>
-                        <div class="button_up_down__down">
-                            <v-btn icon small>
-                                <v-icon small>mdi-arrow-down-bold</v-icon>
-                            </v-btn>
-                        </div>
-                    </div>
-                    <div class="menu-card__form_training_set__input__spacer"></div>
-                    <div class="count_box">
-                        <div class="count">
-                            {{recommendWorkoutSet.set}}
-                        </div>
-                        <div class="count_label">
-                            set
-                        </div>
-                    </div>
-                    <div class="button_up_down">
-                        <div class="button_up_down__up">
-                            <v-btn icon small>
-                                <v-icon small>mdi-arrow-up-bold</v-icon>
-                            </v-btn>
-                        </div>
-                        <div class="button_up_down__down">
-                            <v-btn icon small>
-                                <v-icon small>mdi-arrow-down-bold</v-icon>
-                            </v-btn>
-                        </div>
+                    <div class="count_label">
+                        reps
                     </div>
                 </div>
-                <div class="menu-card__form_training_set__submit">
-                    <v-card-actions>
-                        <v-btn
-                                size="small"
-                                @click="isInfoBox=!isInfoBox"
-                        >
-                            Info
+                <div class="button_up_down">
+                    <div class="button_up_down__up">
+                        <v-btn icon small>
+                            <v-icon small>mdi-arrow-up-bold</v-icon>
                         </v-btn>
-                    </v-card-actions>
-                    <div class="spacer"></div>
-                    <v-card-actions>
-                        <v-btn
-                                color="accent"
-                                size="small"
-                                @click="$emit('set-menu')"
-                        >
-                            Set
+                    </div>
+                    <div class="button_up_down__down">
+                        <v-btn icon small>
+                            <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
-                    </v-card-actions>
+                    </div>
+                </div>
+                <div class="menu-card__form_training_set__input__spacer"></div>
+                <div class="count_box">
+                    <div class="count">
+                        {{recommendWorkoutSet.set}}
+                    </div>
+                    <div class="count_label">
+                        set
+                    </div>
+                </div>
+                <div class="button_up_down">
+                    <div class="button_up_down__up">
+                        <v-btn icon small>
+                            <v-icon small>mdi-arrow-up-bold</v-icon>
+                        </v-btn>
+                    </div>
+                    <div class="button_up_down__down">
+                        <v-btn icon small>
+                            <v-icon small>mdi-arrow-down-bold</v-icon>
+                        </v-btn>
+                    </div>
                 </div>
             </div>
-        </form>
+            <div class="menu-card__form_training_set__submit">
+                <v-card-actions>
+                    <v-btn
+                            size="small"
+                            @click="isInfoBox=!isInfoBox"
+                    >
+                        Info
+                    </v-btn>
+                </v-card-actions>
+                <div class="spacer"></div>
+                <v-card-actions>
+                    <v-btn v-if="!isAdd"
+                            color="accent"
+                            size="small"
+                            @click="$emit('set-menu')"
+                    >
+                        Set
+                    </v-btn>
+                    <v-btn v-else
+                            disabled
+                    >
+                        Added
+                    </v-btn>
+                </v-card-actions>
+            </div>
+        </div>
         <div class="menu-card__info_box" v-show="isInfoBox">
             <div class="level_box">
                 <div class="level_box__title">
