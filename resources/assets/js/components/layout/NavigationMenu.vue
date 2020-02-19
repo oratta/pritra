@@ -3,7 +3,7 @@
         <v-list-item>
             <v-list-item-content>
                 <v-list-item-title class="title grey--text text--darken-2">
-                    Navigation Lists
+                    Menu
                 </v-list-item-title>
             </v-list-item-content>
         </v-list-item>
@@ -30,11 +30,7 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list-group>
-
-
-
-
-
+            
             <v-list-item v-for="nav_list in nav_lists" :key="'A'+ nav_list.name">
                 <v-list-item-icon>
                     <v-icon>{{ nav_list.icon }}</v-icon>
