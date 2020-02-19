@@ -36,12 +36,12 @@
                 </div>
                 <div class="button_up_down">
                     <div class="button_up_down__up">
-                        <v-btn icon small>
+                        <v-btn icon small @click="selectedWorkoutSet.rep +=1">
                             <v-icon small>mdi-arrow-up-bold</v-icon>
                         </v-btn>
                     </div>
                     <div class="button_up_down__down">
-                        <v-btn icon small>
+                        <v-btn icon small @click="selectedWorkoutSet.rep -=1">
                             <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
                     </div>
@@ -57,12 +57,12 @@
                 </div>
                 <div class="button_up_down">
                     <div class="button_up_down__up">
-                        <v-btn icon small>
+                        <v-btn icon small @click="selectedWorkoutSet.set +=1">
                             <v-icon small>mdi-arrow-up-bold</v-icon>
                         </v-btn>
                     </div>
                     <div class="button_up_down__down">
-                        <v-btn icon small>
+                        <v-btn icon small @click="selectedWorkoutSet.set -=1">
                             <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
                     </div>
