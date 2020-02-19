@@ -15,21 +15,12 @@
         <div class="menu-card__form_training_set__input">
             <div class="step_name">
                 <v-select
-                    label="Select Step..."
-                    :items="selectItemsStepName"></v-select>
-                {{recommendWorkoutSet.stepName}}
-            </div>
-            <div class="button_up_down">
-                <div class="button_up_down__up">
-                    <v-btn icon small>
-                        <v-icon small>mdi-arrow-up-bold</v-icon>
-                    </v-btn>
-                </div>
-                <div class="button_up_down__down">
-                    <v-btn icon small>
-                        <v-icon small>mdi-arrow-down-bold</v-icon>
-                    </v-btn>
-                </div>
+                    no-data-text="Select Step..."
+                    :items="steps"
+                    item-text="name"
+                    item-value="number"
+                ></v-select>
+                {{recommendWorkoutSet.number}}
             </div>
         </div>
         <div class="menu-card__form_training_set">
@@ -108,9 +99,9 @@
                     <v-icon>mdi-run</v-icon>{{menuName}}
                 </div>
                 <div class="level_box__card"
-                    v-for="step in steps" :key=step.stepNumber
+                    v-for="step in steps" :key=step.number
                 >
-                    <div class="level_box__card__step_name">S{{step.stepNumber}} {{step.name}}</div>
+                    <div class="level_box__card__step_name">S{{step.number}} {{step.name}}</div>
                     <ul>
                         <li v-for="level in step.levels" :key="level.levelNumber">
                             Lv{{level.id}} : {{level.rep}} × {{level.set}}
@@ -123,7 +114,7 @@
                     <v-icon>mdi-panda</v-icon>Best
                 </div>
                 <div class="history_box__card">
-                    <div class="history_box__card__step_name">S{{historyWorkout.best.stepNumber}} {{historyWorkout.best.stepName}}</div>
+                    <div class="history_box__card__step_name">S{{historyWorkout.best.number}} {{historyWorkout.best.name}}</div>
                     <div class="history_box__card__count">{{historyWorkout.best.rep}} × {{historyWorkout.best.set}}</div>
                     <div class="history_box__card__time">{{historyWorkout.best.date}}</div>
                 </div>
@@ -133,7 +124,7 @@
                 <div class="history_box__card"
                     v-for="i in [0,1,2]"
                 >
-                    <div class="history_box__card__step_name">S{{historyWorkout.recent[i].stepNumber}} {{historyWorkout.recent[i].stepName}}</div>
+                    <div class="history_box__card__step_name">S{{historyWorkout.recent[i].number}} {{historyWorkout.recent[i].name}}</div>
                     <div class="history_box__card__count">{{historyWorkout.recent[i].rep}} × {{historyWorkout.recent[i].set}}</div>
                     <div class="history_box__card__time">{{historyWorkout.recent[i].date}}</div>
                 </div>
@@ -148,37 +139,39 @@ export default{
             testList:["test1", "test2", "test3"],
             isInfoBox: false,
             selectItemsStepName: [],
+
             recommendWorkoutSet: {
-                stepName: 'S4 Full Push Up',
+                name: 'Full Push Up',
+                number: 2,
                 rep: 20,
                 set: 3,
             },
             historyWorkout: {
                 'best': {
-                    stepNumber: 1,
-                    stepName: 'FullPush',
+                    number: 1,
+                    name: 'FullPush',
                     rep: 15,
                     set: 2,
                     date: '2019/02/01 9:24',
                 },
                 'recent':[
                     {
-                        stepNumber: 1,
-                        stepName: 'FullPush',
+                        number: 1,
+                        name: 'FullPush',
                         rep: 15,
                         set: 2,
                         date: '2019/02/01 9:24',
                     },
                     {
-                        stepNumber: 2,
-                        stepName: 'HalfPush',
+                        number: 2,
+                        name: 'HalfPush',
                         rep: 15,
                         set: 3,
                         date: '2019/01/01 9:24',
                     },
                     {
-                        stepNumber: 1,
-                        stepName: 'FullPush',
+                        number: 1,
+                        name: 'FullPush',
                         rep: 20,
                         set: 2,
                         date: '2018/12/01 9:24',
@@ -206,10 +199,6 @@ export default{
             this.initProps();
         },
         initProps: function(){
-            for(let step in this.steps){
-                // this.selectItemsStepName.push({"item-text":step.name, "item-value":step.stepNumber});
-                this.selectItemsStepName.push(step.name);
-            }
         },
     },
     created () {

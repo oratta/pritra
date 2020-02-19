@@ -49,41 +49,41 @@ export default {
                     "menuId":1,
                     "menuName":"PushUp",
                     "steps":
-                        {
-                            1: {
+                        [
+                            {
                                 name: 'Half Push Up',
-                                stepNumber: 1,
+                                number: 1,
                                 levels: [{levelNumber: 1, rep: 5, set: 1,}, {
                                     levelNumber: 2,
                                     rep: 10,
                                     set: 1,
                                 }, {levelNumber: 3, rep: 10, set: 2,}]
                             },
-                            2: {
+                            {
                                 name: 'Full Push Up',
-                                stepNumber: 2,
+                                number: 2,
                                 levels: [{levelNumber: 1, rep: 5, set: 1,}, {
                                     levelNumber: 2,
                                     rep: 10,
                                     set: 1,
                                 }, {levelNumber: 3, rep: 10, set: 2,}]
                             },
-                            3: {
+                            {
                                 name: 'One Hand Push Up',
-                                stepNumber: 3,
+                                number: 3,
                                 levels: [{levelNumber: 1, rep: 5, set: 1,}, {
                                     levelNumber: 2,
                                     rep: 10,
                                     set: 1,
                                 }, {levelNumber: 3, rep: 10, set: 2,}]
                             },
-                        },
+                        ],
                 },
-                {"menuId":2, "menuName":"Squat", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
-                {"menuId":3, "menuName":"PullUp", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
-                {"menuId":4, "menuName":"LegRaise", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
-                {"menuId":5, "menuName":"Bridge", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
-                {"menuId":6, "menuName":"OneHandPushUp", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
+                {"menuId":2, "menuName":"Squat", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
+                {"menuId":3, "menuName":"PullUp", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
+                {"menuId":4, "menuName":"LegRaise", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
+                {"menuId":5, "menuName":"Bridge", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
+                {"menuId":6, "menuName":"OneHandPushUp", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
             ],
             addFlags: {
                 1:false,
