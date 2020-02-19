@@ -15,19 +15,20 @@
         <div class="menu-card__form_training_set__input">
             <div class="step_name">
                 <v-select
-                    no-data-text="Select Step..."
-                    :items="steps"
-                    item-text="name"
-                    item-value="number"
+                        v-model="selectedWorkoutSet.step"
+                        no-data-text="Select Step..."
+                        :items="steps"
+                        item-text="name"
+                        item-value="number"
+                        return-object
                 ></v-select>
-                {{recommendWorkoutSet.number}}
             </div>
         </div>
         <div class="menu-card__form_training_set">
             <div class="menu-card__form_training_set__input">
                 <div class="count_box">
                     <div class="count">
-                        {{recommendWorkoutSet.rep}}
+                        {{selectedWorkoutSet.rep}}
                     </div>
                     <div class="count_label">
                         reps
@@ -48,7 +49,7 @@
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="count_box">
                     <div class="count">
-                        {{recommendWorkoutSet.set}}
+                        {{selectedWorkoutSet.set}}
                     </div>
                     <div class="count_label">
                         set
@@ -138,11 +139,12 @@ export default{
         return {
             testList:["test1", "test2", "test3"],
             isInfoBox: false,
-            selectItemsStepName: [],
-
+            selectedWorkoutSet: {},
             recommendWorkoutSet: {
-                name: 'Full Push Up',
-                number: 2,
+                step: {
+                    name: 'Full Push Up',
+                    number: 2,
+                },
                 rep: 20,
                 set: 3,
             },
@@ -190,15 +192,13 @@ export default{
             required:true,
         },
         steps: {
-            type:Object,
+            type:Array,
             required:true,
         }
     },
     methods: {
         init: function(){
-            this.initProps();
-        },
-        initProps: function(){
+            this.selectedWorkoutSet = this.recommendWorkoutSet;
         },
     },
     created () {
