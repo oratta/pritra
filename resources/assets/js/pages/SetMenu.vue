@@ -9,11 +9,14 @@
                 <MenuCard
                     v-on:set-menu="setMenu(menuCard.menuId)"
                     :is-add="addFlags[menuCard.menuId]"
+                    :menu-name="menuCard.menuName"
+                    :steps="menuCard.steps"
                 ></MenuCard>
             </v-col>
         </v-row>
+        <div class="margin_for_cart" v-show="isShowCart">
+        </div>
         <div class="cart" v-show="isShowCart">
-            ここにカート用のフッターが表示されるよ
             <div class="mini_menu_card" v-for="miniCard in miniCardInfo">
                 <v-card>
                     <v-card-title>{{miniCard}}PushUp</v-card-title>
@@ -42,12 +45,45 @@ export default {
             isShowCart: false,
             miniCardInfo: {},
             menuCardInfo: [
-                {"menuId":1},
-                {"menuId":2},
-                {"menuId":3},
-                {"menuId":4},
-                {"menuId":5},
-                {"menuId":6},
+                {
+                    "menuId":1,
+                    "menuName":"PushUp",
+                    "steps":
+                        {
+                            1: {
+                                name: 'Half Push Up',
+                                stepNumber: 1,
+                                levels: [{levelNumber: 1, rep: 5, set: 1,}, {
+                                    levelNumber: 2,
+                                    rep: 10,
+                                    set: 1,
+                                }, {levelNumber: 3, rep: 10, set: 2,}]
+                            },
+                            2: {
+                                name: 'Full Push Up',
+                                stepNumber: 2,
+                                levels: [{levelNumber: 1, rep: 5, set: 1,}, {
+                                    levelNumber: 2,
+                                    rep: 10,
+                                    set: 1,
+                                }, {levelNumber: 3, rep: 10, set: 2,}]
+                            },
+                            3: {
+                                name: 'One Hand Push Up',
+                                stepNumber: 3,
+                                levels: [{levelNumber: 1, rep: 5, set: 1,}, {
+                                    levelNumber: 2,
+                                    rep: 10,
+                                    set: 1,
+                                }, {levelNumber: 3, rep: 10, set: 2,}]
+                            },
+                        },
+                },
+                {"menuId":2, "menuName":"Squat", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
+                {"menuId":3, "menuName":"PullUp", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
+                {"menuId":4, "menuName":"LegRaise", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
+                {"menuId":5, "menuName":"Bridge", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
+                {"menuId":6, "menuName":"OneHandPushUp", "steps": {1:{name:'FirstStep',stepNumber: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},2: {name: 'SecondStep', stepNumber: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},3: {name: 'ThirdStep',stepNumber: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},},},
             ],
             addFlags: {
                 1:false,
@@ -75,8 +111,9 @@ export default {
         addMiniCard: function(menuId){
             this.miniCardInfo[menuId]=menuId;
         },
+        init: function(){
 
-
-    }
+        }
+    },
 }
 </script>

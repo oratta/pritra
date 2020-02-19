@@ -12,9 +12,26 @@
                    src="https://cdn.pixabay.com/photo/2014/10/07/10/43/ok-477504_960_720.png"
             ></img>
         </div>
-        <v-card-title>
-            {{recommendWorkoutSet.stepName}}
-        </v-card-title>
+        <div class="menu-card__form_training_set__input">
+            <div class="step_name">
+                <v-select
+                    label="Select Step..."
+                    :items="selectItemsStepName"></v-select>
+                {{recommendWorkoutSet.stepName}}
+            </div>
+            <div class="button_up_down">
+                <div class="button_up_down__up">
+                    <v-btn icon small>
+                        <v-icon small>mdi-arrow-up-bold</v-icon>
+                    </v-btn>
+                </div>
+                <div class="button_up_down__down">
+                    <v-btn icon small>
+                        <v-icon small>mdi-arrow-down-bold</v-icon>
+                    </v-btn>
+                </div>
+            </div>
+        </div>
         <div class="menu-card__form_training_set">
             <div class="menu-card__form_training_set__input">
                 <div class="count_box">
@@ -128,82 +145,14 @@
 export default{
     data(){
         return {
+            testList:["test1", "test2", "test3"],
             isInfoBox: false,
-            menuName: 'Push Up',
+            selectItemsStepName: [],
             recommendWorkoutSet: {
                 stepName: 'S4 Full Push Up',
                 rep: 20,
                 set: 3,
             },
-            steps:[
-                {
-                    name: 'Wall Push Up',
-                    stepNumber:1,
-                    levels:[
-                        {
-                            levelNumber:1,
-                            rep: 5,
-                            set: 1,
-                        },
-                        {
-                            levelNumber:2,
-                            rep: 10,
-                            set: 1,
-                        },
-                        {
-                            levelNumber:3,
-                            rep: 10,
-                            set: 2,
-                        },
-
-                    ]
-                },
-                {
-                    name: 'Half Push Up',
-                    stepNumber:2,
-                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
-                },
-                {
-                    name: 'Half Push Up',
-                    stepNumber:3,
-                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
-                },
-                {
-                    name: 'Half Push Up',
-                    stepNumber:4,
-                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
-                },
-                {
-                    name: 'Half Push Up',
-                    stepNumber:5,
-                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
-                },
-                {
-                    name: 'Half Push Up',
-                    stepNumber:6,
-                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
-                },
-                {
-                    name: 'Half Push Up',
-                    stepNumber:7,
-                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
-                },
-                {
-                    name: 'Half Push Up',
-                    stepNumber:8,
-                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
-                },
-                {
-                    name: 'Half Push Up',
-                    stepNumber:9,
-                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
-                },
-                {
-                    name: 'Half Push Up',
-                    stepNumber:10,
-                    levels:[{levelNumber:1, rep: 5, set: 1,}, {levelNumber:2, rep: 10, set: 1,}, {levelNumber:3, rep: 10, set: 2,},]
-                },
-            ],
             historyWorkout: {
                 'best': {
                     stepNumber: 1,
@@ -243,6 +192,34 @@ export default{
             type:Boolean,
             requiered:true,
         },
+        menuName: {
+            type:String,
+            required:true,
+        },
+        steps: {
+            type:Object,
+            required:true,
+        }
+    },
+    methods: {
+        init: function(){
+            this.initProps();
+        },
+        initProps: function(){
+            for(let step in this.steps){
+                // this.selectItemsStepName.push({"item-text":step.name, "item-value":step.stepNumber});
+                this.selectItemsStepName.push(step.name);
+            }
+        },
+    },
+    created () {
+        // view が作られた時にデータを取得し、
+        // そのデータは既に監視されています
+        this.init()
+    },
+    watch: {
+        // ルートが変更されたらこのメソッドを再び呼び出します
+        '$route': 'init'
     },
 }
 </script>
