@@ -82,7 +82,7 @@
                     <v-btn v-if="!isAdd"
                             color="accent"
                             size="small"
-                            @click="$emit('set-menu')"
+                            @click="$emit('set-menu', selectedWorkoutSet)"
                     >
                         Set
                     </v-btn>

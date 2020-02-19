@@ -7,7 +7,7 @@
                    :key="menuCard.menuId"
             >
                 <MenuCard
-                    v-on:set-menu="setMenu(menuCard.menuId)"
+                    v-on:set-menu="setMenu(menuCard.menuId, $event)"
                     :is-add="addFlags[menuCard.menuId]"
                     :menu-name="menuCard.menuName"
                     :steps="menuCard.steps"
@@ -19,11 +19,11 @@
         <div class="cart" v-show="isShowCart">
             <div class="mini_menu_card" v-for="miniCard in miniCardInfo">
                 <v-card>
-                    <v-card-title>{{miniCard}}PushUp</v-card-title>
-                    <v-card-text>Full Push Up</v-card-text>
-                    <v-card-text>20×2</v-card-text>
+                    <v-card-title>{{miniCard.menuName}}</v-card-title>
+                    <v-card-text>{{miniCard.step.name}}</v-card-text>
+                    <v-card-text>{{miniCard.rep}}×{{miniCard.set}}</v-card-text>
                     <div class="remove_btn">
-                        <v-btn small @click="removeMenu(miniCard)">Remove</v-btn>
+                        <v-btn small @click="removeMenu(miniCard.menuId)">Remove</v-btn>
                     </div>
                 </v-card>
             </div>
@@ -96,10 +96,10 @@ export default {
         }
     },
     methods:{
-        setMenu: function(menuId){
+        setMenu: function(menuId, selectedWorkoutSet){
             this.isShowCart = true;
             this.addFlags[menuId] = true;
-            this.addMiniCard(menuId);
+            this.addMiniCard(menuId, selectedWorkoutSet);
         },
         removeMenu: function(menuId){
             this.addFlags[menuId] = false;
@@ -108,8 +108,11 @@ export default {
                 this.isShowCart = false;
             }
         },
-        addMiniCard: function(menuId){
-            this.miniCardInfo[menuId]=menuId;
+        addMiniCard: function(menuId, selectedWorkoutSet){
+            console.log(selectedWorkoutSet);
+            this.miniCardInfo[menuId]=selectedWorkoutSet;
+            this.miniCardInfo[menuId]['menuId'] = menuId;
+            this.miniCardInfo[menuId]['menuName'] = this.menuCardInfo[menuId-1].menuName;
         },
         init: function(){
 
