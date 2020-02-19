@@ -28,7 +28,7 @@
                 </v-card>
             </div>
             <div class="training_start_btn">
-                <v-btn color="primary">Start</v-btn>
+                <v-btn color="primary" @click="send">Start</v-btn>
             </div>
         </div>
     </v-container>
@@ -109,13 +109,23 @@ export default {
             }
         },
         addMiniCard: function(menuId, selectedWorkoutSet){
-            console.log(selectedWorkoutSet);
             this.miniCardInfo[menuId]=selectedWorkoutSet;
             this.miniCardInfo[menuId]['menuId'] = menuId;
             this.miniCardInfo[menuId]['menuName'] = this.menuCardInfo[menuId-1].menuName;
         },
         init: function(){
 
+        },
+        async send(){
+            const formData = new FormData();
+            formData.append('selectedWorkoutSets', this.miniCardInfo);
+            console.log('send request');
+            const response = await axios.post('/api/plan', formData);
+            console.log('get response');
+            console.log(response);
+            //TODO エラー処理
+
+            this.$router.push('nextpage');
         }
     },
 }

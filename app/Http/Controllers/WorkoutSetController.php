@@ -22,6 +22,11 @@ class WorkoutSetController extends Controller
         });
     }
 
+    public function setPlan(Request $request)
+    {
+        dump($request);
+    }
+
     public function index(Request $request)
     {
         if($this->__isRequestBestWorkoutSets($request)){
