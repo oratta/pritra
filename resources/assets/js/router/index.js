@@ -5,15 +5,21 @@ import About from '../pages/About.vue'
 import Enterprise from '../pages/Enterprise.vue'
 import SetMenu from '../pages/SetMenu.vue'
 import Sample from '../pages/Sample.vue'
+import Login from '../pages/Login.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/set_menu',
+        path: '/training/plan',
         name: 'set_menu',
         component: SetMenu,
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
     },
     {
         path: '/sample',
