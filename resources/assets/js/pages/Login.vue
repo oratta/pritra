@@ -34,7 +34,7 @@
         <div class="panel" v-show="tab === 2">
             <v-form
                     ref="form"
-                    v-model="valid"
+                    v-model="validRegister"
                     lazy-validation
                     @submit.prevent="register"
             >
@@ -63,64 +63,33 @@
                         label="E-mail"
                         required
                 ></v-text-field>
+
+                <v-text-field
+                        v-model="registerForm.password"
+                        :append-icon="isShowPasswordRegister ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="passwordRules"
+                        label="Password"
+                        :type="isShowPasswordRegister ? 'text' : 'password'"
+                        @click:append="isShowPasswordRegister = !isShowPasswordRegister"
+                        required
+                ></v-text-field>
+
                 <v-btn
-                        :disabled="!valid"
-                        color="success"
+                        color="accent"
+                        :disabled="!validRegister"
                         class="mr-4"
                         @click="validate"
                         type="submit"
                 >
                     submit
                 </v-btn>
-
                 <v-btn
-                        :disabled="!valid"
-                        color="success"
-                        class="mr-4"
-                        @click="validate"
-                >
-                    Validate
-                </v-btn>
-
-                <v-btn
-                        color="error"
                         class="mr-4"
                         @click="reset"
                 >
                     Reset Form
                 </v-btn>
-
-                <v-btn
-                        color="warning"
-                        @click="resetValidation"
-                >
-                    Reset Validation
-                </v-btn>
             </v-form>
-            <form class="form" @submit.prevent="register">
-                <div v-if="registerErrors" class="errors">
-                    <ul v-if="registerErrors.name">
-                        <li v-for="msg in registerErrors.name" :key="msg">{{ msg }}</li>
-                    </ul>
-                    <ul v-if="registerErrors.email">
-                        <li v-for="msg in registerErrors.email" :key="msg">{{ msg }}</li>
-                    </ul>
-                    <ul v-if="registerErrors.password">
-                        <li v-for="msg in registerErrors.password" :key="msg">{{ msg }}</li>
-                    </ul>
-                </div>
-                <label for="username">Name</label>
-                <input type="text" class="form__item" id="username" v-model="registerForm.name">
-                <label for="email">Email</label>
-                <input type="text" class="form__item" id="email" v-model="registerForm.email">
-                <label for="password">Password</label>
-                <input type="password" class="form__item" id="password" v-model="registerForm.password">
-                <label for="password-confirmation">Password (confirm)</label>
-                <input type="password" class="form__item" id="password-confirmation" v-model="registerForm.password_confirmation">
-                <div class="form__button">
-                    <button type="submit" class="button button--inverse">register</button>
-                </div>
-            </form>
         </div>
     </v-container>
 </template>
@@ -132,7 +101,10 @@
         data () {
             return {
                 tab: 1,
-                valid: true,
+                validRegister: true,
+                validLogin: true,
+                isShowPasswordRegister: false,
+                isShowPasswordLogin: false,
                 loginForm: {
                     email: '',
                     password: ''
@@ -141,7 +113,6 @@
                     name: '',
                     email: '',
                     password: '',
-                    password_confirmation: ''
                 },
                 nameRules: [
                     v => !!v || 'Name is required',
@@ -151,7 +122,10 @@
                     v => !!v || 'E-mail is required',
                     v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
                 ],
-
+                passwordRules: [
+                    v => !!v || 'Password is required',
+                    v => (v.length >= 8 && v.length <= 30) || 'Min 8 and max 30 characters'
+                ],
             }
         },
         methods: {
@@ -182,9 +156,6 @@
             },
             reset () {
                 this.$refs.form.reset()
-            },
-            resetValidation () {
-                this.$refs.form.resetValidation()
             },
         },
         created(){
