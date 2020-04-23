@@ -13,7 +13,12 @@
             >Register</v-tab>
         </v-tabs>
         <div class="panel" v-show="tab === 1">
-            <form class="form" @submit.prevent="login">
+            <v-form
+                    ref="form"
+                    v-model="validLogin"
+                    lazy-validation
+                    @submit.prevent="login"
+            >
                 <div v-if="loginErrors" class="errors">
                     <ul v-if="loginErrors.email">
                         <li v-for="msg in loginErrors.email" :key="msg">{{ msg }}</li>
@@ -22,14 +27,38 @@
                         <li v-for="msg in loginErrors.password" :key="msg">{{ msg }}</li>
                     </ul>
                 </div>
-                <label for="login-email">Email</label>
-                <input type="text" class="form__item" id="login-email" v-model="loginForm.email">
-                <label for="login-password">Password</label>
-                <input type="password" class="form__item" id="login-password" v-model="loginForm.password">
-                <div class="form__button">
-                    <button type="submit" class="button button--inverse">login</button>
-                </div>
-            </form>
+                <v-text-field
+                        v-model="loginForm.email"
+                        :rules="emailRules"
+                        label="E-mail"
+                        required
+                ></v-text-field>
+
+                <v-text-field
+                        v-model="loginForm.password"
+                        :append-icon="isShowPasswordLogin ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="passwordRules"
+                        label="Password"
+                        :type="isShowPasswordLogin ? 'text' : 'password'"
+                        @click:append="isShowPasswordLogin = !isShowPasswordLogin"
+                        required
+                ></v-text-field>
+
+                <v-btn
+                        color="accent"
+                        :disabled="!validLogin"
+                        class="mr-4"
+                        type="submit"
+                >
+                    submit
+                </v-btn>
+                <v-btn
+                        class="mr-4"
+                        @click="reset"
+                >
+                    Reset Form
+                </v-btn>
+            </v-form>
         </div>
         <div class="panel" v-show="tab === 2">
             <v-form
@@ -155,6 +184,7 @@
                 this.$refs.form.validate()
             },
             reset () {
+                this.$refs.form.resetValidation()
                 this.$refs.form.reset()
             },
         },
