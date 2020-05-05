@@ -6,7 +6,7 @@
             <v-btn text to="/training/log">Log</v-btn>
             <v-spacer></v-spacer>
             <v-toolbar-items v-if="isLogin">
-                <div class="user_name">user name</div>
+                <v-btn text to="/profile">{{userName}}</v-btn>
                 <v-btn text to="/logout">logout</v-btn>
             </v-toolbar-items>
             <v-toolbar-items v-else>
@@ -24,7 +24,14 @@
     export default {
         data(){
             return{
-                isLogin: false,
+            }
+        },
+        computed: {
+            isLogin() {
+                return this.$store.getters['auth/check']
+            },
+            userName(){
+                return this.$store.getters['auth/username'];
             }
         }
     };

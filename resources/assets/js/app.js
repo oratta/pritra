@@ -7,11 +7,17 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify)
 
-const app = new Vue({
-    el: '#app',
-    vuetify: new Vuetify(),
-    router,
-    store,
-    components: {App},
-    template: '<App />'
-})
+const createApp = async () =>{
+    await store.dispatch('auth/currentUser')
+
+    new Vue({
+        el: '#app',
+        vuetify: new Vuetify(),
+        router,
+        store,
+        components: {App},
+        template: '<App />'
+    })
+}
+
+createApp();
