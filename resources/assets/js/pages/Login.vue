@@ -1,19 +1,24 @@
 <template>
-    <div class="container--small">
-        <ul class="tab">
-            <li
-                class="tab__item"
-                :class="{'tab__item--active': tab === 1 }"
-                @click="tab = 1"
-            >Login</li>
-            <li
-                class="tab__item"
-                :class="{'tab__item--active': tab ===2 }"
-                @click="tab = 2"
-            >Register</li>
-        </ul>
+    <v-container>
+        <v-tabs>
+            <v-tab
+                    class="tab__item"
+                    :class="{'tab__item--active': tab === 1 }"
+                    @click="tab = 1"
+            >Login</v-tab>
+            <v-tab
+                    class="tab__item"
+                    :class="{'tab__item--active': tab ===2 }"
+                    @click="tab = 2"
+            >Register</v-tab>
+        </v-tabs>
         <div class="panel" v-show="tab === 1">
-            <form class="form" @submit.prevent="login">
+            <v-form
+                    ref="form"
+                    v-model="validLogin"
+                    lazy-validation
+                    @submit.prevent="login"
+            >
                 <div v-if="loginErrors" class="errors">
                     <ul v-if="loginErrors.email">
                         <li v-for="msg in loginErrors.email" :key="msg">{{ msg }}</li>
@@ -22,17 +27,46 @@
                         <li v-for="msg in loginErrors.password" :key="msg">{{ msg }}</li>
                     </ul>
                 </div>
-                <label for="login-email">Email</label>
-                <input type="text" class="form__item" id="login-email" v-model="loginForm.email">
-                <label for="login-password">Password</label>
-                <input type="password" class="form__item" id="login-password" v-model="loginForm.password">
-                <div class="form__button">
-                    <button type="submit" class="button button--inverse">login</button>
-                </div>
-            </form>
+                <v-text-field
+                        v-model="loginForm.email"
+                        :rules="emailRules"
+                        label="E-mail"
+                        required
+                ></v-text-field>
+
+                <v-text-field
+                        v-model="loginForm.password"
+                        :append-icon="isShowPasswordLogin ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="passwordRules"
+                        label="Password"
+                        :type="isShowPasswordLogin ? 'text' : 'password'"
+                        @click:append="isShowPasswordLogin = !isShowPasswordLogin"
+                        required
+                ></v-text-field>
+
+                <v-btn
+                        color="accent"
+                        :disabled="!validLogin"
+                        class="mr-4"
+                        type="submit"
+                >
+                    submit
+                </v-btn>
+                <v-btn
+                        class="mr-4"
+                        @click="reset"
+                >
+                    Reset Form
+                </v-btn>
+            </v-form>
         </div>
         <div class="panel" v-show="tab === 2">
-            <form class="form" @submit.prevent="register">
+            <v-form
+                    ref="form"
+                    v-model="validRegister"
+                    lazy-validation
+                    @submit.prevent="register"
+            >
                 <div v-if="registerErrors" class="errors">
                     <ul v-if="registerErrors.name">
                         <li v-for="msg in registerErrors.name" :key="msg">{{ msg }}</li>
@@ -44,20 +78,49 @@
                         <li v-for="msg in registerErrors.password" :key="msg">{{ msg }}</li>
                     </ul>
                 </div>
-                <label for="username">Name</label>
-                <input type="text" class="form__item" id="username" v-model="registerForm.name">
-                <label for="email">Email</label>
-                <input type="text" class="form__item" id="email" v-model="registerForm.email">
-                <label for="password">Password</label>
-                <input type="password" class="form__item" id="password" v-model="registerForm.password">
-                <label for="password-confirmation">Password (confirm)</label>
-                <input type="password" class="form__item" id="password-confirmation" v-model="registerForm.password_confirmation">
-                <div class="form__button">
-                    <button type="submit" class="button button--inverse">register</button>
-                </div>
-            </form>
+                <v-text-field
+                        v-model="registerForm.name"
+                        :counter="10"
+                        :rules="nameRules"
+                        label="Name"
+                        required
+                ></v-text-field>
+
+                <v-text-field
+                        v-model="registerForm.email"
+                        :rules="emailRules"
+                        label="E-mail"
+                        required
+                ></v-text-field>
+
+                <v-text-field
+                        v-model="registerForm.password"
+                        :append-icon="isShowPasswordRegister ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="passwordRules"
+                        label="Password"
+                        :type="isShowPasswordRegister ? 'text' : 'password'"
+                        @click:append="isShowPasswordRegister = !isShowPasswordRegister"
+                        required
+                ></v-text-field>
+
+                <v-btn
+                        color="accent"
+                        :disabled="!validRegister"
+                        class="mr-4"
+                        @click="validate"
+                        type="submit"
+                >
+                    submit
+                </v-btn>
+                <v-btn
+                        class="mr-4"
+                        @click="reset"
+                >
+                    Reset Form
+                </v-btn>
+            </v-form>
         </div>
-    </div>
+    </v-container>
 </template>
 
 <script>
@@ -67,6 +130,10 @@
         data () {
             return {
                 tab: 1,
+                validRegister: true,
+                validLogin: true,
+                isShowPasswordRegister: false,
+                isShowPasswordLogin: false,
                 loginForm: {
                     email: '',
                     password: ''
@@ -75,8 +142,19 @@
                     name: '',
                     email: '',
                     password: '',
-                    password_confirmation: ''
-                }
+                },
+                nameRules: [
+                    v => !!v || 'Name is required',
+                    v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+                ],
+                emailRules: [
+                    v => !!v || 'E-mail is required',
+                    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+                ],
+                passwordRules: [
+                    v => !!v || 'Password is required',
+                    v => (v.length >= 8 && v.length <= 30) || 'Min 8 and max 30 characters'
+                ],
             }
         },
         methods: {
@@ -101,7 +179,14 @@
             clearError () {
                 this.$store.commit('auth/setLoginErrorMessages', null)
                 this.$store.commit('auth/setRegisterErrorMessages', null)
-            }
+            },
+            validate () {
+                this.$refs.form.validate()
+            },
+            reset () {
+                this.$refs.form.resetValidation()
+                this.$refs.form.reset()
+            },
         },
         created(){
             this.clearError()

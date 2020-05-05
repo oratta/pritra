@@ -2,6 +2,7 @@
 
 namespace App\Model\UserData;
 
+use App\Model\Master\MenuMaster;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -33,5 +34,19 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->type===1 ? true : false;
+    }
+
+    public function getBestWorkoutSets()
+    {
+        return WorkoutSet::getBestWorkoutSetList($this->id);
+    }
+
+    public function getRecommendedWorkoutSets()
+    {
+        $recommendWorkoutSets = $this->getBestWorkoutSets()->map(function(WorkoutSet $workoutSet){
+            return $workoutSet->getNextLevel();
+        });
+
+        return $recommendWorkoutSets;
     }
 }

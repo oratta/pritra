@@ -12,7 +12,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Workout::class, function (Faker $faker) {
     $menuId = mt_rand(1,MenuMaster::MASTER_COUNT);
-    $stepIdMin = ($menuId-1)*StepMaster::STEP_NUMBER_MAX+1;
+    $stepIdMin = MenuMaster::getFirstStepMasterId($menuId);
     $stepIdMax = $menuId*StepMaster::STEP_NUMBER_MAX;
     $stepId = mt_rand($stepIdMin, $stepIdMax);
     return [
