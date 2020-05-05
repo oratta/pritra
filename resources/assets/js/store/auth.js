@@ -83,9 +83,12 @@ const actions = {
 
     // ログインユーザーチェック
     async currentUser (context) {
+        console.log('start user check');
+
         context.commit('setApiStatus', null)
         const response = await axios.get('/api/user')
-        const user = response.data || null
+        const user = response.data || null;
+        console.log('user name : ' + user);
 
         if (response.status === OK) {
             context.commit('setApiStatus', true)
