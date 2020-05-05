@@ -10,8 +10,7 @@
                 <v-btn text @click="logout">logout</v-btn>
             </v-toolbar-items>
             <v-toolbar-items v-else>
-                <v-btn text to="/login">login</v-btn>
-                <v-btn text to="/register">register</v-btn>
+                <v-btn text to="/login">login/register</v-btn>
             </v-toolbar-items>
         </v-app-bar>
         <v-content>
