@@ -38,7 +38,7 @@ Route::get('workout_sets', 'WorkoutSetController@index');
 
 
 Route::get('menu', function(){return;});//メニューのプランニング画面
-Route::post('plan', 'WorkoutSetController@setPlan');//プランの決定
+Route::post('plan', 'WorkoutSetController@setPlan')->name('warkout_set.set_plan');//プランの決定
 Route::get('plan', function(){return;});//プランを表示
 Route::post('workout_set', function(){return;});//実行したワークアウトの記録
 Route::get('workout_set', function(){return;});//履歴の表示

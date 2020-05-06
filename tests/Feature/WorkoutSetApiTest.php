@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\Controller;
 use App\Model\Master\MenuMaster;
 use App\Model\UserData\User;
 use App\Model\UserData\WorkoutSet;
@@ -22,6 +23,13 @@ class WorkoutSetApiTest extends TestCase
 
         // テストユーザー作成
         $this->user = factory(User::class)->create(["password" => Hash::make("secret")]);
+    }
+
+    public function should_テストメッセージを返す()
+    {
+        $response = $this->actingAs($this->user)
+            ->json('post', route('workout_set.set_plan'));
+        $response->assertStatus(Controller::HTTP_STATUS_CREATE);
     }
 
     /**

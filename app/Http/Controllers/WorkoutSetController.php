@@ -24,7 +24,7 @@ class WorkoutSetController extends Controller
 
     public function setPlan(Request $request)
     {
-        dump($request);
+        response("test", Controller::HTTP_STATUS_CREATE);
     }
 
     public function index(Request $request)

@@ -10,4 +10,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    const HTTP_STATUS_CREATE = 201;
+    const HTTP_STATUS_OK = 200;
+
 }
