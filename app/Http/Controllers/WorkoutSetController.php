@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class WorkoutSetController extends Controller
 {
@@ -24,7 +25,7 @@ class WorkoutSetController extends Controller
 
     public function setPlan(Request $request)
     {
-        response("test", Controller::HTTP_STATUS_CREATE);
+        return response("test", Controller::HTTP_STATUS_CREATE);
     }
 
     public function index(Request $request)
