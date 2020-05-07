@@ -125,7 +125,7 @@ export default {
             console.log(response);
             //TODO エラー処理
 
-            this.$router.push('nextpage');
+            this.$router.push('run');
         }
     },
 }
