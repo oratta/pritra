@@ -49,12 +49,22 @@
                 </div>
                 <div class="button_up_down">
                     <div class="button_up_down__up">
-                        <v-btn icon small @click="workout.rep +=1">
+                        <v-btn
+                                icon
+                                small
+                                @click="workout.rep +=1"
+                                :disabled="workout.isFinish"
+                        >
                             <v-icon small>mdi-arrow-up-bold</v-icon>
                         </v-btn>
                     </div>
                     <div class="button_up_down__down">
-                        <v-btn icon small @click="workout.rep -=1">
+                        <v-btn
+                                icon
+                                small
+                                @click="workout.rep -=1"
+                                :disabled="workout.isFinish"
+                        >
                             <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
                     </div>
@@ -65,6 +75,7 @@
                             v-model="sampleValue"
                             :items="sampleItems"
                             standard
+                            :disabled="workout.isFinish"
                             label="training load..."
                     ></v-select>
                 </div>
