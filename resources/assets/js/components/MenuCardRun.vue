@@ -100,20 +100,6 @@
                     <v-icon dark>mdi-plus</v-icon>
                 </v-btn>
             </div>
-            <div class="menu-card__form_training_set__submit">
-                <v-card-actions>
-                </v-card-actions>
-                <div class="spacer"></div>
-                <v-card-actions>
-                    <v-btn
-                           color="accent"
-                           size="small"
-                           @click="$emit('set-menu', selectedWorkoutSet)"
-                    >
-                        Finish
-                    </v-btn>
-                </v-card-actions>
-            </div>
         </div>
     </v-card>
 </template>

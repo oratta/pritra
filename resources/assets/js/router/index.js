@@ -7,6 +7,7 @@ import SetMenu from '../pages/SetMenu.vue';
 import Sample from '../pages/Sample.vue';
 import Login from '../pages/Login.vue';
 import Run from '../pages/Run.vue';
+import Finish from '../pages/Finish.vue';
 
 
 Vue.use(VueRouter)
@@ -21,6 +22,11 @@ const routes = [
         path: '/training/run',
         name: 'run',
         component: Run,
+    },
+    {
+        path: '/training/finish',
+        name: 'finish',
+        component: Finish,
     },
     {
         path: '/login',

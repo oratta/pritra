@@ -12,6 +12,20 @@
                 ></MenuCardRun>
             </v-col>
         </v-row>
+        <div class="menu-card__form_training_set__submit">
+            <v-card-actions>
+            </v-card-actions>
+            <div class="spacer"></div>
+            <v-card-actions>
+                <v-btn
+                        color="accent"
+                        size="small"
+                        @click="finish"
+                >
+                    finish workout
+                </v-btn>
+            </v-card-actions>
+        </div>
         </v-container>
 </template>
 
@@ -40,6 +54,17 @@ export default {
         }
     },
     methods:{
+        async finish(){
+            // const formData = new FormData();
+            // formData.append('selectedWorkoutSets', this.miniCardInfo);
+            // console.log('send request');
+            // const response = await axios.post('/api/plan', formData);
+            // console.log('get response');
+            // console.log(response);
+            // //TODO エラー処理
+
+            this.$router.push('finish');
+        }
     },
 }
 </script>
