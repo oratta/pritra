@@ -25,11 +25,48 @@ class WorkoutSetApiTest extends TestCase
         $this->user = factory(User::class)->create(["password" => Hash::make("secret")]);
     }
 
-    public function should_テストメッセージを返す()
+    /**
+     * @test
+     */
+    public function should_ユーザのリコメンドメニューとともにメニューの一覧を返す()
+    {
+        $this->notImplemented();
+    }
+
+    /**
+     * @test
+     */
+    public function should_プランを設定したらDBに保存する()
     {
         $response = $this->actingAs($this->user)
             ->json('post', route('workout_set.set_plan'));
         $response->assertStatus(Controller::HTTP_STATUS_CREATE);
+
+        $this->notImplemented();
+    }
+
+    /**
+     * @test
+     */
+    public function should_実行中のプランを表示する()
+    {
+        $this->notImplemented();
+    }
+
+    /**
+     * @test
+     */
+    public function should_実行したワークアウトをDBに保存する()
+    {
+        $this->notImplemented();
+    }
+
+    /*
+     * @test
+     */
+    public function should_最後に実行したワークアウトの情報を返す()
+    {
+        $this->notImplemented();
     }
 
     /**

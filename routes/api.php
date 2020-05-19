@@ -37,10 +37,10 @@ Route::get('workout_sets', 'WorkoutSetController@index');
 //Route::put('workout_sets');
 
 
-//メニューのプランニング画面
+//メニューのプランニング画面。すでにプランがあったらそっちを返す
 Route::get('menu', 'MenuController@showUserMenu')->name('show_user_menu');
 
-//プランの決定。すでにプランがあったらそっちを返す
+//プランの決定。
 Route::post('plan', 'WorkoutSetController@setPlan')->name('workout_set.set_plan');
 //プランを表示
 Route::get('plan', 'WorkoutSetController@showPlan')->name('workout_set.show_plan');

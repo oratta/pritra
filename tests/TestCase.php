@@ -30,4 +30,9 @@ abstract class TestCase extends BaseTestCase
             $this->seedingDatabase();
         }
     }
+
+    public function notImplemented()
+    {
+        $this->fail('not implemented');
+    }
 }
