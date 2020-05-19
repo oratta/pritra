@@ -25,7 +25,22 @@ class WorkoutSetController extends Controller
 
     public function setPlan(Request $request)
     {
-        return response("test", Controller::HTTP_STATUS_CREATE);
+        return $this->returnNotImplemented();
+    }
+
+    public function showPlan(Request $request)
+    {
+        return $this->returnNotImplemented();
+    }
+
+    public function add(Request $request)
+    {
+        return $this->returnNotImplemented();
+    }
+
+    public function showHistory(Request $request)
+    {
+        return $this->returnNotImplemented();
     }
 
     public function index(Request $request)

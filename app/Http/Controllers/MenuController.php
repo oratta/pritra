@@ -18,6 +18,11 @@ class MenuController extends Controller
         return view('menus.index', compact('menus'));
     }
 
+    public function indexUserMenu()
+    {
+        return $this->returnNotImplemented();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
