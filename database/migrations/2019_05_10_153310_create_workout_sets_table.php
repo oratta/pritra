@@ -24,6 +24,10 @@ class CreateWorkoutSetsTable extends Migration
             $table->unsignedSmallInteger("min_rep_count");
             $table->unsignedTinyInteger("set_count");
             $table->unsignedTinyInteger("level");
+            $table->unsignedSmallInteger("planed_min_rep_count");
+            $table->unsignedTinyInteger("planed_set_count");
+            $table->unsignedTinyInteger("planed_level");
+            $table->unsignedTinyInteger('is_plan');
             $table->unsignedSmallInteger("step_level")->index; // for search
             $table->timestamps();
         });
