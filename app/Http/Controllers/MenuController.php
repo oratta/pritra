@@ -7,6 +7,11 @@ use App\Model\Master\MenuMaster;
 
 class MenuController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +23,39 @@ class MenuController extends Controller
         return view('menus.index', compact('menus'));
     }
 
-    public function indexUserMenu()
+    /***
+     *  menu_s:[
+     *      1:{
+     *          name: Push Up
+     *          recommend:{
+     *              stepNumber: 1
+     *              reps: 20
+     *              set: 10
+     *          },
+     *          stepName_s:[
+     *              wall stand push up, ....,..., full push up
+     *          ],
+     *          stepInfo:{
+     *              levelInfo_l:[
+     *                  {
+     *                      name: half push up
+     *                      lv: [{rep:2, set:1},{},,,]
+     *                  }
+     *              ],
+     *              best: {
+     *                  name: Full Push Up
+     *                  lv: 2
+     *                  rep: 20
+     *                  set: 2
+     *                  date: 2012/02/23
+     *              },
+     *              recent: [{`same as best`}]
+     *          }
+     *      }
+     *      2:{...}...
+     * ]
+     */
+    public function indexUserMenu(Request $request)
     {
         return $this->returnNotImplemented();
     }

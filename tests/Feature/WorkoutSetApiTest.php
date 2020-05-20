@@ -25,12 +25,79 @@ class WorkoutSetApiTest extends TestCase
         $this->user = factory(User::class)->create(["password" => Hash::make("secret")]);
     }
 
+    private function __setWorkoutHistoryData()
+    {
+        $this->notImplemented();
+    }
+
     /**
      * @test
      */
     public function should_ユーザのリコメンドメニューとともにメニューの一覧を返す()
     {
-        $this->notImplemented();
+        /*
+         * fail if not login
+         */
+        $response = $this->json('get', route('show_user_menu'));
+        $response->assertStatus(Controller::HTTP_UNAUTHORIZED);
+
+
+        $this->__setWorkoutHistoryData();
+        $response = $this->actingAs($this->user)->json('get', route('show_user_menu'));
+        $response->assertStatus(Controller::HTTP_STATUS_OK);
+
+        /*
+         * ステップごとのレベルリストが返ってくる
+         * MenuMaster::getLevelInfo_l();
+         */
+        $expect = [
+            1 => [
+                'stepInfo' => [
+                    'levelInfo_l' => MenuMaster::getLevelInfo_l(),
+                ]
+            ]
+        ];
+        $response->assertJsonFragment($expect);
+
+        /*
+         * ベストの情報が返ってくる
+         */
+        $bestWorkout = $this->user->getBest(1);
+        $expect = [
+            1 => [
+                'stepInfo' => [
+                    'best' => $bestWorkout
+                ]
+            ]
+        ];
+        $response->assertJsonFragment($expect);
+
+        /*
+         * 最近のログが3つ返ってくる
+         */
+        $expect = [
+            1 => [
+                'stepInfo' => [
+                    'recent' => $this->user->getHistory(1)
+                ]
+            ]
+        ];
+        $response->assertJsonFragment($expect);
+
+        /*
+         * 一番最新+1Lvがおすすめとして返ってくる
+         */
+        $expect = [
+            1 => [
+                'recommend' => [
+                    'stepNumber' => $bestWorkout->stepNumber,
+                    'reps' => $bestWorkout->reps,
+                    'set' => $bestWorkout->set,
+                    'level' => $bestWorkout-level
+                ]
+            ]
+        ];
+        $response->assertJsonFragment($expect);
     }
 
     /**

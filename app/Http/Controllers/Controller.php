@@ -14,6 +14,7 @@ class Controller extends BaseController
     const HTTP_STATUS_CREATE = 201;
     const HTTP_STATUS_OK = 200;
     const HTTP_NOT_IMPLEMENTED = 501;
+    const HTTP_UNAUTHORIZED = 401;
 
     protected function returnNotImplemented()
     {
