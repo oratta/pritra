@@ -122,12 +122,12 @@ class WorkoutSetApiTest extends TestCase
          * データがおかしいときに400HTTP_STATUS_BAD_REQUESTを返す
          */
         //範囲外のメニューID
-        $this->__requestAndAssertHTTPStatus([0=> ['stepNumber'=>1,'rep'=>20,'set'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
-        $this->__requestAndAssertHTTPStatus([10=> ['stepNumber'=>1,'rep'=>20,'set'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus([0=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus([10=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
 
         //範囲外のstepNumber
-        $this->__requestAndAssertHTTPStatus([1=> ['stepNumber'=>0,'rep'=>20,'set'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
-        $this->__requestAndAssertHTTPStatus([1=> ['stepNumber'=>11,'rep'=>20,'set'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus([1=> ['stepId'=>0,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus([1=> ['stepId'=>11,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
 
         //データが空
         $this->__requestAndAssertHTTPStatus([], Controller::HTTP_STATUS_BAD_REQUEST);
@@ -138,14 +138,14 @@ class WorkoutSetApiTest extends TestCase
          */
         $data = [
             1 => [
-                'stepNumber'    => 1,
-                'rep'           => 20,
-                'set'           => 2
+                'stepId'    => 1,
+                'repCount'           => 20,
+                'setCount'           => 2
             ],
             5 => [
-                'stepNumber'    => 10,
-                'rep'           => 150,
-                'set'           => 3
+                'stepId'    => 10,
+                'repCount'           => 150,
+                'setCount'           => 3
             ],
         ];
         $response = $this->actingAs($this->user)
@@ -160,9 +160,9 @@ class WorkoutSetApiTest extends TestCase
         $this->assertEquals($data->size(), $plan->size());
         foreach([1,5] as $i){
             $this->assertEquals($i, $plan_l[$i]->menuId);
-            $this->assertEquals($data[$i]['stepNumber'], $plan[$i]->stepNumnber);
-            $this->assertEquals($data[$i]['rep'], $plan[$i]->rep);
-            $this->assertEquals($data[$i]['set'], $plan[$i]->set);
+            $this->assertEquals($data[$i]['stepId'], $plan[$i]->stepNumnber);
+            $this->assertEquals($data[$i]['repCount'], $plan[$i]->repCount);
+            $this->assertEquals($data[$i]['setCount'], $plan[$i]->setCount);
         }
 
     }

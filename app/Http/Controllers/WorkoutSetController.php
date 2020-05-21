@@ -79,13 +79,13 @@ class WorkoutSetController extends Controller
         $planInfo = $request->input();
         $workoutSet_l = [];
         foreach ($planInfo as $menuId => $workoutSetInfo){
-            $workoutSet = WorkoutSet::createPlanedWorkoutSet(
+            $workoutSet = $this->user->createPlanedWorkoutSet(
                 $menuId,
-                $planInfo['stepMasterId'],
-                $planInfo['repCount'],
-                $planInfo['setCount']
+                $workoutSetInfo['stepId'],
+                $workoutSetInfo['repCount'],
+                $workoutSetInfo['setCount']
             );
-            $workoutSet_l[menuId] = $workoutSet;
+            $workoutSet_l[$menuId] = $workoutSet;
         }
         return $workoutSet_l;
     }

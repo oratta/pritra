@@ -234,8 +234,8 @@ class WorkoutSet extends Model
         if ($isPlan){
             $columnPrefix = "planed_";
         }
-        if($this->step && $this->{$columnPrefix+"min_rep_count"} && $this->{$columnPrefix+"set_count"}){
-            $this->{$columnPrefix+"level"} = $this->step->getAchievedLevel($this->{$columnPrefix+min_rep_count}, $this->{$columnPrefix+set_count});
+        if($this->step && $this->{$columnPrefix . "min_rep_count"} && $this->{$columnPrefix . "set_count"}){
+            $this->{$columnPrefix . "level"} = $this->step->getAchievedLevel($this->{$columnPrefix . "min_rep_count"}, $this->{$columnPrefix . "set_count"});
             if (!$isPlan) $this->step_level = $this->min_step_master_id*100+$this->level;
             return true;
         }

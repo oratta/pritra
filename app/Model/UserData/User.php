@@ -49,4 +49,11 @@ class User extends Authenticatable
 
         return $recommendWorkoutSets;
     }
+
+    public function createPlanedWorkoutSet($menuMasterId,$stepMasterId, $planedRepCount, $planedSetCount)
+    {
+        $workoutSet = WorkoutSet::createPlanedWorkoutSet($menuMasterId,$stepMasterId, $planedRepCount, $planedSetCount);
+        $workoutSet->user_id = $this->id;
+        return $workoutSet;
+    }
 }
