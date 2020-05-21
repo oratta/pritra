@@ -173,6 +173,22 @@ class WorkoutSetApiTest extends TestCase
     public function should_実行中のプランを表示する()
     {
         $this->notImplemented();
+        /**
+         * ログインしていないと使えない
+         */
+
+        /**
+         * 不正なアクセスで400
+         */
+        //プランがない(実行済み)
+
+        /**
+         * 200を返す
+         */
+
+        /**
+         * dbのプランの情報をjsonで返す
+         */
     }
 
     /**
@@ -201,9 +217,29 @@ class WorkoutSetApiTest extends TestCase
     /*
      * @test
      */
-    public function should_最後に実行したワークアウトの情報を返す()
+    public function should_指定されたWorkoutSetの情報を返す()
     {
         $this->notImplemented();
+        /**
+         * ログインしていないと使えない
+         */
+        /**
+         * 不正なアクセスで400
+         */
+        //指定されたWorkoutSetがない
+        //指定されたWorkoutSetが自分のではない
+
+        /**
+         * 200を返す
+         */
+
+        /**
+         * 指定されたWorkoutSetのDataをJsonとして返している
+         */
+
+        /**
+         * workoutが保存されている
+         */
     }
 
     /**
