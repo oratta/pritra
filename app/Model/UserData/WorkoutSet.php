@@ -12,11 +12,6 @@ class WorkoutSet extends Model
     protected $guarded = ["id"];
     public $timestamps = true;
 
-//    protected $appends = [
-//        'start_time',
-//        'end_time'
-//    ];
-
     /**
      * @var Workout
      */
@@ -45,6 +40,7 @@ class WorkoutSet extends Model
 
         return $value;
     }
+
     private function setStartTime()
     {
         if($this->workouts->first() instanceof Workout && $this->workouts->first()->created_at){
@@ -76,6 +72,20 @@ class WorkoutSet extends Model
     {
         $this->relations['workouts'] = $workouts;
     }
+
+    public static function createPlanedWorkoutSet($menuMasterId,$stepMasterId, $planedRepCount, $planedSetCount)
+    {
+        $workoutSet = new WorkoutSet;
+        $workoutSet->menu_master_id = $menuMasterId;
+        $workoutSet->min_step_master_id = $stepMasterId;
+        $workoutSet->is_plan                = true;
+        $workoutSet->planed_min_rep_count   = $planedRepCount;
+        $workoutSet->planed_set_count       = $planedSetCount;
+        $workoutSet->setLevel(true);
+
+        return $workoutSet;
+    }
+
 
     /**
      * @param $userId
@@ -208,11 +218,14 @@ class WorkoutSet extends Model
     /**
      * @return bool if fail to set level property, it return false
      */
-    public function setLevel()
+    public function setLevel($isPlan=false)
     {
-        if($this->step && $this->min_rep_count && $this->set_count){
-            $this->level = $this->step->getAchievedLevel($this->min_rep_count, $this->set_count);
-            $this->step_level = $this->min_step_master_id*100+$this->level;
+        if ($isPlan){
+            $columnPrefix = "planed_";
+        }
+        if($this->step && $this->{$columnPrefix+"min_rep_count"} && $this->{$columnPrefix+"set_count"}){
+            $this->{$columnPrefix+"level"} = $this->step->getAchievedLevel($this->{$columnPrefix+min_rep_count}, $this->{$columnPrefix+set_count});
+            if (!$isPlan) $this->step_level = $this->min_step_master_id*100+$this->level;
             return true;
         }
         return false;

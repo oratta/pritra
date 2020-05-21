@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Model\UserData\WorkoutSet;
 
 class WorkoutSetController extends Controller
 {
@@ -23,9 +24,20 @@ class WorkoutSetController extends Controller
         });
     }
 
+    /***
+     * @param Request $request
+     *          [masterID => [
+     *              'stepNumber' => 1,
+     *              'repCount' => 20,
+     *              'setCount' = 2,
+     *          ],...]
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function setPlan(Request $request)
     {
-        return $this->returnNotImplemented();
+        $planedWorkoutSet_l = $this->__inputPlanWorkoutSet($request);
+        foreach ($planedWorkoutSet_l as $planedWorkoutSet) $planedWorkoutSet->save();
+        return response('plan create',Controller::HTTP_STATUS_CREATE);
     }
 
     public function showPlan(Request $request)
@@ -60,6 +72,22 @@ class WorkoutSetController extends Controller
 
     protected function indexRecommend(){
         return $this->user->getRecommendedWorkoutSets();
+    }
+
+    private function __inputPlanWorkoutSet($request)
+    {
+        $planInfo = $request->input();
+        $workoutSet_l = [];
+        foreach ($planInfo as $menuId => $workoutSetInfo){
+            $workoutSet = WorkoutSet::createPlanedWorkoutSet(
+                $menuId,
+                $planInfo['stepMasterId'],
+                $planInfo['repCount'],
+                $planInfo['setCount']
+            );
+            $workoutSet_l[menuId] = $workoutSet;
+        }
+        return $workoutSet_l;
     }
 
     private function __isRequestBestWorkoutSets(Request $request)
