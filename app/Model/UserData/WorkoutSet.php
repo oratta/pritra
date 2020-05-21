@@ -12,6 +12,17 @@ class WorkoutSet extends Model
     protected $guarded = ["id"];
     public $timestamps = true;
 
+    /*
+     * default value for eloquent
+     */
+    protected $attributes = [
+        'min_step_master_id'    => 0,
+        'min_rep_count'         => 0,
+        'set_count'             => 0,
+        'level'                 => 0,
+    ];
+
+
     /**
      * @var Workout
      */
