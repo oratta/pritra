@@ -39,7 +39,7 @@ class WorkoutSetApiTest extends TestCase
          * fail if not login
          */
         $response = $this->json('get', route('show_user_menu'));
-        $response->assertStatus(Controller::HTTP_UNAUTHORIZED);
+        $response->assertStatus(Controller::HTTP_STATUS_UNAUTHORIZED);
 
 
         $this->__setWorkoutHistoryData();
@@ -116,21 +116,21 @@ class WorkoutSetApiTest extends TestCase
          * ログインしていないと使えない
          */
         $response = $this->json('post', route('workout_set.set_plan'));
-        $response->assertStatus(Controller::HTTP_UNAUTHORIZED);
+        $response->assertStatus(Controller::HTTP_STATUS_UNAUTHORIZED);
 
         /*
-         * データがおかしいときに400HTTP_BAD_REQUESTを返す
+         * データがおかしいときに400HTTP_STATUS_BAD_REQUESTを返す
          */
         //範囲外のメニューID
-        $this->__requestAndAssertHTTPStatus([0=> ['stepNumber'=>1,'rep'=>20,'set'=>2]], Controller::HTTP_BAD_REQUEST);
-        $this->__requestAndAssertHTTPStatus([10=> ['stepNumber'=>1,'rep'=>20,'set'=>2]], Controller::HTTP_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus([0=> ['stepNumber'=>1,'rep'=>20,'set'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus([10=> ['stepNumber'=>1,'rep'=>20,'set'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
 
         //範囲外のstepNumber
-        $this->__requestAndAssertHTTPStatus([1=> ['stepNumber'=>0,'rep'=>20,'set'=>2]], Controller::HTTP_BAD_REQUEST);
-        $this->__requestAndAssertHTTPStatus([1=> ['stepNumber'=>11,'rep'=>20,'set'=>2]], Controller::HTTP_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus([1=> ['stepNumber'=>0,'rep'=>20,'set'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus([1=> ['stepNumber'=>11,'rep'=>20,'set'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
 
         //データが空
-        $this->__requestAndAssertHTTPStatus([], Controller::HTTP_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus([], Controller::HTTP_STATUS_BAD_REQUEST);
 
 
         /*

@@ -13,13 +13,13 @@ class Controller extends BaseController
 
     const HTTP_STATUS_CREATE = 201;
     const HTTP_STATUS_OK = 200;
-    const HTTP_NOT_IMPLEMENTED = 501;
-    const HTTP_UNAUTHORIZED = 401;
-    const HTTP_BAD_REQUEST = 400;
+    const HTTP_STATUS_NOT_IMPLEMENTED = 501;
+    const HTTP_STATUS_UNAUTHORIZED = 401;
+    const HTTP_STATUS_BAD_REQUEST = 400;
 
     protected function returnNotImplemented()
     {
-        return response("test",self::HTTP_NOT_IMPLEMENTED);
+        return response("test",self::HTTP_STATUS_NOT_IMPLEMENTED);
     }
 
 }
