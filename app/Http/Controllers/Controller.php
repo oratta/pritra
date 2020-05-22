@@ -11,11 +11,12 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    const HTTP_STATUS_CREATE = 201;
-    const HTTP_STATUS_OK = 200;
-    const HTTP_STATUS_NOT_IMPLEMENTED = 501;
-    const HTTP_STATUS_UNAUTHORIZED = 401;
-    const HTTP_STATUS_BAD_REQUEST = 400;
+    const HTTP_STATUS_OK                = 200;
+    const HTTP_STATUS_CREATE            = 201;
+    const HTTP_STATUS_NO_CONTENT        = 204;
+    const HTTP_STATUS_BAD_REQUEST       = 400;
+    const HTTP_STATUS_UNAUTHORIZED      = 401;
+    const HTTP_STATUS_NOT_IMPLEMENTED   = 501;
 
     protected function returnNotImplemented()
     {

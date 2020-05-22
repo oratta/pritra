@@ -100,11 +100,13 @@ class WorkoutSetApiTest extends TestCase
         $response->assertJsonFragment($expect);
     }
 
-    private function __requestAndAssertHTTPStatus($data, $expectedCode)
+    private function __requestAndAssertHTTPStatus($method, $routeName, $expectedCode, $data=[])
     {
         $response = $this->actingAs($this->user)
-            ->json('post', route('workout_set.set_plan'), $data);
+            ->json($method, route($routeName), $data);
         $response->assertStatus($expectedCode);
+
+        return $response;
     }
 
     /**
@@ -122,11 +124,20 @@ class WorkoutSetApiTest extends TestCase
          * データがおかしいときに400HTTP_STATUS_BAD_REQUESTを返す
          */
         //範囲外のメニューID
-        $this->__requestAndAssertHTTPStatus([0=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
-        $this->__requestAndAssertHTTPStatus([10=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus(
+            'post','workout_set.set_plan',
+            Controller::HTTP_STATUS_BAD_REQUEST,
+            [0=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]]);
+        $this->__requestAndAssertHTTPStatus(
+            'post','workout_set.set_plan',
+            Controller::HTTP_STATUS_BAD_REQUEST,
+            [10=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]]);
 
         //データが空
-        $this->__requestAndAssertHTTPStatus([], Controller::HTTP_STATUS_BAD_REQUEST);
+        $this->__requestAndAssertHTTPStatus(
+            'post','workout_set.set_plan',
+            Controller::HTTP_STATUS_BAD_REQUEST,
+            []);
 
 
         /*
@@ -162,6 +173,12 @@ class WorkoutSetApiTest extends TestCase
 
     }
 
+    private function __requestAndAssertLogin($method, $routeName)
+    {
+        $response = $this->json($method, route($routeName));
+        $response->assertStatus(Controller::HTTP_STATUS_UNAUTHORIZED);
+    }
+
     /**
      * @test
      */
@@ -171,19 +188,62 @@ class WorkoutSetApiTest extends TestCase
         /**
          * ログインしていないと使えない
          */
+        $this->__requestAndAssertLogin('get', 'workout_set.show_plan');
 
         /**
-         * 不正なアクセスで400
+         * 204を返す
          */
-        //プランがない(実行済み)
+        //実行中のプランが存在しない
+        $this->__requestAndAssertHTTPStatus(
+            'get', 'workout_set.show_plan',
+            Controller::HTTP_STATUS_NO_CONTENT
+        );
 
         /**
          * 200を返す
          */
+        //プランの作成
+        $masterId_a = 1;
+        $stepId_a   = 2;
+        $masterId_b = 2;
+        $stepId_b   = 2;
+        $data = [
+            $masterId_a => [
+                'stepId'    => $stepId_a,
+                'repCount'           => 20,
+                'setCount'           => 2
+            ],
+            $masterId_b => [
+                'stepId'    => $stepId_b,
+                'repCount'           => 150,
+                'setCount'           => 3
+            ],
+        ];
+        $this->actingAs($this->user)->json('post', route('workout_set.set_plan'), $data);
+
+        $response = $this->__requestAndAssertHTTPStatus(
+            'get', 'workout_set.show_plan',
+            Controller::HTTP_STATUS_OK
+        );
 
         /**
          * dbのプランの情報をjsonで返す
          */
+        $menu_l = MenuMaster::where(['id','in',[$masterId_a,$masterId_b]])->get()->keyBy('id');
+        $step_l = MenuMaster::where(['id','in',[$stepId_a, $stepId_b]])->get()->keyBy('id');
+        $expected = [];
+        foreach ([1,5] as $i){
+            $expected[$i] = [
+                1 => [
+                    'menuName' => $menu_l->get($i)->name,
+                    'stepName' => $step_l->get($i)->name,
+                    'stepImageUrl' => $step_l->getImageUrl(),
+                    'planedRepCount' => $data[$i]['repCount'],
+                    'planedSetCount' => $data[$i]['setCount'],
+                ],
+            ];
+        }
+        $response->assertJson($expected);
     }
 
     /**
