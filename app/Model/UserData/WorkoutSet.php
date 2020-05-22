@@ -87,11 +87,12 @@ class WorkoutSet extends Model
     public static function createPlanedWorkoutSet($menuMasterId,$stepMasterId, $planedRepCount, $planedSetCount)
     {
         $workoutSet = new WorkoutSet;
-        $workoutSet->menu_master_id = $menuMasterId;
-        $workoutSet->min_step_master_id = $stepMasterId;
+        $workoutSet->menu_master_id         = $menuMasterId;
+        $workoutSet->min_step_master_id     = $stepMasterId;
         $workoutSet->is_plan                = true;
         $workoutSet->planed_min_rep_count   = $planedRepCount;
         $workoutSet->planed_set_count       = $planedSetCount;
+        $workoutSet->step_level             = 0;
         $workoutSet->setLevel(true);
 
         return $workoutSet;
