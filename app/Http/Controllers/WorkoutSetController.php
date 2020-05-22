@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\BadRequestException;
+use App\Model\Master\MenuMaster;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -35,7 +37,13 @@ class WorkoutSetController extends Controller
      */
     public function setPlan(Request $request)
     {
-        $planedWorkoutSet_l = $this->__inputPlanWorkoutSet($request);
+        try{
+            $planedWorkoutSet_l = $this->__inputPlanWorkoutSet($request);
+        }
+        catch(BadRequestException $e) {
+            return abort($e->getCode(), $e->getMessage());
+        }
+
         foreach ($planedWorkoutSet_l as $planedWorkoutSet) $planedWorkoutSet->save();
         return response('plan create',Controller::HTTP_STATUS_CREATE);
     }
@@ -78,7 +86,9 @@ class WorkoutSetController extends Controller
     {
         $planInfo = $request->input();
         $workoutSet_l = [];
+        if (empty($planInfo)) throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
         foreach ($planInfo as $menuId => $workoutSetInfo){
+            if ($menuId <=0 or $menuId >= MenuMaster::MASTER_COUNT)throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
             $workoutSet = $this->user->createPlanedWorkoutSet(
                 $menuId,
                 $workoutSetInfo['stepId'],

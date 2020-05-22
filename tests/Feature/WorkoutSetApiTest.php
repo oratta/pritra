@@ -125,10 +125,6 @@ class WorkoutSetApiTest extends TestCase
         $this->__requestAndAssertHTTPStatus([0=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
         $this->__requestAndAssertHTTPStatus([10=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
 
-        //範囲外のstepNumber
-        $this->__requestAndAssertHTTPStatus([1=> ['stepId'=>0,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
-        $this->__requestAndAssertHTTPStatus([1=> ['stepId'=>11,'repCount'=>20,'setCount'=>2]], Controller::HTTP_STATUS_BAD_REQUEST);
-
         //データが空
         $this->__requestAndAssertHTTPStatus([], Controller::HTTP_STATUS_BAD_REQUEST);
 
@@ -149,20 +145,19 @@ class WorkoutSetApiTest extends TestCase
             ],
         ];
         $response = $this->actingAs($this->user)
-            ->json('post', route('workout_set.set_plan'));
+            ->json('post', route('workout_set.set_plan'), $data);
         $response->assertStatus(Controller::HTTP_STATUS_CREATE);
 
         /*
          * 設定したプランがisPlanのWorkoutSetとしてDBに保存されている
          */
-        $plan = WorkoutSet::findAll(['user_id'=>$this->user->id, 'is_plan'=>1]);
-        $plan_l = $this->user->getPlan();
-        $this->assertEquals($data->size(), $plan->size());
+        $plan_l = $this->user->getPlan_l();
+        $this->assertEquals(count($data), $plan_l->count());
         foreach([1,5] as $i){
-            $this->assertEquals($i, $plan_l[$i]->menuId);
-            $this->assertEquals($data[$i]['stepId'], $plan[$i]->stepNumnber);
-            $this->assertEquals($data[$i]['repCount'], $plan[$i]->repCount);
-            $this->assertEquals($data[$i]['setCount'], $plan[$i]->setCount);
+            $this->assertEquals($i, $plan_l->get($i)->menu_master_id);
+            $this->assertEquals($data[$i]['stepId'], $plan_l->get($i)->min_step_master_id);
+            $this->assertEquals($data[$i]['repCount'], $plan_l->get($i)->planed_min_rep_count);
+            $this->assertEquals($data[$i]['setCount'], $plan_l->get($i)->planed_set_count);
         }
 
     }

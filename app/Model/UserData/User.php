@@ -56,4 +56,10 @@ class User extends Authenticatable
         $workoutSet->user_id = $this->id;
         return $workoutSet;
     }
+
+    public function getPlan_l()
+    {
+        return WorkoutSet::where(['user_id'=>$this->id, 'is_plan'=>1])->
+                    get()->keyBy('menu_master_id');
+    }
 }
