@@ -38,7 +38,7 @@ class WorkoutSetController extends Controller
     public function setPlan(Request $request)
     {
         try{
-            $planedWorkoutSet_l = $this->__inputPlanWorkoutSet($request);
+            $planedWorkoutSet_l = $this->__inputSetPlan($request);
         }
         catch(BadRequestException $e) {
             return abort($e->getCode(), $e->getMessage());
@@ -82,7 +82,7 @@ class WorkoutSetController extends Controller
         return $this->user->getRecommendedWorkoutSets();
     }
 
-    private function __inputPlanWorkoutSet($request)
+    private function __inputSetPlan($request)
     {
         $planInfo = $request->input();
         $workoutSet_l = [];
