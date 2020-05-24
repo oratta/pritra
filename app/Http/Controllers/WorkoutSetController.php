@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Model\UserData\WorkoutSet;
+use Illuminate\Database\Eloquent\Collection;
 
 class WorkoutSetController extends Controller
 {
@@ -50,7 +51,27 @@ class WorkoutSetController extends Controller
 
     public function showPlan(Request $request)
     {
-        return $this->returnNotImplemented();
+        $planedWorkoutSet_l = $this->user->getPlan_l();
+        if ($planedWorkoutSet_l->count() === 0){
+            return abort(Controller::HTTP_STATUS_NO_CONTENT, "there is no plan");
+        }
+        else {
+            return $this->__getReturnShowPlan($planedWorkoutSet_l);
+        }
+    }
+
+    private function __getReturnShowPlan(Collection $planedWorkoutSet_l)
+    {
+        $return_l = [];
+        foreach( $planedWorkoutSet_l as $planedWorkoutSet){
+            $return_l[$planedWorkoutSet->menu_master_id] = [];
+            $return_l[$planedWorkoutSet->menu_master_id]['menuName'] = $planedWorkoutSet->menu->name;
+            $return_l[$planedWorkoutSet->menu_master_id]['stepName'] = $planedWorkoutSet->step->name;
+            $return_l[$planedWorkoutSet->menu_master_id]['stepImageUrl'] = $planedWorkoutSet->step->getImageUrl();
+            $return_l[$planedWorkoutSet->menu_master_id]['planedRepCount'] = $planedWorkoutSet->planed_min_rep_count;
+            $return_l[$planedWorkoutSet->menu_master_id]['planedSetCount'] = $planedWorkoutSet->planed_set_count;
+        }
+        return $return_l;
     }
 
     public function add(Request $request)

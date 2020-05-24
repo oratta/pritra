@@ -17,7 +17,7 @@ class StepMaster extends Model
         return $this->belongsTo('App\Model\Master\MenuMaster', 'menu_master_id');
     }
 
-    public function getImgUrl()
+    public function getImageUrl()
     {
         return "";
     }

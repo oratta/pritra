@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Http\Controllers\Controller;
 use App\Model\Master\MenuMaster;
+use App\Model\Master\StepMaster;
 use App\Model\UserData\User;
 use App\Model\UserData\WorkoutSet;
 use Illuminate\Support\Facades\Hash;
@@ -184,7 +185,6 @@ class WorkoutSetApiTest extends TestCase
      */
     public function should_実行中のプランを表示する()
     {
-        $this->notImplemented();
         /**
          * ログインしていないと使えない
          */
@@ -205,8 +205,8 @@ class WorkoutSetApiTest extends TestCase
         //プランの作成
         $masterId_a = 1;
         $stepId_a   = 2;
-        $masterId_b = 2;
-        $stepId_b   = 2;
+        $masterId_b = 5;
+        $stepId_b   = 42;
         $data = [
             $masterId_a => [
                 'stepId'    => $stepId_a,
@@ -229,18 +229,17 @@ class WorkoutSetApiTest extends TestCase
         /**
          * dbのプランの情報をjsonで返す
          */
-        $menu_l = MenuMaster::where(['id','in',[$masterId_a,$masterId_b]])->get()->keyBy('id');
-        $step_l = MenuMaster::where(['id','in',[$stepId_a, $stepId_b]])->get()->keyBy('id');
+        $menu_l = MenuMaster::whereIn('id',[$masterId_a,$masterId_b])->get()->keyBy('id');
+        $step_l = StepMaster::whereIn('id',[$stepId_a, $stepId_b])->get()->keyBy('id');
         $expected = [];
-        foreach ([1,5] as $i){
+        foreach ([$masterId_a,$masterId_b] as $i){
+            $stepId = $data[$i]['stepId'];
             $expected[$i] = [
-                1 => [
-                    'menuName' => $menu_l->get($i)->name,
-                    'stepName' => $step_l->get($i)->name,
-                    'stepImageUrl' => $step_l->getImageUrl(),
-                    'planedRepCount' => $data[$i]['repCount'],
-                    'planedSetCount' => $data[$i]['setCount'],
-                ],
+                'menuName' => $menu_l->get($i)->name,
+                'stepName' => $step_l->get($stepId)->name,
+                'stepImageUrl' => $step_l->get($stepId)->getImageUrl(),
+                'planedRepCount' => $data[$i]['repCount'],
+                'planedSetCount' => $data[$i]['setCount'],
             ];
         }
         $response->assertJson($expected);
