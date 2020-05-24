@@ -203,23 +203,12 @@ class WorkoutSetApiTest extends TestCase
          * 200を返す
          */
         //プランの作成
-        $masterId_a = 1;
-        $stepId_a   = 2;
-        $masterId_b = 5;
-        $stepId_b   = 42;
-        $data = [
-            $masterId_a => [
-                'stepId'    => $stepId_a,
-                'repCount'           => 20,
-                'setCount'           => 2
-            ],
-            $masterId_b => [
-                'stepId'    => $stepId_b,
-                'repCount'           => 150,
-                'setCount'           => 3
-            ],
+        //masterId => stepId
+        $idInfo = [
+            1 => 5,
+            2 => 42
         ];
-        $this->actingAs($this->user)->json('post', route('workout_set.set_plan'), $data);
+        $postData = $this->__createPlan($idInfo);
 
         $response = $this->__requestAndAssertHTTPStatus(
             'get', 'workout_set.show_plan',
@@ -229,21 +218,36 @@ class WorkoutSetApiTest extends TestCase
         /**
          * dbのプランの情報をjsonで返す
          */
-        $menu_l = MenuMaster::whereIn('id',[$masterId_a,$masterId_b])->get()->keyBy('id');
-        $step_l = StepMaster::whereIn('id',[$stepId_a, $stepId_b])->get()->keyBy('id');
+        $menu_l = MenuMaster::whereIn('id',array_keys($idInfo))->get()->keyBy('id');
+        $step_l = StepMaster::whereIn('id',$idInfo)->get()->keyBy('id');
         $expected = [];
-        foreach ([$masterId_a,$masterId_b] as $i){
-            $stepId = $data[$i]['stepId'];
-            $expected[$i] = [
-                'menuName' => $menu_l->get($i)->name,
+        foreach ($idInfo as $masterId => $stepId){
+            $expected[$masterId] = [
+                'menuName' => $menu_l->get($masterId)->name,
                 'stepName' => $step_l->get($stepId)->name,
                 'stepImageUrl' => $step_l->get($stepId)->getImageUrl(),
-                'planedRepCount' => $data[$i]['repCount'],
-                'planedSetCount' => $data[$i]['setCount'],
+                'planedRepCount' => $postData[$masterId]['repCount'],
+                'planedSetCount' => $postData[$masterId]['setCount'],
             ];
         }
         $response->assertJson($expected);
     }
+
+    private function __createPlan(array $idInfo)
+    {
+        $postData = [];
+        foreach($idInfo as $masterId => $stepId){
+            $postData[$masterId] = [
+                'stepId'    => $stepId,
+                'repCount'           => 20*$stepId,
+                'setCount'           => 2*$masterId
+            ];
+        }
+        $this->actingAs($this->user)->json('post', route('workout_set.set_plan'), $postData);
+
+        return $postData;
+    }
+
 
     /**
      * @test
