@@ -206,7 +206,7 @@ class WorkoutSetApiTest extends TestCase
         //masterId => stepId
         $idInfo = [
             1 => 5,
-            2 => 42
+            5 => 42
         ];
         $postData = $this->__createPlan($idInfo);
 
@@ -252,24 +252,81 @@ class WorkoutSetApiTest extends TestCase
     /**
      * @test
      */
-    public function should_実行したワークアウトをDBに保存する()
+    public function should_実行したワークアウトをDBに保存する_workout_set_add()
     {
-        $this->notImplemented();
         /**
          * ログインしていないと使えない
          */
+        $this->__requestAndAssertLogin('post', 'workout_set.add');
+
         /**
-         * 不正なアクセスで400
+         * 400を返す
          */
-        /**
-         * 201を返す
-         */
+        //指定したworkout_setが存在しない
+        $this->__requestAndAssertHTTPStatus(
+            'post', 'workout_set.add',
+            Controller::HTTP_STATUS_BAD_REQUEST,
+            [3,5,7,8]
+        );
+        //WorkoutSetのIDが存在しない
+
+        //プランの作成
+        //masterId => stepId
+        $idInfo = [
+            1 => 5,
+            5 => 42
+        ];
+        $postData = $this->__createPlan($idInfo);
+        $responseShowPlan = $this->__requestAndAssertHTTPStatus(
+            'get', 'workout_set.show_plan',
+            Controller::HTTP_STATUS_OK
+        );
+
+        $planedWorkoutSet_l = WorkoutSet::where('user_id', $this->user)->get()->keyBy('id');
+        $this->assertEquals(count($idInfo), $planedWorkoutSet_l->count());
+
         /**
          * plan中のworkoutSetが実行後のデータになっている
          */
+        $workoutSetId_l = $planedWorkoutSet_l->pluck('id');
+        $workoutExecuteData = [];
+        foreach ($workoutSetId_l as $workoutSetId){
+            $workoutExecuteData[$workoutSetId] = [];
+            $setCount = mt_rand(1,5);
+            for($i=0;$i<$setCount;$i++){
+                $workoutExecuteData[$workoutSetId][] = [
+                    'repCount' => mt_rand(0,20),
+                    'difficultyType' => mt_rand(1, count(config::get('pritra.DIFFICULTY_LIST'))),
+                ];
+            }
+        }
+        $responseAdd = $this->__requestAndAssertHttpStatus(
+            'get', 'workout_set.add',
+            Controller::HTTP_STATUS_CREATE,
+            $workoutExecuteData
+        );
+
+        $excusedWorkoutSet_l = WorkoutSet::where('user_id', $this->user)->get()->keyBy('id');
+        $this->assertEquals($planedWorkoutSet_l->count(), $excusedWorkoutSet_l->count());
+        foreach ($excusedWorkoutSet_l as $id => $workoutSet){
+            $workoutData =  collection($workoutExecuteData[$id]);
+            $minRepCount = $workoutData->min('repCount');
+            $stepCount = $workoutData->count();
+            $this->assertFalse($workoutSet->isPlan());
+            $this->assertEquals($minRepCount,$workoutSet->min_rep_count);
+            $this->assertEquals($stepCount,$workoutSet->set_count);
+        }
+
         /**
-         * workoutが保存されている
+         * 400
+         * workoutIDは存在するが、すでに実行済みである
          */
+        $responseAdd = $this->__requestAndAssertHttpStatus(
+            'get', 'workout_set.add',
+            Controller::HTTP_STATUS_BAD_REQUEST,
+            $workoutExecuteData
+        );
+
     }
 
     /*
