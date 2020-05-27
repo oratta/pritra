@@ -74,9 +74,36 @@ class WorkoutSetController extends Controller
         return $return_l;
     }
 
+    /***
+     * @param Request $request
+     * [
+     *      workoutSetId => [
+     *          [
+     *              'repCount' => 20,
+     *              'difficultyType' => 2,
+     *          ],
+     *          ...
+     *      ],
+     *      ...
+     * ]
+     */
     public function add(Request $request)
     {
-        return $this->returnNotImplemented();
+        $executeWorkoutInfo_l = $request->input();
+        $workoutSetId_l = array_keys($executeWorkoutInfo_l);
+        $workoutSet_l = WorkoutSet::whereIn('id', $workoutSetId_l)->get()->keyBy('id');
+        if ($workoutSet_l->count()!==count($workoutSetId_l)){
+            return abort(Controller::HTTP_STATUS_BAD_REQUEST, "bad request");
+        }
+        $minRepCount = PHP_INT_MAX;
+        foreach ($workoutSet_l as $id => $workoutSet){
+            if ($workoutSet->user_id !== $this->user->id){
+                return abort(Controller::HTTP_STATUS_BAD_REQUEST, "bad request");
+            }
+            $workoutSet->addWorkout($executeWorkoutInfo_l[$id]);
+            $workoutSet->save();
+        }
+        return response('workouts add and fix a workout set',Controller::HTTP_STATUS_CREATE);
     }
 
     public function showHistory(Request $request)

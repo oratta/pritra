@@ -260,15 +260,13 @@ class WorkoutSetApiTest extends TestCase
         $this->__requestAndAssertLogin('post', 'workout_set.add');
 
         /**
-         * 400を返す
+         * 400 指定したworkout_setが存在しない
          */
-        //指定したworkout_setが存在しない
         $this->__requestAndAssertHTTPStatus(
             'post', 'workout_set.add',
             Controller::HTTP_STATUS_BAD_REQUEST,
-            [3,5,7,8]
+            [100=>[[3,1],[5,2]]]
         );
-        //WorkoutSetのIDが存在しない
 
         //プランの作成
         //masterId => stepId
@@ -285,9 +283,6 @@ class WorkoutSetApiTest extends TestCase
         $planedWorkoutSet_l = WorkoutSet::where('user_id', $this->user)->get()->keyBy('id');
         $this->assertEquals(count($idInfo), $planedWorkoutSet_l->count());
 
-        /**
-         * plan中のworkoutSetが実行後のデータになっている
-         */
         $workoutSetId_l = $planedWorkoutSet_l->pluck('id');
         $workoutExecuteData = [];
         foreach ($workoutSetId_l as $workoutSetId){
@@ -300,12 +295,28 @@ class WorkoutSetApiTest extends TestCase
                 ];
             }
         }
+
+        /*
+         * 400 WorkoutSetのIDが自分のものでない
+         */
+        $planedWorkoutSet_l->first()->user_id += 1;
+        $planedWorkoutSet_l->first()->save();
         $responseAdd = $this->__requestAndAssertHttpStatus(
             'get', 'workout_set.add',
             Controller::HTTP_STATUS_CREATE,
             $workoutExecuteData
         );
 
+        /**
+         * 202 plan中のworkoutSetが実行後のデータになっている
+         */
+        $planedWorkoutSet_l->first()->user_id -= 1;
+        $planedWorkoutSet_l->first()->save();
+        $responseAdd = $this->__requestAndAssertHttpStatus(
+            'get', 'workout_set.add',
+            Controller::HTTP_STATUS_CREATE,
+            $workoutExecuteData
+        );
         $excusedWorkoutSet_l = WorkoutSet::where('user_id', $this->user)->get()->keyBy('id');
         $this->assertEquals($planedWorkoutSet_l->count(), $excusedWorkoutSet_l->count());
         foreach ($excusedWorkoutSet_l as $id => $workoutSet){
