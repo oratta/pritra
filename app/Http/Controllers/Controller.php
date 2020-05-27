@@ -6,6 +6,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Log;
 
 class Controller extends BaseController
 {
@@ -20,6 +21,7 @@ class Controller extends BaseController
 
     protected function returnNotImplemented()
     {
+        Log::alert('not Implemented');
         return response("test",self::HTTP_STATUS_NOT_IMPLEMENTED);
     }
 
