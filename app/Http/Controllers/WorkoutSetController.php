@@ -45,7 +45,9 @@ class WorkoutSetController extends Controller
             return abort($e->getCode(), $e->getMessage());
         }
 
-        foreach ($planedWorkoutSet_l as $planedWorkoutSet) $planedWorkoutSet->save();
+        foreach ($planedWorkoutSet_l as $planedWorkoutSet){
+            $planedWorkoutSet->save();
+        }
         return response('plan create',Controller::HTTP_STATUS_CREATE);
     }
 
@@ -100,7 +102,11 @@ class WorkoutSetController extends Controller
             if ($workoutSet->user_id !== $this->user->id){
                 return abort(Controller::HTTP_STATUS_BAD_REQUEST, "bad request");
             }
-            $workoutSet->addWorkout($executeWorkoutInfo_l[$id]);
+            else if($workoutSet->is_plan !== 1){
+                return abort(Controller::HTTP_STATUS_BAD_REQUEST, "this workout already done");
+            }
+            $workoutSet->addWorkoutBulk($executeWorkoutInfo_l[$id]);
+            $workoutSet->is_plan = false;
             $workoutSet->save();
         }
         return response('workouts add and fix a workout set',Controller::HTTP_STATUS_CREATE);

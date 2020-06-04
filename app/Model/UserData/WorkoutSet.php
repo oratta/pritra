@@ -22,6 +22,10 @@ class WorkoutSet extends Model
         'level'                 => 0,
     ];
 
+    protected $casts = [
+        'user_id'       => 'int',
+        'is_plan'       => 'int',
+    ];
 
     /**
      * @var Workout
@@ -213,6 +217,24 @@ class WorkoutSet extends Model
         $this->setWorkoutSetInfo();
     }
 
+    public function addWorkoutBulk(array $workoutInfo_l)
+    {
+        $minCount = PHP_INT_MAX;
+        $workoutList = $this->workouts;
+        foreach ($workoutInfo_l as $workoutInfo){
+            $workout = new Workout();
+            $workout->workout_set_id    = $this->id;
+            $workout->user_id           = $this->user_id;
+            $workout->menu_master_id    = $this->menu_master_id;
+            $workout->step_master_id    = $this->min_step_master_id;
+            $workout->count             = $workoutInfo['repCount'];
+            $workout->difficulty_type   = $workoutInfo['difficultyType'];
+            $workoutList->add($workout);
+        }
+        $this->workouts = $workoutList;
+        $this->setWorkoutSetInfo();
+    }
+
     /***********************************
      * ここから移植
      ***********************************/
@@ -234,6 +256,8 @@ class WorkoutSet extends Model
     {
         if ($isPlan){
             $columnPrefix = "planed_";
+        }else {
+            $columnPrefix = "";
         }
         if($this->step && $this->{$columnPrefix . "min_rep_count"} && $this->{$columnPrefix . "set_count"}){
             $this->{$columnPrefix . "level"} = $this->step->getAchievedLevel($this->{$columnPrefix . "min_rep_count"}, $this->{$columnPrefix . "set_count"});
@@ -309,6 +333,16 @@ class WorkoutSet extends Model
             else{
                 return 0;
             }
+        }
+    }
+
+    public function isPlan()
+    {
+        if($this->is_plan){
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

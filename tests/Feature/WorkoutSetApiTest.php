@@ -275,12 +275,8 @@ class WorkoutSetApiTest extends TestCase
             5 => 42
         ];
         $postData = $this->__createPlan($idInfo);
-        $responseShowPlan = $this->__requestAndAssertHTTPStatus(
-            'get', 'workout_set.show_plan',
-            Controller::HTTP_STATUS_OK
-        );
 
-        $planedWorkoutSet_l = WorkoutSet::where('user_id', $this->user)->get()->keyBy('id');
+        $planedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
         $this->assertEquals(count($idInfo), $planedWorkoutSet_l->count());
 
         $workoutSetId_l = $planedWorkoutSet_l->pluck('id');
@@ -291,7 +287,7 @@ class WorkoutSetApiTest extends TestCase
             for($i=0;$i<$setCount;$i++){
                 $workoutExecuteData[$workoutSetId][] = [
                     'repCount' => mt_rand(0,20),
-                    'difficultyType' => mt_rand(1, count(config::get('pritra.DIFFICULTY_LIST'))),
+                    'difficultyType' => mt_rand(1, count(config('pritra.DIFFICULTY_LIST'))),
                 ];
             }
         }
@@ -302,25 +298,25 @@ class WorkoutSetApiTest extends TestCase
         $planedWorkoutSet_l->first()->user_id += 1;
         $planedWorkoutSet_l->first()->save();
         $responseAdd = $this->__requestAndAssertHttpStatus(
-            'get', 'workout_set.add',
-            Controller::HTTP_STATUS_CREATE,
+            'post', 'workout_set.add',
+            Controller::HTTP_STATUS_BAD_REQUEST,
             $workoutExecuteData
         );
 
         /**
-         * 202 plan中のworkoutSetが実行後のデータになっている
+         * 201 plan中のworkoutSetが実行後のデータになっている
          */
         $planedWorkoutSet_l->first()->user_id -= 1;
         $planedWorkoutSet_l->first()->save();
         $responseAdd = $this->__requestAndAssertHttpStatus(
-            'get', 'workout_set.add',
+            'post', 'workout_set.add',
             Controller::HTTP_STATUS_CREATE,
             $workoutExecuteData
         );
-        $excusedWorkoutSet_l = WorkoutSet::where('user_id', $this->user)->get()->keyBy('id');
+        $excusedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
         $this->assertEquals($planedWorkoutSet_l->count(), $excusedWorkoutSet_l->count());
         foreach ($excusedWorkoutSet_l as $id => $workoutSet){
-            $workoutData =  collection($workoutExecuteData[$id]);
+            $workoutData =  collect($workoutExecuteData[$id]);
             $minRepCount = $workoutData->min('repCount');
             $stepCount = $workoutData->count();
             $this->assertFalse($workoutSet->isPlan());
@@ -333,7 +329,7 @@ class WorkoutSetApiTest extends TestCase
          * workoutIDは存在するが、すでに実行済みである
          */
         $responseAdd = $this->__requestAndAssertHttpStatus(
-            'get', 'workout_set.add',
+            'post', 'workout_set.add',
             Controller::HTTP_STATUS_BAD_REQUEST,
             $workoutExecuteData
         );
