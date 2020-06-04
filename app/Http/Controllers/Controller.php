@@ -19,9 +19,13 @@ class Controller extends BaseController
     const HTTP_STATUS_UNAUTHORIZED      = 401;
     const HTTP_STATUS_NOT_IMPLEMENTED   = 501;
 
-    protected function returnNotImplemented()
+    protected function responseNotImplemented()
     {
-        Log::alert('not Implemented');
+        $trace = debug_backtrace();
+        $class = get_called_class();
+        $method = $trace[1]['function'];
+        $where = "$method@$class";
+        Log::debug("not Implemented at $where");
         return response("test",self::HTTP_STATUS_NOT_IMPLEMENTED);
     }
 

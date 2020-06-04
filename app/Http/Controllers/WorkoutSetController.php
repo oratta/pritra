@@ -108,7 +108,7 @@ class WorkoutSetController extends Controller
 
     public function showHistory(Request $request)
     {
-        return $this->returnNotImplemented();
+        return $this->responseNotImplemented();
     }
 
     public function index(Request $request)
