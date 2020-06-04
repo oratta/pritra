@@ -2,7 +2,7 @@
 
 namespace App\Logging;
 
-class fCustomizeFormatter
+class CustomizeFormatter
 {
     /**
      * 渡されたロガーインスタンスのカスタマイズ
