@@ -26,11 +26,6 @@ class WorkoutSetApiTest extends TestCase
         $this->user = factory(User::class)->create(["password" => Hash::make("secret")]);
     }
 
-    private function __setWorkoutHistoryData()
-    {
-        $this->notImplemented();
-    }
-
     /**
      * @test
      */
@@ -39,13 +34,32 @@ class WorkoutSetApiTest extends TestCase
         /*
          * fail if not login
          */
-        $response = $this->json('get', route('show_user_menu'));
-        $response->assertStatus(Controller::HTTP_STATUS_UNAUTHORIZED);
+        $this->__requestAndAssertLogin("get", "show_user_menu");
 
+        //planの作成
+        $idInfo = [
+            1 => 5,
+            5 => 42
+        ];
+        $postData = $this->__createPlan($idInfo);
 
-        $this->__setWorkoutHistoryData();
-        $response = $this->actingAs($this->user)->json('get', route('show_user_menu'));
-        $response->assertStatus(Controller::HTTP_STATUS_OK);
+        /**
+         * 異常系 : プランがある場合はエラーを返す
+         */
+        $response = $this->__requestAndAssertHTTPStatus(
+            'get', 'show_user_menu',
+            Controller::HTTP_STATUS_BAD_REQUEST
+        );
+
+        $this->__addWorkoutSet();
+
+        /**
+         * 正常系 : 200を返す
+         */
+        $response = $this->__requestAndAssertHTTPStatus(
+            'get', 'show_user_menu',
+            Controller::HTTP_STATUS_OK
+        );
 
         /*
          * ステップごとのレベルリストが返ってくる
@@ -246,6 +260,31 @@ class WorkoutSetApiTest extends TestCase
         $this->actingAs($this->user)->json('post', route('workout_set.set_plan'), $postData);
 
         return $postData;
+    }
+
+    private function __addWorkoutSet()
+    {
+        $planedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
+        $workoutSetId_l = $planedWorkoutSet_l->pluck('id');
+        $workoutExecuteData = [];
+        foreach ($workoutSetId_l as $workoutSetId){
+            $workoutExecuteData[$workoutSetId] = [];
+            $setCount = mt_rand(1,5);
+            for($i=0;$i<$setCount;$i++){
+                $workoutExecuteData[$workoutSetId][] = [
+                    'repCount' => mt_rand(0,20),
+                    'difficultyType' => mt_rand(1, count(config('pritra.DIFFICULTY_LIST'))),
+                ];
+            }
+        }
+
+        $responseAdd = $this->__requestAndAssertHttpStatus(
+            'post', 'workout_set.add',
+            Controller::HTTP_STATUS_CREATE,
+            $workoutExecuteData
+        );
+
+        return $workoutExecuteData;
     }
 
 

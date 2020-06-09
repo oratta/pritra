@@ -40,7 +40,7 @@ class MenuController extends Controller
      *                  {
      *                      name: half push up
      *                      lv: [{rep:2, set:1},{},,,]
-     *                  }
+     *                  }, * number of steps
      *              ],
      *              best: {
      *                  name: Full Push Up
@@ -49,7 +49,9 @@ class MenuController extends Controller
      *                  set: 2
      *                  date: 2012/02/23
      *              },
-     *              recent: [{`same as best`}]
+     *              recent: [
+     *                  { same as best }, *3
+     *              ]
      *          }
      *      }
      *      2:{...}...
@@ -57,7 +59,27 @@ class MenuController extends Controller
      */
     public function indexUserMenu(Request $request)
     {
-        return $this->returnNotImplemented();
+        $menuInfo_l = [];
+        $menu_l = MenuMaster::get()->keyBy('id');
+        $recommendedWorkoutSet_l = $this->user->getRecommendedWorkoutSets();
+        $bestWorkoutSet_l = $this->user->getBestWorkoutSet_l();
+        $recentWorkoutSet_l = $this->user->getRecentWorkoutSet_l(3);
+        $levelInfo_l = Step::getLevelInfo_l();
+        foreach ($menu_l as $menuId => $menu){
+            $menuInfo_l[$menuId]['name'] = $menu->name;
+            $menuInfo_l[$menuId]['recommend'] = [];
+            $menuInfo_l[$menuId]['recommend']['stepNumber'] = $recommendedWorkoutSet_l[$menuId]['stepNumber'];
+            $menuInfo_l[$menuId]['recommend']['reps'] = $recommendedWorkoutSet_l[$menuId]['reps'];
+            $menuInfo_l[$menuId]['recommend']['set'] = $recommendedWorkoutSet_l[$menuId]['set'];
+            $menuInfo_l[$menuId]['stepName_l'] = $menu->steps->pluck('name');
+            $stepInfo = [];
+            $stepInfo['best'] = $bestWorkoutSet_l[$menuId];
+            $stepInfo['recent'] = $recentWorkoutSet_l[$menuId];
+            $stepInfo['levelInfo_l'] = $levelInfo_l[$menuId];
+            $menuInfo_l[$menuId]['stepInfo'] = $stepInfo;
+        }
+
+        return $menuInfo_l;
     }
 
     /**
