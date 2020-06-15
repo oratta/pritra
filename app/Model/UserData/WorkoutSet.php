@@ -135,6 +135,24 @@ class WorkoutSet extends Model
         return collect($bestLogList);
     }
 
+    static public function getRecentWorkoutSetList($userId, $limit=1)
+    {
+        $recent_l = [];
+        for ($menuId = 1; $menuId <= config('pritra.MENU_COUNT'); ++$menuId) {
+            $recent_l[$menuId] = static::getRecentWorkoutSet($userId, $menuId, $limit);
+        }
+        return collect($recent_l);
+    }
+
+    static private function getRecentWorkoutSet($userId, $menuId, $limit=1)
+    {
+        $workoutSet_l = WorkoutSet::where('user_id', '=', $userId)
+            ->where('menu_master_id', '=', $menuId)
+            ->limit($limit)
+            ->get();
+        return $workoutSet_l;
+    }
+
 
 
     public function setWorkoutSetInfo(){

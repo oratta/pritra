@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\Master\MenuMaster;
+use App\Model\Master\StepMaster as Step;
+use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function($request, $next){
+            $this->user = Auth::user();
+            return $next($request);
+        });
     }
 
     /**
@@ -38,6 +44,7 @@ class MenuController extends Controller
      *          stepInfo:{
      *              levelInfo_l:[
      *                  {
+     *                      id: stepId
      *                      name: half push up
      *                      lv: [{rep:2, set:1},{},,,]
      *                  }, * number of steps
@@ -59,12 +66,16 @@ class MenuController extends Controller
      */
     public function indexUserMenu(Request $request)
     {
+        if($this->user->hasPlan()){
+            return abort(Controller::HTTP_STATUS_BAD_REQUEST, "he or she has a plan");
+        }
+
         $menuInfo_l = [];
         $menu_l = MenuMaster::get()->keyBy('id');
         $recommendedWorkoutSet_l = $this->user->getRecommendedWorkoutSets();
-        $bestWorkoutSet_l = $this->user->getBestWorkoutSet_l();
+        $bestWorkoutSet_l = $this->user->getBestWorkoutSets();
         $recentWorkoutSet_l = $this->user->getRecentWorkoutSet_l(3);
-        $levelInfo_l = Step::getLevelInfo_l();
+        $levelInfo_l = Step::getLevelInfo_l_l();
         foreach ($menu_l as $menuId => $menu){
             $menuInfo_l[$menuId]['name'] = $menu->name;
             $menuInfo_l[$menuId]['recommend'] = [];

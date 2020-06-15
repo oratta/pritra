@@ -68,24 +68,25 @@ class WorkoutSetApiTest extends TestCase
         $expect = [
             1 => [
                 'stepInfo' => [
-                    'levelInfo_l' => MenuMaster::getLevelInfo_l(),
+                    'levelInfo_l' => StepMaster::getLevelInfo_l(1),
                 ]
             ]
         ];
-        $response->assertJsonFragment($expect);
+        $response->assertJson($expect);
 
         /*
          * ベストの情報が返ってくる
          */
-        $bestWorkout = $this->user->getBest(1);
+        $bestWorkout = $this->user->getBestWorkoutSet(1);
+        $bestWorkoutArray = $bestWorkout->toArray();
         $expect = [
             1 => [
                 'stepInfo' => [
-                    'best' => $bestWorkout
+                    'best' => $bestWorkoutArray
                 ]
             ]
         ];
-        $response->assertJsonFragment($expect);
+        $response->assertJson($expect);
 
         /*
          * 最近のログが3つ返ってくる
@@ -93,11 +94,11 @@ class WorkoutSetApiTest extends TestCase
         $expect = [
             1 => [
                 'stepInfo' => [
-                    'recent' => $this->user->getHistory(1)
+                    'recent' => $this->user->getRecentWorkoutSet_l(3)->toArray()[1],
                 ]
             ]
         ];
-        $response->assertJsonFragment($expect);
+        $response->assertJson($expect);
 
         /*
          * 一番最新+1Lvがおすすめとして返ってくる
@@ -108,11 +109,11 @@ class WorkoutSetApiTest extends TestCase
                     'stepNumber' => $bestWorkout->stepNumber,
                     'reps' => $bestWorkout->reps,
                     'set' => $bestWorkout->set,
-                    'level' => $bestWorkout-level
+//                    'level' => $bestWorkout->level + 1
                 ]
             ]
         ];
-        $response->assertJsonFragment($expect);
+        $response->assertJson($expect);
     }
 
     private function __requestAndAssertHTTPStatus($method, $routeName, $expectedCode, $data=[])
