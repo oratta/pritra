@@ -6,7 +6,6 @@ use App\Exceptions\BadRequestException;
 use App\Model\Master\MenuMaster;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use App\Model\UserData\WorkoutSet;
 use Illuminate\Database\Eloquent\Collection;
 
