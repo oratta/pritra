@@ -36,6 +36,8 @@
 
 <script>
 import MenuCard from '../components/MenuCard.vue'
+import { OK } from '../util'
+
 export default {
     components: {
         MenuCard
@@ -96,6 +98,15 @@ export default {
         }
     },
     methods:{
+        async fetchMenuInfo_l () {
+            const response = await axios.get("/api/menu");
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status)
+                return false
+            }
+            this.menuCardInfo = response.data.data;
+        },
+
         setMenu: function(menuId, selectedWorkoutSet){
             this.isShowCart = true;
             this.addFlags[menuId] = true;
@@ -126,6 +137,14 @@ export default {
             //TODO エラー処理
 
             this.$router.push('run');
+        },
+    },
+    watch: {
+        $route: {
+            async handler () {
+                await this.fetchMenuInfo_l()
+            },
+            immediate: true
         }
     },
 }

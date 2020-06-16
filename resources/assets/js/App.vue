@@ -21,6 +21,8 @@
 
 <script>
     import {mapState} from 'vuex';
+    import { INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } from "./util";
+
 
     export default {
         data(){
@@ -28,11 +30,14 @@
             }
         },
         computed: {
-            isLogin() {
+            isLogin: function() {
                 return this.$store.getters['auth/check'];
             },
-            userName(){
+            userName: function(){
                 return this.$store.getters['auth/username'];
+            },
+            errorCode: function(){
+                return this.$store.state.error.code
             },
             ...mapState({
                apiStatus: state => state.auth.apiStatus,
@@ -45,6 +50,29 @@
                 if (this.apiStatus) {
                     this.$router.push('/login');
                 }
+            }
+        },
+        watch: {
+            errorCode: {
+                async handler (val) {
+                    if (val === INTERNAL_SERVER_ERROR) {
+                        this.$router.push('/500')
+                    } else if (val === UNAUTHORIZED) {
+                        // トークンをリフレッシュ
+                        await axios.get('/api/refresh-token')
+                        // ストアのuserをクリア
+                        this.$store.commit('auth/setUser', null)
+                        // ログイン画面へ
+                        this.$router.push('/login')
+                    } else if (val === NOT_FOUND){
+                        this.$router.push('/not-found')
+                    }
+                },
+                immediate: true
+            },
+            $route () {
+                this.$store.commit('error/setCode', null)
+                this.$store.commit('error/setMessage', null)
             }
         }
     };
