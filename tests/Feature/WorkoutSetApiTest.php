@@ -66,9 +66,13 @@ class WorkoutSetApiTest extends TestCase
          * MenuMaster::getLevelInfo_l();
          */
         $expect = [
-            1 => [
-                'stepInfo' => [
-                    'levelInfo_l' => StepMaster::getLevelInfo_l(1),
+            "data" => [
+                1 => [
+                    'step_l' => [
+                        1 => [
+                            'levelInfo' => StepMaster::getLevelInfo_l(1)[1],
+                        ]
+                    ]
                 ]
             ]
         ];
@@ -80,9 +84,11 @@ class WorkoutSetApiTest extends TestCase
         $bestWorkout = $this->user->getBestWorkoutSet(1);
         $bestWorkoutArray = $bestWorkout->toArray();
         $expect = [
-            1 => [
-                'stepInfo' => [
-                    'best' => $bestWorkoutArray
+            'data' => [
+                1 => [
+                    'historyInfo' => [
+                        'best' => $bestWorkoutArray
+                    ]
                 ]
             ]
         ];
@@ -92,9 +98,11 @@ class WorkoutSetApiTest extends TestCase
          * 最近のログが3つ返ってくる
          */
         $expect = [
-            1 => [
-                'stepInfo' => [
-                    'recent' => $this->user->getRecentWorkoutSet_l(3)->toArray()[1],
+            "data" => [
+                1 => [
+                    'historyInfo' => [
+                        'recent' => $this->user->getRecentWorkoutSet_l(3)->toArray()[1],
+                    ]
                 ]
             ]
         ];
@@ -103,13 +111,16 @@ class WorkoutSetApiTest extends TestCase
         /*
          * 一番最新+1Lvがおすすめとして返ってくる
          */
+        $recommendWorkoutSet = $bestWorkout->getNextLevel();
         $expect = [
-            1 => [
-                'recommend' => [
-                    'stepNumber' => $bestWorkout->stepNumber,
-                    'reps' => $bestWorkout->reps,
-                    'set' => $bestWorkout->set,
-//                    'level' => $bestWorkout->level + 1
+            "data" => [
+                1 => [
+                    'recommend' => [
+                        'name' => $recommendWorkoutSet->step->getViewName(),
+                        'id' => $recommendWorkoutSet->step->id,
+                        'reps' => $recommendWorkoutSet->reps,
+                        'set' => $recommendWorkoutSet->set,
+                    ]
                 ]
             ]
         ];

@@ -22,6 +22,8 @@ class StepMaster extends Model
         return "";
     }
 
+    //TODO 表示する際のnameにnumberを付ける : S1:Wall Push Up
+
     /**
      */
     public function getAchievedLevel($repCount, $setCount = 0)
@@ -138,6 +140,11 @@ class StepMaster extends Model
     static public function getStep_lByMenuId($menuId)
     {
         return StepMaster::where('menu_master_id', $menuId)->get();
+    }
+
+    public function getViewName()
+    {
+        return $this->step_number . "-" . $this->name;
     }
 
 }

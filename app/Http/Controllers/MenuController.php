@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserMenu as UserMenuResource;
 use Illuminate\Http\Request;
 use App\Model\Master\MenuMaster;
 use App\Model\Master\StepMaster as Step;
@@ -30,7 +31,7 @@ class MenuController extends Controller
     }
 
     /***
-     *  menu_s:[
+     *  menu_l:[
      *      1:{
      *          name: Push Up
      *          recommend:{
@@ -38,17 +39,15 @@ class MenuController extends Controller
      *              reps: 20
      *              set: 10
      *          },
-     *          stepName_s:[
+     *          step_l:[
+     *              {
+     *                  name: Half Push up
+     *                  id: 1,
+     *                  levelInfo: [{rep:2, set:1},{},,,]
+     *              }
      *              wall stand push up, ....,..., full push up
      *          ],
-     *          stepInfo:{
-     *              levelInfo_l:[
-     *                  {
-     *                      id: stepId
-     *                      name: half push up
-     *                      lv: [{rep:2, set:1},{},,,]
-     *                  }, * number of steps
-     *              ],
+     *          historyInfo:{
      *              best: {
      *                  name: Full Push Up
      *                  lv: 2
@@ -70,27 +69,7 @@ class MenuController extends Controller
             return abort(Controller::HTTP_STATUS_BAD_REQUEST, "he or she has a plan");
         }
 
-        $menuInfo_l = [];
-        $menu_l = MenuMaster::get()->keyBy('id');
-        $recommendedWorkoutSet_l = $this->user->getRecommendedWorkoutSets();
-        $bestWorkoutSet_l = $this->user->getBestWorkoutSets();
-        $recentWorkoutSet_l = $this->user->getRecentWorkoutSet_l(3);
-        $levelInfo_l = Step::getLevelInfo_l_l();
-        foreach ($menu_l as $menuId => $menu){
-            $menuInfo_l[$menuId]['name'] = $menu->name;
-            $menuInfo_l[$menuId]['recommend'] = [];
-            $menuInfo_l[$menuId]['recommend']['stepNumber'] = $recommendedWorkoutSet_l[$menuId]['stepNumber'];
-            $menuInfo_l[$menuId]['recommend']['reps'] = $recommendedWorkoutSet_l[$menuId]['reps'];
-            $menuInfo_l[$menuId]['recommend']['set'] = $recommendedWorkoutSet_l[$menuId]['set'];
-            $menuInfo_l[$menuId]['stepName_l'] = $menu->steps->pluck('name');
-            $stepInfo = [];
-            $stepInfo['best'] = $bestWorkoutSet_l[$menuId];
-            $stepInfo['recent'] = $recentWorkoutSet_l[$menuId];
-            $stepInfo['levelInfo_l'] = $levelInfo_l[$menuId];
-            $menuInfo_l[$menuId]['stepInfo'] = $stepInfo;
-        }
-
-        return $menuInfo_l;
+        return new UserMenuResource($this->user);
     }
 
     /**
