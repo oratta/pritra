@@ -27,6 +27,7 @@ class UserMenu extends JsonResource
         $recentWorkoutSet_l = $user->getRecentWorkoutSet_l(3);
         foreach ($menu_l as $menuId => $menu){
             $menuInfo_l[$menuId]['name'] = $menu->name;
+            $menuInfo_l[$menuId]['id'] = $menu->id;
             $menuInfo_l[$menuId]['recommend'] = [];
             $menuInfo_l[$menuId]['recommend']['id'] = $recommendedWorkoutSet_l[$menuId]->step->id;
             $menuInfo_l[$menuId]['recommend']['name'] = $recommendedWorkoutSet_l[$menuId]->step->getViewName();

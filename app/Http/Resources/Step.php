@@ -6,7 +6,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class Step extends JsonResource
 {
-    public $preserveKeys = true;
     /**
      * Transform the resource into an array.
      *

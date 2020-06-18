@@ -55,7 +55,7 @@ class StepMaster extends Model
         else {
             $repCountColumn = "level" . $level . "_rep_count";
             $setCountColumn = "level" . $level . "_set_count";
-            return ["repCount" => $this->$repCountColumn, "setCount" => $this->$setCountColumn];
+            return ["level" => $level, "repCount" => $this->$repCountColumn, "setCount" => $this->$setCountColumn];
         }
     }
 

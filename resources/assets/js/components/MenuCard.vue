@@ -1,7 +1,7 @@
 <template>
     <v-card class="menu-card">
         <v-card-subtitle>
-            {{menuName}}
+            {{menu.name}}
         </v-card-subtitle>
         <div class="menu-card__img__box">
             <img class="menu-card__img"
@@ -17,7 +17,7 @@
                 <v-select
                         v-model="selectedWorkoutSet.step"
                         no-data-text="Select Step..."
-                        :items="steps"
+                        :items="menu.step_l"
                         item-text="name"
                         item-value="number"
                         return-object
@@ -97,15 +97,15 @@
         <div class="menu-card__info_box" v-show="isInfoBox">
             <div class="level_box">
                 <div class="level_box__title">
-                    <v-icon>mdi-run</v-icon>{{menuName}}
+                    <v-icon>mdi-run</v-icon>{{menu.name}}
                 </div>
                 <div class="level_box__card"
-                    v-for="step in steps" :key=step.number
+                    v-for="step in menu.step_l" :key=step.number
                 >
                     <div class="level_box__card__step_name">S{{step.number}} {{step.name}}</div>
                     <ul>
-                        <li v-for="level in step.levels" :key="level.levelNumber">
-                            Lv{{level.id}} : {{level.rep}} × {{level.set}}
+                        <li v-for="level in step.levelInfo" :key="level.level">
+                            Lv{{level.level}} : {{level.repCount}} × {{level.setCount}}
                         </li>
                     </ul>
                 </div>
@@ -115,7 +115,7 @@
                     <v-icon>mdi-panda</v-icon>Best
                 </div>
                 <div class="history_box__card">
-                    <div class="history_box__card__step_name">S{{historyWorkout.best.number}} {{historyWorkout.best.name}}</div>
+                    <div class="history_box__card__step_name">{{historyWorkout.best.name}}</div>
                     <div class="history_box__card__count">{{historyWorkout.best.rep}} × {{historyWorkout.best.set}}</div>
                     <div class="history_box__card__time">{{historyWorkout.best.date}}</div>
                 </div>
@@ -187,14 +187,10 @@ export default{
             type:Boolean,
             requiered:true,
         },
-        menuName: {
-            type:String,
+        menu: {
+            type:Object,
             required:true,
         },
-        steps: {
-            type:Array,
-            required:true,
-        }
     },
     methods: {
         init: function(){
