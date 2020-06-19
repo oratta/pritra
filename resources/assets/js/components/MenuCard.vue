@@ -28,7 +28,7 @@
             <div class="menu-card__form_training_set__input">
                 <div class="count_box">
                     <div class="count">
-                        {{selectedWorkoutSet.rep}}
+                        {{selectedWorkoutSet.reps}}
                     </div>
                     <div class="count_label">
                         reps
@@ -36,12 +36,12 @@
                 </div>
                 <div class="button_up_down">
                     <div class="button_up_down__up">
-                        <v-btn icon small @click="selectedWorkoutSet.rep +=1">
+                        <v-btn icon small @click="selectedWorkoutSet.reps +=1">
                             <v-icon small>mdi-arrow-up-bold</v-icon>
                         </v-btn>
                     </div>
                     <div class="button_up_down__down">
-                        <v-btn icon small @click="selectedWorkoutSet.rep -=1">
+                        <v-btn icon small @click="selectedWorkoutSet.reps -=1">
                             <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
                     </div>
@@ -145,7 +145,7 @@ export default{
                     name: 'Full Push Up',
                     number: 2,
                 },
-                rep: 20,
+                reps: 20,
                 set: 3,
             },
             historyWorkout: {
