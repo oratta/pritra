@@ -48,7 +48,7 @@ class StepMaster extends Model
         if($level === 0){
             $levelInfo_l = [];
             for($i=1;$i<=3;++$i) {
-                $levelInfo_l[$i] = $this->getLevelInfo($i);
+                $levelInfo_l[] = $this->getLevelInfo($i);
             }
             return $levelInfo_l;
         }
