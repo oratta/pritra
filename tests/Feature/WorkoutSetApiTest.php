@@ -69,7 +69,7 @@ class WorkoutSetApiTest extends TestCase
             "data" => [
                 1 => [
                     'step_l' => [
-                        1 => [
+                        0 => [
                             'levelInfo' => StepMaster::getLevelInfo_l(1)[1],
                         ]
                     ]
@@ -120,8 +120,8 @@ class WorkoutSetApiTest extends TestCase
                             'name' => $recommendWorkoutSet->step->getViewName(),
                             'id' => $recommendWorkoutSet->step->id,
                         ],
-                        'reps' => $recommendWorkoutSet->reps,
-                        'set' => $recommendWorkoutSet->set,
+                        'reps' => $recommendWorkoutSet->min_rep_count,
+                        'set' => $recommendWorkoutSet->set_count,
                     ]
                 ]
             ]
