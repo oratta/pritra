@@ -116,8 +116,10 @@ class WorkoutSetApiTest extends TestCase
             "data" => [
                 1 => [
                     'recommend' => [
-                        'name' => $recommendWorkoutSet->step->getViewName(),
-                        'id' => $recommendWorkoutSet->step->id,
+                        'step' => [
+                            'name' => $recommendWorkoutSet->step->getViewName(),
+                            'id' => $recommendWorkoutSet->step->id,
+                        ],
                         'reps' => $recommendWorkoutSet->reps,
                         'set' => $recommendWorkoutSet->set,
                     ]

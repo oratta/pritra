@@ -194,17 +194,13 @@ export default{
     },
     methods: {
         init: function(){
-            this.selectedWorkoutSet = this.recommendWorkoutSet;
+            //データロードを待たずにレンダリングするので、menuのresponseが来る前に参照しちゃう
+            this.selectedWorkoutSet = this.menu.recommend;
         },
-    },
-    created () {
-        // view が作られた時にデータを取得し、
-        // そのデータは既に監視されています
-        this.init()
     },
     watch: {
         // ルートが変更されたらこのメソッドを再び呼び出します
-        '$route': 'init'
+        menu: 'init'
     },
 }
 </script>

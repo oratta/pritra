@@ -29,8 +29,9 @@ class UserMenu extends JsonResource
             $menuInfo_l[$menuId]['name'] = $menu->name;
             $menuInfo_l[$menuId]['id'] = $menu->id;
             $menuInfo_l[$menuId]['recommend'] = [];
-            $menuInfo_l[$menuId]['recommend']['id'] = $recommendedWorkoutSet_l[$menuId]->step->id;
-            $menuInfo_l[$menuId]['recommend']['name'] = $recommendedWorkoutSet_l[$menuId]->step->getViewName();
+            $menuInfo_l[$menuId]['recommend']['step'] = [];
+            $menuInfo_l[$menuId]['recommend']['step']['id'] = $recommendedWorkoutSet_l[$menuId]->step->id;
+            $menuInfo_l[$menuId]['recommend']['step']['name'] = $recommendedWorkoutSet_l[$menuId]->step->getViewName();
             $menuInfo_l[$menuId]['recommend']['reps'] = $recommendedWorkoutSet_l[$menuId]['reps'];
             $menuInfo_l[$menuId]['recommend']['set'] = $recommendedWorkoutSet_l[$menuId]['set'];
             $menuInfo_l[$menuId]['step_l'] = StepResource::collection($menu->steps->keyBy('id'));
