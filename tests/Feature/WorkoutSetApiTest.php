@@ -101,7 +101,7 @@ class WorkoutSetApiTest extends TestCase
             "data" => [
                 1 => [
                     'historyInfo' => [
-                        'recent' => $this->user->getRecentWorkoutSet_l(3)->toArray()[1],
+                        'recentList' => $this->user->getRecentWorkoutSet_l(3)->toArray()[1],
                     ]
                 ]
             ]

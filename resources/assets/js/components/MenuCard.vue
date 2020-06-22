@@ -115,19 +115,20 @@
                     <v-icon>mdi-panda</v-icon>Best
                 </div>
                 <div class="history_box__card">
-                    <div class="history_box__card__step_name">{{historyWorkout.best.name}}</div>
-                    <div class="history_box__card__count">{{historyWorkout.best.rep}} × {{historyWorkout.best.set}}</div>
-                    <div class="history_box__card__time">{{historyWorkout.best.date}}</div>
+                    <div class="history_box__card__step_name">{{historyInfo.best.step.name}}</div>
+                    <div class="history_box__card__count">{{historyInfo.best.rep}} × {{historyInfo.best.set}}</div>
+                    <div class="history_box__card__time">{{historyInfo.best.date}}</div>
                 </div>
                 <div class="history_box__title">
                     <v-icon>mdi-history</v-icon>Recent
                 </div>
+                </div>
                 <div class="history_box__card"
-                    v-for="i in [0,1,2]"
+                    v-for="recent in recentList"
                 >
-                    <div class="history_box__card__step_name">S{{historyWorkout.recent[i].number}} {{historyWorkout.recent[i].name}}</div>
-                    <div class="history_box__card__count">{{historyWorkout.recent[i].rep}} × {{historyWorkout.recent[i].set}}</div>
-                    <div class="history_box__card__time">{{historyWorkout.recent[i].date}}</div>
+                    <div class="history_box__card__step_name">{{recent.step.name}}</div>
+                    <div class="history_box__card__count">{{recent.rep}} × {{recent.set}}</div>
+                    <div class="history_box__card__time">{{recent.date}}</div>
                 </div>
             </div>
         </div>
@@ -139,8 +140,7 @@ export default{
         return {
             testList:["test1", "test2", "test3"],
             isInfoBox: false,
-            selectedWorkoutSet: {},
-            recommendWorkoutSet: {
+            selectedWorkoutSet: {
                 step: {
                     name: 'Full Push Up',
                     number: 2,
@@ -148,32 +148,36 @@ export default{
                 reps: 20,
                 set: 3,
             },
-            historyWorkout: {
+            historyInfo: {
                 'best': {
-                    number: 1,
-                    name: 'FullPush',
+                    step: {
+                        name: 'FullPush',
+                    },
                     rep: 15,
                     set: 2,
                     date: '2019/02/01 9:24',
                 },
-                'recent':[
+                'recentList':[
                     {
-                        number: 1,
-                        name: 'FullPush',
+                        step:{
+                            name: 'FullPush',
+                        },
                         rep: 15,
                         set: 2,
                         date: '2019/02/01 9:24',
                     },
                     {
-                        number: 2,
-                        name: 'HalfPush',
+                        step: {
+                            name: 'HalfPush',
+                        },
                         rep: 15,
                         set: 3,
                         date: '2019/01/01 9:24',
                     },
                     {
-                        number: 1,
-                        name: 'FullPush',
+                        step: {
+                            name: 'FullPush',
+                        },
                         rep: 20,
                         set: 2,
                         date: '2018/12/01 9:24',
@@ -196,6 +200,7 @@ export default{
         init: function(){
             //データロードを待たずにレンダリングするので、menuのresponseが来る前に参照しちゃう
             this.selectedWorkoutSet = this.menu.recommend;
+            this.historyInfo = this.menu.historyInfo;
         },
     },
     watch: {

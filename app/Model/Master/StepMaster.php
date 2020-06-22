@@ -147,4 +147,9 @@ class StepMaster extends Model
         return $this->step_number . "-" . $this->name;
     }
 
+    public function setViewName()
+    {
+        $this->name =  $this->getViewName();
+    }
+
 }
