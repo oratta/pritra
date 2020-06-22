@@ -8,7 +8,9 @@
                     lg="4"
                     xl="4"
                     sm="6"
-                    v-for="i in [1,2,3]">
+                    v-for="i in [1,2,3]"
+                    :key = "i"
+            >
                 <v-card
                         max-width="420"
                         class="mx-auto"
