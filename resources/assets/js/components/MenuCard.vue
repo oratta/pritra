@@ -122,9 +122,14 @@
                 <div class="history_box__title">
                     <v-icon>mdi-history</v-icon>Recent
                 </div>
+                <div class="history_box__card"
+                     v-if="historyInfo.recentList.length == 0"
+                >
+                    no log
                 </div>
                 <div class="history_box__card"
-                    v-for="recent in recentList"
+                     v-else
+                     v-for="recent in historyInfo.recentList"
                 >
                     <div class="history_box__card__step_name">{{recent.step.name}}</div>
                     <div class="history_box__card__count">{{recent.rep}} × {{recent.set}}</div>
@@ -153,7 +158,7 @@ export default{
                     step: {
                         name: 'FullPush',
                     },
-                    rep: 15,
+                    rep: 15, 
                     set: 2,
                     date: '2019/02/01 9:24',
                 },
