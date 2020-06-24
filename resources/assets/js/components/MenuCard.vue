@@ -147,45 +147,29 @@ export default{
             isInfoBox: false,
             selectedWorkoutSet: {
                 step: {
-                    name: 'Full Push Up',
-                    number: 2,
+                    name: '',
+                    number: 0,
                 },
-                reps: 20,
-                set: 3,
+                reps: 0,
+                set: 0,
             },
             historyInfo: {
                 'best': {
                     step: {
-                        name: 'FullPush',
+                        name: '',
                     },
-                    rep: 15,
-                    set: 2,
-                    date: '2019/02/01 9:24',
+                    rep: 0,
+                    set: 0,
+                    date: '',
                 },
                 'recentList':[
                     {
                         step:{
-                            name: 'FullPush',
+                            name: '',
                         },
-                        rep: 15,
-                        set: 2,
-                        date: '2019/02/01 9:24',
-                    },
-                    {
-                        step: {
-                            name: 'HalfPush',
-                        },
-                        rep: 15,
-                        set: 3,
-                        date: '2019/01/01 9:24',
-                    },
-                    {
-                        step: {
-                            name: 'FullPush',
-                        },
-                        rep: 20,
-                        set: 2,
-                        date: '2018/12/01 9:24',
+                        rep: 0,
+                        set: 0,
+                        date: '',
                     },
                 ]
             }
@@ -203,14 +187,15 @@ export default{
     },
     methods: {
         init: function(){
-            //データロードを待たずにレンダリングするので、menuのresponseが来る前に参照しちゃう
             this.selectedWorkoutSet = this.menu.recommend;
             this.historyInfo = this.menu.historyInfo;
         },
     },
     watch: {
-        // ルートが変更されたらこのメソッドを再び呼び出します
-        menu: 'init'
+        menu: {
+            handler: 'init',
+            immediate: true
+        }
     },
 }
 </script>
