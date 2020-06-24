@@ -120,7 +120,7 @@ export default {
         },
         addMiniCard: function(menuId, selectedWorkoutSet){
             this.miniCardInfo[menuId]=selectedWorkoutSet;
-            this.miniCardInfo[menuId].menuName = this.menuCardInfo[menuId-1].name
+            this.miniCardInfo[menuId].menuName = this.menuCardInfo[menuId].name
         },
         init: function(){
 
