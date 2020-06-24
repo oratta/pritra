@@ -7,8 +7,8 @@
                    :key="menuCard.id"
             >
                 <MenuCard
-                    v-on:set-menu="setMenu(menuCard.menuId, $event)"
-                    :is-add="addFlags[menuCard.menuId]"
+                    v-on:set-menu="setMenu(menuCard.id, $event)"
+                    :is-add="addFlags[menuCard.id]"
                     :menu="menuCard"
                 ></MenuCard>
             </v-col>
@@ -18,11 +18,11 @@
         <div class="cart" v-show="isShowCart">
             <div class="mini_menu_card" v-for="miniCard in miniCardInfo">
                 <v-card>
-                    <v-card-title>{{miniCard.name}}</v-card-title>
+                    <v-card-title>{{miniCard.menuName}}</v-card-title>
                     <v-card-text>{{miniCard.step.name}}</v-card-text>
-                    <v-card-text>{{miniCard.rep}}×{{miniCard.set}}</v-card-text>
+                    <v-card-text>{{miniCard.reps}}×{{miniCard.set}}</v-card-text>
                     <div class="remove_btn">
-                        <v-btn small @click="removeMenu(miniCard.menuId)">Remove</v-btn>
+                        <v-btn small @click="removeMenu(miniCard.id)">Remove</v-btn>
                     </div>
                 </v-card>
             </div>
@@ -120,8 +120,7 @@ export default {
         },
         addMiniCard: function(menuId, selectedWorkoutSet){
             this.miniCardInfo[menuId]=selectedWorkoutSet;
-            this.miniCardInfo[menuId]['menuId'] = menuId;
-            this.miniCardInfo[menuId]['name'] = this.menuCardInfo[menuId-1].name;
+            this.miniCardInfo[menuId].menuName = this.menuCardInfo[menuId-1].name
         },
         init: function(){
 

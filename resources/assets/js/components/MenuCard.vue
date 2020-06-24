@@ -158,7 +158,7 @@ export default{
                     step: {
                         name: 'FullPush',
                     },
-                    rep: 15, 
+                    rep: 15,
                     set: 2,
                     date: '2019/02/01 9:24',
                 },
