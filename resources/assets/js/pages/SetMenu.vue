@@ -4,26 +4,25 @@
         <v-row>
             <v-col lg="4" md="4" sm="6" cols="12"
                    v-for="menuCard in menuCardInfo"
-                   :key="menuCard.menuId"
+                   :key="menuCard.id"
             >
                 <MenuCard
-                    v-on:set-menu="setMenu(menuCard.menuId, $event)"
-                    :is-add="addFlags[menuCard.menuId]"
-                    :menu-name="menuCard.menuName"
-                    :steps="menuCard.steps"
+                    v-on:set-menu="setMenu(menuCard.id, $event)"
+                    :is-add="addFlags[menuCard.id]"
+                    :menu="menuCard"
                 ></MenuCard>
             </v-col>
         </v-row>
         <div class="margin_for_cart" v-show="isShowCart">
         </div>
         <div class="cart" v-show="isShowCart">
-            <div class="mini_menu_card" v-for="miniCard in miniCardInfo">
+            <div class="mini_menu_card" v-for="(miniCard, menuId) in miniCardInfo">
                 <v-card>
                     <v-card-title>{{miniCard.menuName}}</v-card-title>
                     <v-card-text>{{miniCard.step.name}}</v-card-text>
-                    <v-card-text>{{miniCard.rep}}×{{miniCard.set}}</v-card-text>
+                    <v-card-text>{{miniCard.reps}}×{{miniCard.set}}</v-card-text>
                     <div class="remove_btn">
-                        <v-btn small @click="removeMenu(miniCard.menuId)">Remove</v-btn>
+                        <v-btn small @click="removeMenu(menuId)">Remove</v-btn>
                     </div>
                 </v-card>
             </div>
@@ -36,6 +35,8 @@
 
 <script>
 import MenuCard from '../components/MenuCard.vue'
+import { OK } from '../util'
+
 export default {
     components: {
         MenuCard
@@ -45,45 +46,7 @@ export default {
             isShowCart: false,
             miniCardInfo: {},
             menuCardInfo: [
-                {
-                    "menuId":1,
-                    "menuName":"PushUp",
-                    "steps":
-                        [
-                            {
-                                name: 'Half Push Up',
-                                number: 1,
-                                levels: [{levelNumber: 1, rep: 5, set: 1,}, {
-                                    levelNumber: 2,
-                                    rep: 10,
-                                    set: 1,
-                                }, {levelNumber: 3, rep: 10, set: 2,}]
-                            },
-                            {
-                                name: 'Full Push Up',
-                                number: 2,
-                                levels: [{levelNumber: 1, rep: 5, set: 1,}, {
-                                    levelNumber: 2,
-                                    rep: 10,
-                                    set: 1,
-                                }, {levelNumber: 3, rep: 10, set: 2,}]
-                            },
-                            {
-                                name: 'One Hand Push Up',
-                                number: 3,
-                                levels: [{levelNumber: 1, rep: 5, set: 1,}, {
-                                    levelNumber: 2,
-                                    rep: 10,
-                                    set: 1,
-                                }, {levelNumber: 3, rep: 10, set: 2,}]
-                            },
-                        ],
-                },
-                {"menuId":2, "menuName":"Squat", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
-                {"menuId":3, "menuName":"PullUp", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
-                {"menuId":4, "menuName":"LegRaise", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
-                {"menuId":5, "menuName":"Bridge", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
-                {"menuId":6, "menuName":"OneHandPushUp", "steps": [{name:'FirstStep',number: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', number: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',number: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
+                // {"id":2, "name":"Squat", "step_l": [{name:'FirstStep',id: 1,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2,rep: 10,set: 1,},{levelNumber: 3, rep: 10, set: 2,}]},{name: 'SecondStep', id: 2,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},{name: 'ThirdStep',id: 3,levels: [{levelNumber: 1, rep: 5, set: 1,}, {levelNumber: 2, rep: 10,set: 1,}, {levelNumber: 3, rep: 10, set: 2,}]},],},
             ],
             addFlags: {
                 1:false,
@@ -96,6 +59,15 @@ export default {
         }
     },
     methods:{
+        async fetchMenuInfo_l () {
+            const response = await axios.get("/api/menu");
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status)
+                return false
+            }
+            this.menuCardInfo = response.data.data;
+        },
+
         setMenu: function(menuId, selectedWorkoutSet){
             this.isShowCart = true;
             this.addFlags[menuId] = true;
@@ -110,8 +82,7 @@ export default {
         },
         addMiniCard: function(menuId, selectedWorkoutSet){
             this.miniCardInfo[menuId]=selectedWorkoutSet;
-            this.miniCardInfo[menuId]['menuId'] = menuId;
-            this.miniCardInfo[menuId]['menuName'] = this.menuCardInfo[menuId-1].menuName;
+            this.miniCardInfo[menuId].menuName = this.menuCardInfo[menuId].name
         },
         init: function(){
 
@@ -125,7 +96,15 @@ export default {
             console.log(response);
             //TODO エラー処理
 
-            this.$router.push('nextpage');
+            this.$router.push('run');
+        },
+    },
+    watch: {
+        $route: {
+            async handler () {
+                await this.fetchMenuInfo_l()
+            },
+            immediate: true
         }
     },
 }

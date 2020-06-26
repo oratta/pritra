@@ -36,6 +36,11 @@ class User extends Authenticatable
         return $this->type===1 ? true : false;
     }
 
+    public function getBestWorkoutSet($menuId)
+    {
+        return WorkoutSet::getBestWorkoutSet($this->id, $menuId);
+    }
+
     public function getBestWorkoutSets()
     {
         return WorkoutSet::getBestWorkoutSetList($this->id);
@@ -48,5 +53,28 @@ class User extends Authenticatable
         });
 
         return $recommendWorkoutSets;
+    }
+
+    public function getRecentWorkoutSet_l($limit=1)
+    {
+        return WorkoutSet::getRecentWorkoutSetList($this->id);
+    }
+
+    public function createPlanedWorkoutSet($menuMasterId,$stepMasterId, $planedRepCount, $planedSetCount)
+    {
+        $workoutSet = WorkoutSet::createPlanedWorkoutSet($menuMasterId,$stepMasterId, $planedRepCount, $planedSetCount);
+        $workoutSet->user_id = $this->id;
+        return $workoutSet;
+    }
+
+    public function getPlan_l()
+    {
+        return WorkoutSet::where(['user_id'=>$this->id, 'is_plan'=>1])->
+                    get()->keyBy('menu_master_id');
+    }
+
+    public function hasPlan()
+    {
+        return $this->getPlan_l()->count() === 0 ? false : true;
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <v-card class="menu-card">
         <v-card-subtitle>
-            {{menuName}}
+            {{menu.name}}
         </v-card-subtitle>
         <div class="menu-card__img__box">
             <img class="menu-card__img"
@@ -17,7 +17,7 @@
                 <v-select
                         v-model="selectedWorkoutSet.step"
                         no-data-text="Select Step..."
-                        :items="steps"
+                        :items="menu.step_l"
                         item-text="name"
                         item-value="number"
                         return-object
@@ -28,7 +28,7 @@
             <div class="menu-card__form_training_set__input">
                 <div class="count_box">
                     <div class="count">
-                        {{selectedWorkoutSet.rep}}
+                        {{selectedWorkoutSet.reps}}
                     </div>
                     <div class="count_label">
                         reps
@@ -36,12 +36,12 @@
                 </div>
                 <div class="button_up_down">
                     <div class="button_up_down__up">
-                        <v-btn icon small @click="selectedWorkoutSet.rep +=1">
+                        <v-btn icon small @click="selectedWorkoutSet.reps +=1">
                             <v-icon small>mdi-arrow-up-bold</v-icon>
                         </v-btn>
                     </div>
                     <div class="button_up_down__down">
-                        <v-btn icon small @click="selectedWorkoutSet.rep -=1">
+                        <v-btn icon small @click="selectedWorkoutSet.reps -=1">
                             <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
                     </div>
@@ -97,15 +97,15 @@
         <div class="menu-card__info_box" v-show="isInfoBox">
             <div class="level_box">
                 <div class="level_box__title">
-                    <v-icon>mdi-run</v-icon>{{menuName}}
+                    <v-icon>mdi-run</v-icon>{{menu.name}}
                 </div>
                 <div class="level_box__card"
-                    v-for="step in steps" :key=step.number
+                    v-for="step in menu.step_l" :key=step.number
                 >
                     <div class="level_box__card__step_name">S{{step.number}} {{step.name}}</div>
                     <ul>
-                        <li v-for="level in step.levels" :key="level.levelNumber">
-                            Lv{{level.id}} : {{level.rep}} × {{level.set}}
+                        <li v-for="level in step.levelInfo" :key="level.level">
+                            Lv{{level.level}} : {{level.repCount}} × {{level.setCount}}
                         </li>
                     </ul>
                 </div>
@@ -115,19 +115,25 @@
                     <v-icon>mdi-panda</v-icon>Best
                 </div>
                 <div class="history_box__card">
-                    <div class="history_box__card__step_name">S{{historyWorkout.best.number}} {{historyWorkout.best.name}}</div>
-                    <div class="history_box__card__count">{{historyWorkout.best.rep}} × {{historyWorkout.best.set}}</div>
-                    <div class="history_box__card__time">{{historyWorkout.best.date}}</div>
+                    <div class="history_box__card__step_name">{{historyInfo.best.step.name}}</div>
+                    <div class="history_box__card__count">{{historyInfo.best.rep}} × {{historyInfo.best.set}}</div>
+                    <div class="history_box__card__time">{{historyInfo.best.date}}</div>
                 </div>
                 <div class="history_box__title">
                     <v-icon>mdi-history</v-icon>Recent
                 </div>
                 <div class="history_box__card"
-                    v-for="i in [0,1,2]"
+                     v-if="historyInfo.recentList.length == 0"
                 >
-                    <div class="history_box__card__step_name">S{{historyWorkout.recent[i].number}} {{historyWorkout.recent[i].name}}</div>
-                    <div class="history_box__card__count">{{historyWorkout.recent[i].rep}} × {{historyWorkout.recent[i].set}}</div>
-                    <div class="history_box__card__time">{{historyWorkout.recent[i].date}}</div>
+                    no log
+                </div>
+                <div class="history_box__card"
+                     v-else
+                     v-for="recent in historyInfo.recentList"
+                >
+                    <div class="history_box__card__step_name">{{recent.step.name}}</div>
+                    <div class="history_box__card__count">{{recent.rep}} × {{recent.set}}</div>
+                    <div class="history_box__card__time">{{recent.date}}</div>
                 </div>
             </div>
         </div>
@@ -139,44 +145,31 @@ export default{
         return {
             testList:["test1", "test2", "test3"],
             isInfoBox: false,
-            selectedWorkoutSet: {},
-            recommendWorkoutSet: {
+            selectedWorkoutSet: {
                 step: {
-                    name: 'Full Push Up',
-                    number: 2,
+                    name: '',
+                    number: 0,
                 },
-                rep: 20,
-                set: 3,
+                reps: 0,
+                set: 0,
             },
-            historyWorkout: {
+            historyInfo: {
                 'best': {
-                    number: 1,
-                    name: 'FullPush',
-                    rep: 15,
-                    set: 2,
-                    date: '2019/02/01 9:24',
+                    step: {
+                        name: '',
+                    },
+                    rep: 0,
+                    set: 0,
+                    date: '',
                 },
-                'recent':[
+                'recentList':[
                     {
-                        number: 1,
-                        name: 'FullPush',
-                        rep: 15,
-                        set: 2,
-                        date: '2019/02/01 9:24',
-                    },
-                    {
-                        number: 2,
-                        name: 'HalfPush',
-                        rep: 15,
-                        set: 3,
-                        date: '2019/01/01 9:24',
-                    },
-                    {
-                        number: 1,
-                        name: 'FullPush',
-                        rep: 20,
-                        set: 2,
-                        date: '2018/12/01 9:24',
+                        step:{
+                            name: '',
+                        },
+                        rep: 0,
+                        set: 0,
+                        date: '',
                     },
                 ]
             }
@@ -187,28 +180,22 @@ export default{
             type:Boolean,
             requiered:true,
         },
-        menuName: {
-            type:String,
+        menu: {
+            type:Object,
             required:true,
         },
-        steps: {
-            type:Array,
-            required:true,
-        }
     },
     methods: {
         init: function(){
-            this.selectedWorkoutSet = this.recommendWorkoutSet;
+            this.selectedWorkoutSet = this.menu.recommend;
+            this.historyInfo = this.menu.historyInfo;
         },
     },
-    created () {
-        // view が作られた時にデータを取得し、
-        // そのデータは既に監視されています
-        this.init()
-    },
     watch: {
-        // ルートが変更されたらこのメソッドを再び呼び出します
-        '$route': 'init'
+        menu: {
+            handler: 'init',
+            immediate: true
+        }
     },
 }
 </script>

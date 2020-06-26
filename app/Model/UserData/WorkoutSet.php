@@ -12,10 +12,20 @@ class WorkoutSet extends Model
     protected $guarded = ["id"];
     public $timestamps = true;
 
-//    protected $appends = [
-//        'start_time',
-//        'end_time'
-//    ];
+    /*
+     * default value for eloquent
+     */
+    protected $attributes = [
+        'min_step_master_id'    => 0,
+        'min_rep_count'         => 0,
+        'set_count'             => 0,
+        'level'                 => 0,
+    ];
+
+    protected $casts = [
+        'user_id'       => 'int',
+        'is_plan'       => 'int',
+    ];
 
     /**
      * @var Workout
@@ -45,6 +55,7 @@ class WorkoutSet extends Model
 
         return $value;
     }
+
     private function setStartTime()
     {
         if($this->workouts->first() instanceof Workout && $this->workouts->first()->created_at){
@@ -77,6 +88,21 @@ class WorkoutSet extends Model
         $this->relations['workouts'] = $workouts;
     }
 
+    public static function createPlanedWorkoutSet($menuMasterId,$stepMasterId, $planedRepCount, $planedSetCount)
+    {
+        $workoutSet = new WorkoutSet;
+        $workoutSet->menu_master_id         = $menuMasterId;
+        $workoutSet->min_step_master_id     = $stepMasterId;
+        $workoutSet->is_plan                = true;
+        $workoutSet->planed_min_rep_count   = $planedRepCount;
+        $workoutSet->planed_set_count       = $planedSetCount;
+        $workoutSet->step_level             = 0;
+        $workoutSet->setLevel(true);
+
+        return $workoutSet;
+    }
+
+
     /**
      * @param $userId
      * @return array
@@ -107,6 +133,24 @@ class WorkoutSet extends Model
         }
 
         return collect($bestLogList);
+    }
+
+    static public function getRecentWorkoutSetList($userId, $limit=1)
+    {
+        $recent_l = [];
+        for ($menuId = 1; $menuId <= config('pritra.MENU_COUNT'); ++$menuId) {
+            $recent_l[$menuId] = static::getRecentWorkoutSet($userId, $menuId, $limit);
+        }
+        return collect($recent_l);
+    }
+
+    static private function getRecentWorkoutSet($userId, $menuId, $limit=1)
+    {
+        $workoutSet_l = WorkoutSet::where('user_id', '=', $userId)
+            ->where('menu_master_id', '=', $menuId)
+            ->limit($limit)
+            ->get();
+        return $workoutSet_l;
     }
 
 
@@ -191,6 +235,24 @@ class WorkoutSet extends Model
         $this->setWorkoutSetInfo();
     }
 
+    public function addWorkoutBulk(array $workoutInfo_l)
+    {
+        $minCount = PHP_INT_MAX;
+        $workoutList = $this->workouts;
+        foreach ($workoutInfo_l as $workoutInfo){
+            $workout = new Workout();
+            $workout->workout_set_id    = $this->id;
+            $workout->user_id           = $this->user_id;
+            $workout->menu_master_id    = $this->menu_master_id;
+            $workout->step_master_id    = $this->min_step_master_id;
+            $workout->count             = $workoutInfo['repCount'];
+            $workout->difficulty_type   = $workoutInfo['difficultyType'];
+            $workoutList->add($workout);
+        }
+        $this->workouts = $workoutList;
+        $this->setWorkoutSetInfo();
+    }
+
     /***********************************
      * ここから移植
      ***********************************/
@@ -208,11 +270,16 @@ class WorkoutSet extends Model
     /**
      * @return bool if fail to set level property, it return false
      */
-    public function setLevel()
+    public function setLevel($isPlan=false)
     {
-        if($this->step && $this->min_rep_count && $this->set_count){
-            $this->level = $this->step->getAchievedLevel($this->min_rep_count, $this->set_count);
-            $this->step_level = $this->min_step_master_id*100+$this->level;
+        if ($isPlan){
+            $columnPrefix = "planed_";
+        }else {
+            $columnPrefix = "";
+        }
+        if($this->step && $this->{$columnPrefix . "min_rep_count"} && $this->{$columnPrefix . "set_count"}){
+            $this->{$columnPrefix . "level"} = $this->step->getAchievedLevel($this->{$columnPrefix . "min_rep_count"}, $this->{$columnPrefix . "set_count"});
+            if (!$isPlan) $this->step_level = $this->min_step_master_id*100+$this->level;
             return true;
         }
         return false;
@@ -284,6 +351,16 @@ class WorkoutSet extends Model
             else{
                 return 0;
             }
+        }
+    }
+
+    public function isPlan()
+    {
+        if($this->is_plan){
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

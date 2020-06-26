@@ -1,4 +1,9 @@
 .menu-card{
+  .center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
   .v-card__title {
     display: block;
     text-align: center;
@@ -7,6 +12,14 @@
       left: auto;
       right: auto;
     }
+  }
+
+  .count{
+    font-size: 1.5rem;
+  }
+
+  .count_label{
+    opacity: 0.7;
   }
 
   &__img {
@@ -25,12 +38,30 @@
     }
   }
 
+  &__objective {
+    display: flex;
+  }
+
+  .step_name{
+    font-size: 1.6rem;
+  }
+
   &__form_training_set{
+    .add_set_button{
+      padding-bottom: 10px;
+    }
+
+    .set_number_label{
+      font-size: 1.2rem;
+    }
+
     &__input {
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      padding-left: 5px;
+      padding-right:5px;
 
       //.reps_box{
       //  padding-right: 20px;
@@ -44,18 +75,6 @@
           right: 10px;
           left: 10px;
         }
-      }
-
-      .step_name{
-        font-size: 1.6rem;
-      }
-
-      .count{
-        font-size: 1.5rem;
-      }
-
-      .count_label{
-        opacity: 0.7;
       }
     }
 

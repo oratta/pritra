@@ -37,11 +37,17 @@ Route::get('workout_sets', 'WorkoutSetController@index');
 //Route::put('workout_sets');
 
 
-Route::get('menu', function(){return;});//メニューのプランニング画面
-Route::post('plan', 'WorkoutSetController@setPlan');//プランの決定
-Route::get('plan', function(){return;});//プランを表示
-Route::post('workout_set', function(){return;});//実行したワークアウトの記録
-Route::get('workout_set', function(){return;});//履歴の表示
+//メニューのプランニング画面。すでにプランがあったらそっちを返す
+Route::get('menu', 'MenuController@indexUserMenu')->name('show_user_menu');
+
+//プランの決定。
+Route::post('plan', 'WorkoutSetController@setPlan')->name('workout_set.set_plan');
+//プランを表示
+Route::get('plan', 'WorkoutSetController@showPlan')->name('workout_set.show_plan');
+//実行したワークアウトの記録
+Route::post('workout_set', 'WorkoutSetController@add')->name('workout_set.add');
+//履歴の表示(最後に実行したワークアウトの情報)
+Route::get('workout_set', 'WorkoutSetController@showHistory')->name('workout_set.history');
 
 //auth
 Route::post('/register', 'Auth\RegisterController@register')->name('register');
@@ -52,3 +58,9 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/user', function () {
     return Auth::user();
 })->name('user');
+
+// トークンリフレッシュ
+Route::get('/reflesh-token', function (Illuminate\Http\Request $request) {
+    $request->session()->regenerateToken();
+    return response()->json();
+});
