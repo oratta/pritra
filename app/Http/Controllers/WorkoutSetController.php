@@ -41,7 +41,7 @@ class WorkoutSetController extends Controller
             $planedWorkoutSet_l = $this->__inputSetPlan($request);
         }
         catch(BadRequestException $e) {
-            return abort($e->getCode(), $e->getMessage());
+            return $this->responseBadRequest($e);
         }
 
         foreach ($planedWorkoutSet_l as $planedWorkoutSet){
@@ -137,16 +137,20 @@ class WorkoutSetController extends Controller
 
     private function __inputSetPlan($request)
     {
-        $planInfo = $request->input();
+        $planInfo = $request->get('planInfo');
         $workoutSet_l = [];
-        if (empty($planInfo)) throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
+        if (empty($planInfo)) {
+            throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
+        }
         foreach ($planInfo as $menuId => $workoutSetInfo){
-            if ($menuId <=0 or $menuId >= MenuMaster::MASTER_COUNT)throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
+            if ($menuId <=0 or $menuId >= MenuMaster::MASTER_COUNT){
+                throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
+            }
             $workoutSet = $this->user->createPlanedWorkoutSet(
                 $menuId,
-                $workoutSetInfo['stepId'],
-                $workoutSetInfo['repCount'],
-                $workoutSetInfo['setCount']
+                $workoutSetInfo['step']['id'],
+                $workoutSetInfo['reps'],
+                $workoutSetInfo['set']
             );
             $workoutSet_l[$menuId] = $workoutSet;
         }

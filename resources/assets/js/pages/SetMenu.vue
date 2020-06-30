@@ -1,6 +1,7 @@
 <template>
     <v-container class="set-menu">
         <h1>Set Menu</h1>
+        <div v-if="isLoading">now loading...</div>
         <v-row>
             <v-col lg="4" md="4" sm="6" cols="12"
                    v-for="menuCard in menuCardInfo"
@@ -43,6 +44,7 @@ export default {
     },
     data(){
         return {
+            isLoading: false,
             isShowCart: false,
             miniCardInfo: {},
             menuCardInfo: [
@@ -60,7 +62,9 @@ export default {
     },
     methods:{
         async fetchMenuInfo_l () {
+            this.isLoading = true;
             const response = await axios.get("/api/menu");
+            this.isLoading = false;
             if (response.status !== OK) {
                 this.$store.commit('error/setCode', response.status)
                 return false
@@ -89,14 +93,15 @@ export default {
         },
         async send(){
             const formData = new FormData();
-            formData.append('selectedWorkoutSets', this.miniCardInfo);
             console.log('send request');
-            const response = await axios.post('/api/plan', formData);
-            console.log('get response');
-            console.log(response);
-            //TODO エラー処理
-
-            this.$router.push('run');
+            const response = await axios.post('/api/plan', {'planInfo': this.miniCardInfo});
+            if(response.status == 201){
+                this.$router.push('run');
+            }
+            else {
+                console.log('get response error');
+                console.log(response);
+            }
         },
     },
     watch: {
