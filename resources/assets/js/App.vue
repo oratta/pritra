@@ -83,7 +83,7 @@
                         } else if (val === NOT_FOUND){
                             this.$router.push('/not-found')
                         }
-                    }else{
+                    }else if (val !== null){
                         this.alertMessage = "found " + val;
                         this.alert = true;
                         this.$store.commit('error/setCode', null)
