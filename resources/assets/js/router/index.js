@@ -1,13 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../pages/Home.vue';
-import About from '../pages/About.vue';
-import Enterprise from '../pages/Enterprise.vue';
 import SetMenu from '../pages/SetMenu.vue';
-import Sample from '../pages/Sample.vue';
 import Login from '../pages/Login.vue';
 import Run from '../pages/Run.vue';
 import Finish from '../pages/Finish.vue';
+import ErrorBadRequest from '../pages/error/BadRequest.vue'
+import ErrorSystem from '../pages/error/System.vue'
 
 
 Vue.use(VueRouter)
@@ -34,27 +33,22 @@ const routes = [
         component: Login,
     },
     {
-        path: '/sample',
-        name: 'sample',
-        component: Sample,
-    },
-    {
         path: '/',
         name: 'home',
         component: Home
     },
     {
-        path: '/about',
-        name: 'about',
+        path: '/400',
+        name: '400',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: About,
+        component: ErrorBadRequest,
     },
     {
-        path: '/enterprise',
-        name: 'enterprise',
-        component: Enterprise,
+        path: '/500',
+        name: '500',
+        component: ErrorSystem,
     }
 ];
 
