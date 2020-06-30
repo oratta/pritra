@@ -90,7 +90,7 @@
                         this.$store.commit('error/setMessage', null)
                     }
                 },
-                immediate: true
+                immediate: false
             },
             $route () {
                 this.$store.commit('error/setCode', null)
