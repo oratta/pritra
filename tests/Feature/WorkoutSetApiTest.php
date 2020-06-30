@@ -18,6 +18,11 @@ class WorkoutSetApiTest extends TestCase
     use RefreshDatabase;
     use SeedingDatabase;
 
+    /***
+     * @var User
+     */
+    private $user;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -120,8 +125,8 @@ class WorkoutSetApiTest extends TestCase
                             'name' => $recommendWorkoutSet->step->getViewName(),
                             'id' => $recommendWorkoutSet->step->id,
                         ],
-                        'reps' => $recommendWorkoutSet->min_rep_count,
-                        'set' => $recommendWorkoutSet->set_count,
+                        'repCount' => $recommendWorkoutSet->min_rep_count,
+                        'setCount' => $recommendWorkoutSet->set_count,
                     ]
                 ]
             ]
@@ -156,17 +161,17 @@ class WorkoutSetApiTest extends TestCase
         $this->__requestAndAssertHTTPStatus(
             'post','workout_set.set_plan',
             Controller::HTTP_STATUS_BAD_REQUEST,
-            [0=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]]);
+            ['planInfo' => [0=> ['step'=>['id'=>1],'repCount'=>20,'setCount'=>2]]]);
         $this->__requestAndAssertHTTPStatus(
             'post','workout_set.set_plan',
             Controller::HTTP_STATUS_BAD_REQUEST,
-            [10=> ['stepId'=>1,'repCount'=>20,'setCount'=>2]]);
+            ['planInfo' => [10=> ['step'=>['id'=>1],'repCount'=>20,'setCount'=>2]]]);
 
         //データが空
         $this->__requestAndAssertHTTPStatus(
             'post','workout_set.set_plan',
             Controller::HTTP_STATUS_BAD_REQUEST,
-            []);
+            ['planInfo' => []]);
 
 
         /*
@@ -174,19 +179,20 @@ class WorkoutSetApiTest extends TestCase
          */
         $data = [
             1 => [
-                'stepId'    => 1,
+                'step'    => ['id' => 1],
                 'repCount'           => 20,
                 'setCount'           => 2
             ],
             5 => [
-                'stepId'    => 10,
+                'step'    => ['id' => 10],
                 'repCount'           => 150,
                 'setCount'           => 3
             ],
         ];
-        $response = $this->actingAs($this->user)
-            ->json('post', route('workout_set.set_plan'), $data);
-        $response->assertStatus(Controller::HTTP_STATUS_CREATE);
+        $this->__requestAndAssertHTTPStatus(
+            'post','workout_set.set_plan',
+            Controller::HTTP_STATUS_CREATE,
+            ['planInfo' => $data]);
 
         /*
          * 設定したプランがisPlanのWorkoutSetとしてDBに保存されている
@@ -195,7 +201,7 @@ class WorkoutSetApiTest extends TestCase
         $this->assertEquals(count($data), $plan_l->count());
         foreach([1,5] as $i){
             $this->assertEquals($i, $plan_l->get($i)->menu_master_id);
-            $this->assertEquals($data[$i]['stepId'], $plan_l->get($i)->min_step_master_id);
+            $this->assertEquals($data[$i]['step']['id'], $plan_l->get($i)->min_step_master_id);
             $this->assertEquals($data[$i]['repCount'], $plan_l->get($i)->planed_min_rep_count);
             $this->assertEquals($data[$i]['setCount'], $plan_l->get($i)->planed_set_count);
         }
@@ -246,19 +252,27 @@ class WorkoutSetApiTest extends TestCase
         /**
          * dbのプランの情報をjsonで返す
          */
-        $menu_l = MenuMaster::whereIn('id',array_keys($idInfo))->get()->keyBy('id');
-        $step_l = StepMaster::whereIn('id',$idInfo)->get()->keyBy('id');
+//        $menu_l = MenuMaster::whereIn('id',array_keys($idInfo))->get()->keyBy('id');
+//        $step_l = StepMaster::whereIn('id',$idInfo)->get()->keyBy('id');
+        $planList = $this->user->getPlan_l();
         $expected = [];
-        foreach ($idInfo as $masterId => $stepId){
-            $expected[$masterId] = [
-                'menuName' => $menu_l->get($masterId)->name,
-                'stepName' => $step_l->get($stepId)->name,
-                'stepImageUrl' => $step_l->get($stepId)->getImageUrl(),
-                'planedRepCount' => $postData[$masterId]['repCount'],
-                'planedSetCount' => $postData[$masterId]['setCount'],
+        foreach ($planList as $menuId => $plan){
+            $menu = [
+                'name'  => $plan->menu->name,
+                'id'    => $menuId
+            ];
+            $step = [
+                'name'      => $plan->step->name,
+                'imageUrl'  => $plan->step->getImageUrl(),
+            ];
+            $expected[$plan->id] = [
+                'menu' => $menu,
+                'step' => $step,
+                'repCount' => $postData[$menuId]['repCount'],
+                'setCount' => $postData[$menuId]['setCount'],
             ];
         }
-        $response->assertJson($expected);
+        $response->assertJson(['planList' => $expected]);
     }
 
     private function __createPlan(array $idInfo)
@@ -266,12 +280,15 @@ class WorkoutSetApiTest extends TestCase
         $postData = [];
         foreach($idInfo as $masterId => $stepId){
             $postData[$masterId] = [
-                'stepId'    => $stepId,
+                'step'    =>  ['id' => $stepId],
                 'repCount'           => 20*$stepId,
                 'setCount'           => 2*$masterId
             ];
         }
-        $this->actingAs($this->user)->json('post', route('workout_set.set_plan'), $postData);
+        $this->__requestAndAssertHTTPStatus(
+            'post','workout_set.set_plan',
+            Controller::HTTP_STATUS_CREATE,
+            ['planInfo' => $postData]);
 
         return $postData;
     }

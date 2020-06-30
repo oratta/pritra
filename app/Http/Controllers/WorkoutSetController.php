@@ -65,16 +65,18 @@ class WorkoutSetController extends Controller
     {
         $planList = [];
         foreach( $planedWorkoutSet_l as $planedWorkoutSet){
-            $planList[$planedWorkoutSet->menu_master_id] = [];
-            $planList[$planedWorkoutSet->menu_master_id]['menu'] = [];
-            $planList[$planedWorkoutSet->menu_master_id]['menu']['name'] = $planedWorkoutSet->menu->name;
-            $planList[$planedWorkoutSet->menu_master_id]['menu']['id'] = $planedWorkoutSet->menu->id;
-            $planList[$planedWorkoutSet->menu_master_id]['step']['name'] = $planedWorkoutSet->step->name;
-            $planList[$planedWorkoutSet->menu_master_id]['step']['imageUrl'] = $planedWorkoutSet->step->getImageUrl();
-            $planList[$planedWorkoutSet->menu_master_id]['reps'] = $planedWorkoutSet->planed_min_rep_count;
-            $planList[$planedWorkoutSet->menu_master_id]['set'] = $planedWorkoutSet->planed_set_count;
+            $id = $planedWorkoutSet->id;
+            $planList[$id] = [];
+            $planList[$id]['id'] = $id;
+            $planList[$id]['menu'] = [];
+            $planList[$id]['menu']['name'] = $planedWorkoutSet->menu->name;
+            $planList[$id]['menu']['id'] = $planedWorkoutSet->menu->id;
+            $planList[$id]['step']['name'] = $planedWorkoutSet->step->name;
+            $planList[$id]['step']['imageUrl'] = $planedWorkoutSet->step->getImageUrl();
+            $planList[$id]['repCount'] = $planedWorkoutSet->planed_min_rep_count;
+            $planList[$id]['setCount'] = $planedWorkoutSet->planed_set_count;
         }
-        $difficultyList = [];
+        $difficultyTypeList = [];
         $tmpDifficultyList = config('pritra.DIFFICULTY_LIST');
         foreach($tmpDifficultyList as $index => $text){
             $difficulty = [];
@@ -163,8 +165,8 @@ class WorkoutSetController extends Controller
             $workoutSet = $this->user->createPlanedWorkoutSet(
                 $menuId,
                 $workoutSetInfo['step']['id'],
-                $workoutSetInfo['reps'],
-                $workoutSetInfo['set']
+                $workoutSetInfo['repCount'],
+                $workoutSetInfo['setCount']
             );
             $workoutSet_l[$menuId] = $workoutSet;
         }

@@ -26,7 +26,7 @@ class StepMaster extends Model
 
     /**
      */
-    public function getAchievedLevel($repCount, $setCount = 0)
+    public function getAchievedLevel($repCount, $set = 0)
     {
         $nextRepCount = 0;
         $nextWorkoutCount = 0;
@@ -34,7 +34,7 @@ class StepMaster extends Model
         $levelNum = 0;
         for ($i = 0; $i < 3; ++$i) {
             $levelNum = $i + 1;
-            $isAchieved = $this->isAchieved($levelNum, $repCount, $setCount);
+            $isAchieved = $this->isAchieved($levelNum, $repCount, $set);
             if (!$isAchieved) {
                 $levelNum--;
                 break;

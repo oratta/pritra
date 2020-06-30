@@ -21,7 +21,7 @@
                 <v-card>
                     <v-card-title>{{miniCard.menuName}}</v-card-title>
                     <v-card-text>{{miniCard.step.name}}</v-card-text>
-                    <v-card-text>{{miniCard.reps}}×{{miniCard.set}}</v-card-text>
+                    <v-card-text>{{miniCard.repCount}}×{{miniCard.set}}</v-card-text>
                     <div class="remove_btn">
                         <v-btn small @click="removeMenu(menuId)">Remove</v-btn>
                     </div>

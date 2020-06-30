@@ -37,7 +37,7 @@ class MenuController extends Controller
      *          name: Push Up
      *          recommend:{
      *              stepNumber: 1
-     *              reps: 20
+     *              repCount: 20
      *              set: 10
      *          },
      *          step_l:[

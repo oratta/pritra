@@ -14,10 +14,10 @@
         <div class="menu-card__objective center">
             <div class="count_box">
                 <div class="count blue--text">
-                    {{planInfo.reps}}
+                    {{planInfo.repCount}}
                 </div>
                 <div class="count_label">
-                    reps
+                    repCount
                 </div>
             </div>
             <div class="menu-card__form_training_set__input__spacer"></div>
@@ -85,7 +85,7 @@
                             :disabled="workout.isFinish"
                             color="accent"
                             size="small"
-                            @click="workout.isFinish=true"
+                            @click="finishWorkout(workout)"
                     >
                         Fin
                     </v-btn>
@@ -132,19 +132,23 @@ export default{
     methods: {
         init: function(){
             this.workoutList.push({
-                rep:this.planInfo.reps,
+                rep:this.planInfo.repCount,
                 label:"1st",
                 isFinish:false,
-                difficulty: 0,
+                difficultyType: 0,
             });
+        },
+        finishWorkout: function(workout){
+            workout.isFinish = true;
+            this.$emit('finish-workout', workout);
         },
         addWorkout: function(){
             let label = this.getSetNameLabel(this.workoutList.length + 1)
             this.workoutList.push({
-                rep: this.planInfo.reps,
+                rep: this.planInfo.repCount,
                 label: label,
                 isFinish:false,
-                difficulty: 0,
+                difficultyType: 0,
             });
         },
         getSetNameLabel: function(number){

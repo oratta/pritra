@@ -33,8 +33,8 @@ class UserMenu extends JsonResource
             $menuInfo_l[$menuId]['recommend']['step'] = [];
             $menuInfo_l[$menuId]['recommend']['step']['id'] = $recommendedWorkoutSet_l[$menuId]->step->id;
             $menuInfo_l[$menuId]['recommend']['step']['name'] = $recommendedWorkoutSet_l[$menuId]->step->getViewName();
-            $menuInfo_l[$menuId]['recommend']['reps'] = $recommendedWorkoutSet_l[$menuId]->min_rep_count;
-            $menuInfo_l[$menuId]['recommend']['set'] = $recommendedWorkoutSet_l[$menuId]->set_count;
+            $menuInfo_l[$menuId]['recommend']['repCount'] = $recommendedWorkoutSet_l[$menuId]->min_rep_count;
+            $menuInfo_l[$menuId]['recommend']['setCount'] = $recommendedWorkoutSet_l[$menuId]->set_count;
             $menuInfo_l[$menuId]['step_l'] = StepResource::collection($menu->steps->keyBy('id'));
             $historyInfo = [];
             $bestWorkoutSet_l[$menuId]->step->setViewName();

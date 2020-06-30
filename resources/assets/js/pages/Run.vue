@@ -3,12 +3,13 @@
         <h1>Run</h1>
         <v-row>
             <v-col lg="4" md="4" sm="6" cols="12"
-                   v-for="(planInfo, menuId) in planInfoList"
-                   :key="menuId"
+                   v-for="(planInfo, id) in planInfoList"
+                   :key="id"
             >
                 <MenuCardRun
                         :plan-info="planInfo"
                         :difficulty-list="difficultyList"
+                        v-on:finish-workout="finishWorkout(id, $event)"
                 ></MenuCardRun>
             </v-col>
         </v-row>
@@ -38,20 +39,16 @@ export default {
     },
     data(){
         return {
-            planInfoList: []
+            planInfoList: [],
+            executeList: {}
         }
     },
     methods:{
-        async finish(){
-            // const formData = new FormData();
-            // formData.append('selectedWorkoutSets', this.miniCardInfo);
-            // console.log('send request');
-            // const response = await axios.post('/api/plan', formData);
-            // console.log('get response');
-            // console.log(response);
-            // //TODO エラー処理
-
-            this.$router.push('finish');
+        async init() {
+            await this.fetch();
+            for (let id in this.planInfoList){
+                this.executeList[id] = {};
+            }
         },
         async fetch() {
             this.isLoading = true;
@@ -64,11 +61,26 @@ export default {
             this.planInfoList = response.data.planList;
             this.difficultyList = response.data.difficultyList;
         },
+        finishWorkout: function(id, workout){
+            this.executeList[id]['repCount'] = workout.repCount;
+            this.executeList[id]['difficultyType'] = workout.difficultyType;
+        },
+        async finish(){
+            // const formData = new FormData();
+            // formData.append('selectedWorkoutSets', this.miniCardInfo);
+            // console.log('send request');
+            // const response = await axios.post('/api/plan', formData);
+            // console.log('get response');
+            // console.log(response);
+            // //TODO エラー処理
+
+            this.$router.push('finish');
+        },
     },
     watch: {
         $route: {
             async handler () {
-                await this.fetch()
+                await this.init()
             },
             immediate: true
         }
