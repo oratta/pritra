@@ -63,16 +63,30 @@ class WorkoutSetController extends Controller
 
     private function __getReturnShowPlan(Collection $planedWorkoutSet_l)
     {
-        $return_l = [];
+        $planList = [];
         foreach( $planedWorkoutSet_l as $planedWorkoutSet){
-            $return_l[$planedWorkoutSet->menu_master_id] = [];
-            $return_l[$planedWorkoutSet->menu_master_id]['menuName'] = $planedWorkoutSet->menu->name;
-            $return_l[$planedWorkoutSet->menu_master_id]['stepName'] = $planedWorkoutSet->step->name;
-            $return_l[$planedWorkoutSet->menu_master_id]['stepImageUrl'] = $planedWorkoutSet->step->getImageUrl();
-            $return_l[$planedWorkoutSet->menu_master_id]['planedRepCount'] = $planedWorkoutSet->planed_min_rep_count;
-            $return_l[$planedWorkoutSet->menu_master_id]['planedSetCount'] = $planedWorkoutSet->planed_set_count;
+            $planList[$planedWorkoutSet->menu_master_id] = [];
+            $planList[$planedWorkoutSet->menu_master_id]['menu'] = [];
+            $planList[$planedWorkoutSet->menu_master_id]['menu']['name'] = $planedWorkoutSet->menu->name;
+            $planList[$planedWorkoutSet->menu_master_id]['menu']['id'] = $planedWorkoutSet->menu->id;
+            $planList[$planedWorkoutSet->menu_master_id]['step']['name'] = $planedWorkoutSet->step->name;
+            $planList[$planedWorkoutSet->menu_master_id]['step']['imageUrl'] = $planedWorkoutSet->step->getImageUrl();
+            $planList[$planedWorkoutSet->menu_master_id]['reps'] = $planedWorkoutSet->planed_min_rep_count;
+            $planList[$planedWorkoutSet->menu_master_id]['set'] = $planedWorkoutSet->planed_set_count;
         }
-        return $return_l;
+        $difficultyList = [];
+        $tmpDifficultyList = config('pritra.DIFFICULTY_LIST');
+        foreach($tmpDifficultyList as $index => $text){
+            $difficulty = [];
+            $difficulty['text'] = $text;
+            $difficulty['value'] = $index;
+            $difficultyList[] = $difficulty;
+        }
+
+        return [
+            "planList" => $planList,
+            "difficultyList" => $difficultyList
+        ];
     }
 
     /***

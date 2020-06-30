@@ -3,12 +3,12 @@
         <h1>Run</h1>
         <v-row>
             <v-col lg="4" md="4" sm="6" cols="12"
-                   v-for="menuCard in menuCardInfo"
-                   :key="menuCard.menuId"
+                   v-for="(planInfo, menuId) in planInfoList"
+                   :key="menuId"
             >
                 <MenuCardRun
-                        :menu-name="menuCard.menuName"
-                        :step-name="menuCard.stepName"
+                        :plan-info="planInfo"
+                        :difficulty-list="difficultyList"
                 ></MenuCardRun>
             </v-col>
         </v-row>
@@ -31,26 +31,14 @@
 
 <script>
 import MenuCardRun from '../components/MenuCardRun.vue'
+import {OK} from "../util";
 export default {
     components: {
         MenuCardRun,
     },
     data(){
         return {
-            menuCard: {
-                'menuName': 'Push Up',
-                'stepName': 'Full Push Up'
-            },
-            menuCardInfo: [
-                {
-                    'menuName': 'Push Up',
-                    'stepName': 'Full Push Up'
-                },
-                {
-                    'menuName': 'Pull Up',
-                    'stepName': 'Half Pull Up'
-                },
-            ],
+            planInfoList: []
         }
     },
     methods:{
@@ -64,6 +52,25 @@ export default {
             // //TODO エラー処理
 
             this.$router.push('finish');
+        },
+        async fetch() {
+            this.isLoading = true;
+            const response = await axios.get("/api/plan");
+            this.isLoading = false;
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status)
+                return false
+            }
+            this.planInfoList = response.data.planList;
+            this.difficultyList = response.data.difficultyList;
+        },
+    },
+    watch: {
+        $route: {
+            async handler () {
+                await this.fetch()
+            },
+            immediate: true
         }
     },
 }

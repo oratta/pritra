@@ -1,20 +1,20 @@
 <template>
     <v-card class="menu-card">
         <v-card-subtitle>
-            {{menuName}}
+            {{planInfo.menu.name}}
         </v-card-subtitle>
         <div class="menu-card__img__box">
             <img class="menu-card__img"
-                    src="https://hercules-beetle.com/wp-content/uploads/2017/03/full-pushup-01.png"
+                    :src="planInfo.step.imageUrl"
             ></img>
         </div>
         <div class="step_name center">
-            {{stepName}}
+            {{planInfo.step.name}}
         </div>
         <div class="menu-card__objective center">
             <div class="count_box">
                 <div class="count blue--text">
-                    20
+                    {{planInfo.reps}}
                 </div>
                 <div class="count_label">
                     reps
@@ -23,7 +23,7 @@
             <div class="menu-card__form_training_set__input__spacer"></div>
             <div class="count_box">
                 <div class="count blue--text">
-                    2
+                    {{planInfo.set}}
                 </div>
                 <div class="count_label">
                     set
@@ -33,7 +33,7 @@
         <div class="menu-card__form_training_set">
             <div
                     class="menu-card__form_training_set__input"
-                    v-for="workout in workout_s"
+                    v-for="workout in workoutList"
             >
                 <div class="set_number_label">
                     {{workout.label}}
@@ -72,8 +72,8 @@
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="weight">
                     <v-select
-                            v-model="sampleValue"
-                            :items="sampleItems"
+                            v-model="workout.difficulty"
+                            :items="difficultyList"
                             standard
                             :disabled="workout.isFinish"
                             label="training load..."
@@ -105,44 +105,46 @@
 </template>
 <script>
 export default{
-    data(){
-        return {
-            objectiveWorkoutSet: {
-                rep: 20,
-                set: 2,
-            },
-            sampleValue: 0,
-            sampleItems: [
-                'banana', 'apple', 'orange'
-            ],
-            workout_s:[],
-            SET_NAME_LABEL: {
+    computed: {
+        SET_NAME_LABEL: function(){
+            return {
                 1: '1st',
                 2: '2nd',
                 3: '3rd',
             }
         }
     },
+    data(){
+        return {
+            workoutList:[],
+        }
+    },
     props: {
-        menuName: {
-            type:String,
+        planInfo: {
+            type:Object,
             required:true,
         },
-        stepName: {
-            type:String,
+        difficultyList: {
+            type:Array,
             required:true,
         }
     },
     methods: {
         init: function(){
-            this.workout_s.push({rep:20, label:"1st", isFinish:false});
+            this.workoutList.push({
+                rep:this.planInfo.reps,
+                label:"1st",
+                isFinish:false,
+                difficulty: 0,
+            });
         },
         addWorkout: function(){
-            let label = this.getSetNameLabel(this.workout_s.length + 1)
-            this.workout_s.push({
-                rep: this.objectiveWorkoutSet.rep,
+            let label = this.getSetNameLabel(this.workoutList.length + 1)
+            this.workoutList.push({
+                rep: this.planInfo.reps,
                 label: label,
                 isFinish:false,
+                difficulty: 0,
             });
         },
         getSetNameLabel: function(number){

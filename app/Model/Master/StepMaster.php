@@ -19,7 +19,7 @@ class StepMaster extends Model
 
     public function getImageUrl()
     {
-        return "";
+        return "https://hercules-beetle.com/wp-content/uploads/2017/03/full-pushup-01.png";
     }
 
     //TODO 表示する際のnameにnumberを付ける : S1:Wall Push Up
