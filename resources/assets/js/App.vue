@@ -21,7 +21,7 @@
 
 <script>
     import {mapState} from 'vuex';
-    import { INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } from "./util";
+    import { INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } from "./util";
 
 
     export default {
@@ -57,6 +57,8 @@
                 async handler (val) {
                     if (val === INTERNAL_SERVER_ERROR) {
                         this.$router.push('/500')
+                    } else if (val === BAD_REQUEST){
+                        this.$router.push('/400')
                     } else if (val === UNAUTHORIZED) {
                         // トークンをリフレッシュ
                         await axios.get('/api/refresh-token')
