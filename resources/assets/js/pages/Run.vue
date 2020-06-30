@@ -64,6 +64,8 @@ export default {
         finishWorkout: function(id, workout){
             this.executeList[id]['repCount'] = workout.repCount;
             this.executeList[id]['difficultyType'] = workout.difficultyType;
+            console.log('add workout');
+            console.log(this.executeList[id]);
         },
         async finish(){
             // const formData = new FormData();

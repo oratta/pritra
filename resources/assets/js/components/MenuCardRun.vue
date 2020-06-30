@@ -23,7 +23,7 @@
             <div class="menu-card__form_training_set__input__spacer"></div>
             <div class="count_box">
                 <div class="count blue--text">
-                    {{planInfo.set}}
+                    {{planInfo.setCount}}
                 </div>
                 <div class="count_label">
                     set
@@ -41,7 +41,7 @@
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="count_box">
                     <div class="count">
-                        {{workout.rep}}
+                        {{workout.repCount}}
                     </div>
                     <div class="count_label">
                         reps
@@ -52,7 +52,7 @@
                         <v-btn
                                 icon
                                 small
-                                @click="workout.rep +=1"
+                                @click="workout.repCount +=1"
                                 :disabled="workout.isFinish"
                         >
                             <v-icon small>mdi-arrow-up-bold</v-icon>
@@ -62,7 +62,7 @@
                         <v-btn
                                 icon
                                 small
-                                @click="workout.rep -=1"
+                                @click="workout.repCount -=1"
                                 :disabled="workout.isFinish"
                         >
                             <v-icon small>mdi-arrow-down-bold</v-icon>
@@ -72,7 +72,7 @@
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="weight">
                     <v-select
-                            v-model="workout.difficulty"
+                            v-model="workout.difficultyType"
                             :items="difficultyList"
                             standard
                             :disabled="workout.isFinish"
@@ -132,10 +132,10 @@ export default{
     methods: {
         init: function(){
             this.workoutList.push({
-                rep:this.planInfo.repCount,
+                repCount:this.planInfo.repCount,
                 label:"1st",
                 isFinish:false,
-                difficultyType: 0,
+                difficultyType: 3,
             });
         },
         finishWorkout: function(workout){
@@ -145,10 +145,10 @@ export default{
         addWorkout: function(){
             let label = this.getSetNameLabel(this.workoutList.length + 1)
             this.workoutList.push({
-                rep: this.planInfo.repCount,
+                repCount: this.planInfo.repCount,
                 label: label,
                 isFinish:false,
-                difficultyType: 0,
+                difficultyType: 3,
             });
         },
         getSetNameLabel: function(number){
