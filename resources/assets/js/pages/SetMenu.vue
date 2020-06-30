@@ -36,11 +36,14 @@
 
 <script>
 import MenuCard from '../components/MenuCard.vue'
-import { OK } from '../util'
+import {BAD_REQUEST, OK} from '../util'
 
 export default {
     components: {
         MenuCard
+    },
+    computed: {
+        SYSTEM_CODE_GO_TO_RUN_PAGE: () => "systemCode:1"
     },
     data(){
         return {
@@ -65,9 +68,14 @@ export default {
             this.isLoading = true;
             const response = await axios.get("/api/menu");
             this.isLoading = false;
+            if(response.status == BAD_REQUEST && response.data.message == this.SYSTEM_CODE_GO_TO_RUN_PAGE){
+                this.$router.push('run');
+                return true;
+            }
+
             if (response.status !== OK) {
-                this.$store.commit('error/setCode', response.status)
-                return false
+                this.$store.commit('error/setCode', response.status);
+                return false;
             }
             this.menuCardInfo = response.data.data;
         },
@@ -92,7 +100,6 @@ export default {
 
         },
         async send(){
-            const formData = new FormData();
             console.log('send request');
             const response = await axios.post('/api/plan', {'planInfo': this.miniCardInfo});
             if(response.status == 201){

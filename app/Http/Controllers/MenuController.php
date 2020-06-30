@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
 {
+    const SYSTEM_CODE_GO_TO_RUN_PAGE = "systemCode:1";
     public function __construct()
     {
         $this->middleware('auth');
@@ -66,7 +67,7 @@ class MenuController extends Controller
     public function indexUserMenu(Request $request)
     {
         if($this->user->hasPlan()){
-            return abort(Controller::HTTP_STATUS_BAD_REQUEST, "he or she has a plan");
+            return abort(Controller::HTTP_STATUS_BAD_REQUEST, self::SYSTEM_CODE_GO_TO_RUN_PAGE);
         }
 
         return new UserMenuResource($this->user);
