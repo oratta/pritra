@@ -126,9 +126,29 @@ class WorkoutSetController extends Controller
         return response('workouts add and fix a workout set',Controller::HTTP_STATUS_CREATE);
     }
 
-    public function showHistory(Request $request)
+    /***
+     * @param Request $request
+     * [
+     *      workoutSetId => [
+     *          id
+     *          menu => [name]
+     *          step => [name]
+     *          plannedMinRepCount,
+     *          plannedSetCount,
+     *          setCount,
+     *          repCount,
+     *          workoutList => [
+     *              [
+     *                  repCount
+     *                  difficultyType
+     *              ],
+     *          ]
+     *      ]
+     * ]
+     */
+    public function showLatest(Request $request)
     {
-        return $this->responseNotImplemented();
+        return ["O.K"];
     }
 
     public function index(Request $request)

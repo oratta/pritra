@@ -47,7 +47,7 @@ Route::get('plan', 'WorkoutSetController@showPlan')->name('workout_set.show_plan
 //実行したワークアウトの記録
 Route::post('workout_set', 'WorkoutSetController@add')->name('workout_set.add');
 //履歴の表示(最後に実行したワークアウトの情報)
-Route::get('workout_set', 'WorkoutSetController@showHistory')->name('workout_set.history');
+Route::get('workout_set/latest', 'WorkoutSetController@showLatest')->name('workout_set.latest');
 
 //auth
 Route::post('/register', 'Auth\RegisterController@register')->name('register');

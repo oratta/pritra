@@ -535,4 +535,92 @@ class WorkoutSetApiTest extends TestCase
         ];
         $response->assertJson($expected);
     }
+
+    /**
+     * @test
+     */
+    public function should_最後のワークアウトセットの情報を返す()
+    {
+        /**
+         * ログインしていないと使えない
+         */
+        $this->__requestAndAssertLogin('get', 'workout_set.latest');
+
+        //準備
+        $workoutSetInfo = $this->_doWorkououtSet();
+
+        /**
+         * 200
+         */
+        $response = $this->__requestAndAssertHttpStatus(
+            'get', 'workout_set.latest',
+            Controller::HTTP_STATUS_OK
+        );
+
+        $expected = [];
+        foreach($workoutSetInfo as $workoutSetId => $workoutInfo){
+            $workoutSet = WorkoutSet::find($workoutSetId);
+            $expected[$workoutSetId] = [];
+            $expected[$workoutSetId]['id'] = $workoutSetId;
+            $expected[$workoutSetId]['menu'] = ['name' => MenuMaster::find($workoutInfo["menuId"])->name];
+            $expected[$workoutSetId]['step'] = ['name' => StepMaster::find($workoutInfo["stepId"])->name];
+            $expected[$workoutSetId]['plannedMinRepCount'] = $workoutSet->planned_min_rep_count;
+            $expected[$workoutSetId]['plannedSetCount'] = $workoutSet->set_count;
+            $expected[$workoutSetId]['minRepCount'] = $workoutSet->min_rep_count;
+            $expected[$workoutSetId]['setCount'] = $workoutSet->set_count;
+            $expected[$workoutSetId]['workoutList'] = $workoutInfo['workoutList'];
+        }
+        $response->assertJson($expected);
+
+    }
+
+    private function _doWorkououtSet()
+    {
+        //プランの作成
+        //masterId => stepId
+        $idInfo = [
+            1 => 5,
+            5 => 42
+        ];
+        $this->__createPlan($idInfo);
+        $planedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
+        $this->assertEquals(count($idInfo), $planedWorkoutSet_l->count());
+        $workoutSetId_l = $planedWorkoutSet_l->pluck('id');
+        $workoutExecuteData = [];
+        foreach ($workoutSetId_l as $workoutSetId){
+            $workoutExecuteData[$workoutSetId] = [];
+            $setCount = mt_rand(1,5);
+            for($i=0;$i<$setCount;$i++){
+                $workoutExecuteData[$workoutSetId][] = [
+                    'repCount' => mt_rand(0,20),
+                    'difficultyType' => mt_rand(1, count(config('pritra.DIFFICULTY_LIST'))),
+                ];
+            }
+        }
+        //プランの実行
+        $this->__requestAndAssertHttpStatus(
+            'post', 'workout_set.add',
+            Controller::HTTP_STATUS_CREATE,
+            $workoutExecuteData
+        );
+
+        $workoutSetInfo = [];
+        foreach ($workoutExecuteData as $workoutSetId => $workoutList){
+            $workoutSetInfo[$workoutSetId] = [];
+            $workoutSetInfo[$workoutSetId]['workoutList'] = $workoutList;
+            $menuStepId = $this->_array_kshift($idInfo);
+            $workoutSetInfo[$workoutSetId]['menuId'] = key($menuStepId);
+            $workoutSetInfo[$workoutSetId]['stepId'] = current($menuStepId);
+        }
+
+        return $workoutSetInfo;
+    }
+
+    private function _array_kshift(&$arr)
+    {
+        list($k) = array_keys($arr);
+        $r  = array($k=>$arr[$k]);
+        unset($arr[$k]);
+        return $r;
+    }
 }
