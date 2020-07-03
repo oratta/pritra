@@ -47,7 +47,7 @@ export default {
         async init() {
             await this.fetch();
             for (let id in this.planInfoList){
-                this.executeList[id] = {};
+                this.executeList[id] = [];
             }
         },
         async fetch() {
@@ -62,21 +62,24 @@ export default {
             this.difficultyList = response.data.difficultyList;
         },
         finishWorkout: function(id, workout){
-            this.executeList[id]['repCount'] = workout.repCount;
-            this.executeList[id]['difficultyType'] = workout.difficultyType;
+            var info = {};
+            info['repCount'] = workout.repCount;
+            info['difficultyType'] = workout.difficultyType;
+            this.executeList[id].push(info);
             console.log('add workout');
-            console.log(this.executeList[id]);
+            console.log(this.executeList);
         },
         async finish(){
-            // const formData = new FormData();
-            // formData.append('selectedWorkoutSets', this.miniCardInfo);
-            // console.log('send request');
-            // const response = await axios.post('/api/plan', formData);
-            // console.log('get response');
-            // console.log(response);
-            // //TODO エラー処理
+            console.log('send request');
+            const response = await axios.post('/api/workout_set', this.executeList);
+            if(response.status == 201){
+                this.$router.push('finish');
+            }
+            else {
+                console.log('get response error');
+                console.log(response);
+            }
 
-            this.$router.push('finish');
         },
     },
     watch: {

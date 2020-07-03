@@ -112,7 +112,6 @@ class WorkoutSetController extends Controller
         if ($workoutSet_l->count()!==count($workoutSetId_l)){
             return abort(Controller::HTTP_STATUS_BAD_REQUEST, "bad request");
         }
-        $minRepCount = PHP_INT_MAX;
         foreach ($workoutSet_l as $id => $workoutSet){
             if ($workoutSet->user_id !== $this->user->id){
                 return abort(Controller::HTTP_STATUS_BAD_REQUEST, "bad request");
