@@ -179,7 +179,7 @@ class WorkoutSetController extends Controller
             throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
         }
         foreach ($planInfo as $menuId => $workoutSetInfo){
-            if ($menuId <=0 or $menuId >= MenuMaster::MASTER_COUNT){
+            if ($menuId <=0 or $menuId > MenuMaster::MASTER_COUNT){
                 throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
             }
             $workoutSet = $this->user->createplannedWorkoutSet(
