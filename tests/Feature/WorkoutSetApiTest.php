@@ -202,8 +202,8 @@ class WorkoutSetApiTest extends TestCase
         foreach([1,5] as $i){
             $this->assertEquals($i, $plan_l->get($i)->menu_master_id);
             $this->assertEquals($data[$i]['step']['id'], $plan_l->get($i)->min_step_master_id);
-            $this->assertEquals($data[$i]['repCount'], $plan_l->get($i)->planed_min_rep_count);
-            $this->assertEquals($data[$i]['setCount'], $plan_l->get($i)->planed_set_count);
+            $this->assertEquals($data[$i]['repCount'], $plan_l->get($i)->planned_min_rep_count);
+            $this->assertEquals($data[$i]['setCount'], $plan_l->get($i)->planned_set_count);
         }
 
     }
@@ -295,8 +295,8 @@ class WorkoutSetApiTest extends TestCase
 
     private function __addWorkoutSet()
     {
-        $planedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
-        $workoutSetId_l = $planedWorkoutSet_l->pluck('id');
+        $plannedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
+        $workoutSetId_l = $plannedWorkoutSet_l->pluck('id');
         $workoutExecuteData = [];
         foreach ($workoutSetId_l as $workoutSetId){
             $workoutExecuteData[$workoutSetId] = [];
@@ -346,10 +346,10 @@ class WorkoutSetApiTest extends TestCase
         ];
         $postData = $this->__createPlan($idInfo);
 
-        $planedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
-        $this->assertEquals(count($idInfo), $planedWorkoutSet_l->count());
+        $plannedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
+        $this->assertEquals(count($idInfo), $plannedWorkoutSet_l->count());
 
-        $workoutSetId_l = $planedWorkoutSet_l->pluck('id');
+        $workoutSetId_l = $plannedWorkoutSet_l->pluck('id');
         $workoutExecuteData = [];
         foreach ($workoutSetId_l as $workoutSetId){
             $workoutExecuteData[$workoutSetId] = [];
@@ -365,8 +365,8 @@ class WorkoutSetApiTest extends TestCase
         /*
          * 400 WorkoutSetのIDが自分のものでない
          */
-        $planedWorkoutSet_l->first()->user_id += 1;
-        $planedWorkoutSet_l->first()->save();
+        $plannedWorkoutSet_l->first()->user_id += 1;
+        $plannedWorkoutSet_l->first()->save();
         $responseAdd = $this->__requestAndAssertHttpStatus(
             'post', 'workout_set.add',
             Controller::HTTP_STATUS_BAD_REQUEST,
@@ -376,15 +376,15 @@ class WorkoutSetApiTest extends TestCase
         /**
          * 201 plan中のworkoutSetが実行後のデータになっている
          */
-        $planedWorkoutSet_l->first()->user_id -= 1;
-        $planedWorkoutSet_l->first()->save();
+        $plannedWorkoutSet_l->first()->user_id -= 1;
+        $plannedWorkoutSet_l->first()->save();
         $responseAdd = $this->__requestAndAssertHttpStatus(
             'post', 'workout_set.add',
             Controller::HTTP_STATUS_CREATE,
             $workoutExecuteData
         );
         $excusedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
-        $this->assertEquals($planedWorkoutSet_l->count(), $excusedWorkoutSet_l->count());
+        $this->assertEquals($plannedWorkoutSet_l->count(), $excusedWorkoutSet_l->count());
         foreach ($excusedWorkoutSet_l as $id => $workoutSet){
             $workoutData =  collect($workoutExecuteData[$id]);
             $minRepCount = $workoutData->min('repCount');
@@ -583,9 +583,9 @@ class WorkoutSetApiTest extends TestCase
             5 => 42
         ];
         $this->__createPlan($idInfo);
-        $planedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
-        $this->assertEquals(count($idInfo), $planedWorkoutSet_l->count());
-        $workoutSetId_l = $planedWorkoutSet_l->pluck('id');
+        $plannedWorkoutSet_l = WorkoutSet::where('user_id', $this->user->id)->get()->keyBy('id');
+        $this->assertEquals(count($idInfo), $plannedWorkoutSet_l->count());
+        $workoutSetId_l = $plannedWorkoutSet_l->pluck('id');
         $workoutExecuteData = [];
         foreach ($workoutSetId_l as $workoutSetId){
             $workoutExecuteData[$workoutSetId] = [];

@@ -38,43 +38,43 @@ class WorkoutSetController extends Controller
     public function setPlan(Request $request)
     {
         try{
-            $planedWorkoutSet_l = $this->__inputSetPlan($request);
+            $plannedWorkoutSet_l = $this->__inputSetPlan($request);
         }
         catch(BadRequestException $e) {
             return $this->responseBadRequest($e);
         }
 
-        foreach ($planedWorkoutSet_l as $planedWorkoutSet){
-            $planedWorkoutSet->save();
+        foreach ($plannedWorkoutSet_l as $plannedWorkoutSet){
+            $plannedWorkoutSet->save();
         }
         return response('plan create',Controller::HTTP_STATUS_CREATE);
     }
 
     public function showPlan(Request $request)
     {
-        $planedWorkoutSet_l = $this->user->getPlan_l();
-        if ($planedWorkoutSet_l->count() === 0){
+        $plannedWorkoutSet_l = $this->user->getPlan_l();
+        if ($plannedWorkoutSet_l->count() === 0){
             return abort(Controller::HTTP_STATUS_NO_CONTENT, "there is no plan");
         }
         else {
-            return $this->__getReturnShowPlan($planedWorkoutSet_l);
+            return $this->__getReturnShowPlan($plannedWorkoutSet_l);
         }
     }
 
-    private function __getReturnShowPlan(Collection $planedWorkoutSet_l)
+    private function __getReturnShowPlan(Collection $plannedWorkoutSet_l)
     {
         $planList = [];
-        foreach( $planedWorkoutSet_l as $planedWorkoutSet){
-            $id = $planedWorkoutSet->id;
+        foreach( $plannedWorkoutSet_l as $plannedWorkoutSet){
+            $id = $plannedWorkoutSet->id;
             $planList[$id] = [];
             $planList[$id]['id'] = $id;
             $planList[$id]['menu'] = [];
-            $planList[$id]['menu']['name'] = $planedWorkoutSet->menu->name;
-            $planList[$id]['menu']['id'] = $planedWorkoutSet->menu->id;
-            $planList[$id]['step']['name'] = $planedWorkoutSet->step->name;
-            $planList[$id]['step']['imageUrl'] = $planedWorkoutSet->step->getImageUrl();
-            $planList[$id]['repCount'] = $planedWorkoutSet->planed_min_rep_count;
-            $planList[$id]['setCount'] = $planedWorkoutSet->planed_set_count;
+            $planList[$id]['menu']['name'] = $plannedWorkoutSet->menu->name;
+            $planList[$id]['menu']['id'] = $plannedWorkoutSet->menu->id;
+            $planList[$id]['step']['name'] = $plannedWorkoutSet->step->name;
+            $planList[$id]['step']['imageUrl'] = $plannedWorkoutSet->step->getImageUrl();
+            $planList[$id]['repCount'] = $plannedWorkoutSet->planned_min_rep_count;
+            $planList[$id]['setCount'] = $plannedWorkoutSet->planned_set_count;
         }
         $difficultyTypeList = [];
         $tmpDifficultyList = config('pritra.DIFFICULTY_LIST');
@@ -181,7 +181,7 @@ class WorkoutSetController extends Controller
             if ($menuId <=0 or $menuId >= MenuMaster::MASTER_COUNT){
                 throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
             }
-            $workoutSet = $this->user->createPlanedWorkoutSet(
+            $workoutSet = $this->user->createplannedWorkoutSet(
                 $menuId,
                 $workoutSetInfo['step']['id'],
                 $workoutSetInfo['repCount'],
