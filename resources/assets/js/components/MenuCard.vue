@@ -49,7 +49,7 @@
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="count_box">
                     <div class="count">
-                        {{selectedWorkoutSet.set}}
+                        {{selectedWorkoutSet.setCount}}
                     </div>
                     <div class="count_label">
                         set

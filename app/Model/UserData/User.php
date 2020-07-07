@@ -55,7 +55,7 @@ class User extends Authenticatable
         return $recommendWorkoutSets;
     }
 
-    public function getRecentWorkoutSet_l($limit=1)
+    public function getRecentWorkoutSetList($limit=1)
     {
         return WorkoutSet::getRecentWorkoutSetList($this->id);
     }

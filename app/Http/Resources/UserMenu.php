@@ -25,7 +25,7 @@ class UserMenu extends JsonResource
         $menu_l = MenuMaster::get()->keyBy('id');
         $recommendedWorkoutSet_l = $user->getRecommendedWorkoutSets();
         $bestWorkoutSet_l = $user->getBestWorkoutSets();
-        $recentWorkoutSetListList = $user->getRecentWorkoutSet_l(3);
+        $recentWorkoutSetListList = $user->getRecentWorkoutSetList(3);
         foreach ($menu_l as $menuId => $menu){
             $menuInfo_l[$menuId]['name'] = $menu->name;
             $menuInfo_l[$menuId]['id'] = $menu->id;

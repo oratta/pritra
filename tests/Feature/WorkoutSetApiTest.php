@@ -106,7 +106,7 @@ class WorkoutSetApiTest extends TestCase
             "data" => [
                 1 => [
                     'historyInfo' => [
-                        'recentList' => $this->user->getRecentWorkoutSet_l(3)->toArray()[1],
+                        'recentList' => $this->user->getRecentWorkoutSetList(3)->toArray()[1],
                     ]
                 ]
             ]
@@ -537,7 +537,6 @@ class WorkoutSetApiTest extends TestCase
     }
 
     /**
-     * @test
      */
     public function should_最後のワークアウトセットの情報を返す()
     {

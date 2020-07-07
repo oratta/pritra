@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Model\UserData\WorkoutSet;
 use Illuminate\Database\Eloquent\Collection;
+use App\Model\UserData\WorkoutSet as WorkoutSetResource;
 
 class WorkoutSetController extends Controller
 {
@@ -148,7 +149,7 @@ class WorkoutSetController extends Controller
      */
     public function showLatest(Request $request)
     {
-        return ["O.K"];
+        return WorkoutSetResource::collection($this->user->getRecentWorkoutSetList());
     }
 
     public function index(Request $request)
