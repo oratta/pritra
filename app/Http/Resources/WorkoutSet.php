@@ -22,7 +22,7 @@ class WorkoutSet extends JsonResource
             'plannedMinRepCount' => $this->planned_min_rep_count,
             'plannedSetCount' => $this->planned_set_count,
             'setCount' => $this->set_count,
-            'repCount' => $this->rep>count,
+            'repCount' => $this->min_rep_count,
             'workoutList' => WorkoutResource::collection($this->workouts),
         ];
     }

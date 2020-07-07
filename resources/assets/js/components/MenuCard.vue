@@ -102,7 +102,7 @@
                 <div class="level_box__card"
                     v-for="step in menu.step_l" :key=step.number
                 >
-                    <div class="level_box__card__step_name">S{{step.number}} {{step.name}}</div>
+                    <div class="level_box__card__step_name">{{step.name}}</div>
                     <ul>
                         <li v-for="level in step.levelInfo" :key="level.level">
                             Lv{{level.level}} : {{level.repCount}} × {{level.setCount}}
