@@ -73,7 +73,7 @@ export default {
             console.log('send request');
             const response = await axios.post('/api/workout_set', this.executeList);
             if(response.status == 201){
-                this.$router.push('finish');
+                this.$router.push('plan');
             }
             else {
                 console.log('get response error');
