@@ -24,6 +24,7 @@ class WorkoutSet extends JsonResource
             'setCount' => $this->set_count,
             'repCount' => $this->min_rep_count,
             'workoutList' => WorkoutResource::collection($this->workouts),
+            'date' => $this->end_time,
         ];
     }
 }
