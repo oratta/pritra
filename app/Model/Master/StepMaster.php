@@ -19,14 +19,14 @@ class StepMaster extends Model
 
     public function getImageUrl()
     {
-        return "";
+        return "https://hercules-beetle.com/wp-content/uploads/2017/03/full-pushup-01.png";
     }
 
     //TODO 表示する際のnameにnumberを付ける : S1:Wall Push Up
 
     /**
      */
-    public function getAchievedLevel($repCount, $setCount = 0)
+    public function getAchievedLevel($repCount, $set = 0)
     {
         $nextRepCount = 0;
         $nextWorkoutCount = 0;
@@ -34,7 +34,7 @@ class StepMaster extends Model
         $levelNum = 0;
         for ($i = 0; $i < 3; ++$i) {
             $levelNum = $i + 1;
-            $isAchieved = $this->isAchieved($levelNum, $repCount, $setCount);
+            $isAchieved = $this->isAchieved($levelNum, $repCount, $set);
             if (!$isAchieved) {
                 $levelNum--;
                 break;

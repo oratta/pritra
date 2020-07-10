@@ -1,6 +1,7 @@
 <template>
     <v-container class="set-menu">
         <h1>Set Menu</h1>
+        <div v-if="isLoading">now loading...</div>
         <v-row>
             <v-col lg="4" md="4" sm="6" cols="12"
                    v-for="menuCard in menuCardInfo"
@@ -20,7 +21,7 @@
                 <v-card>
                     <v-card-title>{{miniCard.menuName}}</v-card-title>
                     <v-card-text>{{miniCard.step.name}}</v-card-text>
-                    <v-card-text>{{miniCard.reps}}×{{miniCard.set}}</v-card-text>
+                    <v-card-text>{{miniCard.repCount}}×{{miniCard.set}}</v-card-text>
                     <div class="remove_btn">
                         <v-btn small @click="removeMenu(menuId)">Remove</v-btn>
                     </div>
@@ -35,14 +36,18 @@
 
 <script>
 import MenuCard from '../components/MenuCard.vue'
-import { OK } from '../util'
+import {BAD_REQUEST, OK} from '../util'
 
 export default {
     components: {
         MenuCard
     },
+    computed: {
+        SYSTEM_CODE_GO_TO_RUN_PAGE: () => "systemCode:1"
+    },
     data(){
         return {
+            isLoading: false,
             isShowCart: false,
             miniCardInfo: {},
             menuCardInfo: [
@@ -60,10 +65,17 @@ export default {
     },
     methods:{
         async fetchMenuInfo_l () {
+            this.isLoading = true;
             const response = await axios.get("/api/menu");
+            this.isLoading = false;
+            if(response.status == BAD_REQUEST && response.data.message == this.SYSTEM_CODE_GO_TO_RUN_PAGE){
+                this.$router.push('run');
+                return true;
+            }
+
             if (response.status !== OK) {
-                this.$store.commit('error/setCode', response.status)
-                return false
+                this.$store.commit('error/setCode', response.status);
+                return false;
             }
             this.menuCardInfo = response.data.data;
         },
@@ -88,15 +100,15 @@ export default {
 
         },
         async send(){
-            const formData = new FormData();
-            formData.append('selectedWorkoutSets', this.miniCardInfo);
             console.log('send request');
-            const response = await axios.post('/api/plan', formData);
-            console.log('get response');
-            console.log(response);
-            //TODO エラー処理
-
-            this.$router.push('run');
+            const response = await axios.post('/api/plan', {'planInfo': this.miniCardInfo});
+            if(response.status == 201){
+                this.$router.push('run');
+            }
+            else {
+                console.log('get response error');
+                console.log(response);
+            }
         },
     },
     watch: {

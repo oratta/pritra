@@ -103,7 +103,7 @@ class WorkoutController extends Controller
         $successMessage ="
 {$workout->menu->name}
 step{$workout->step->step_number}:{$workout->step->name}
-{$workout->count} reps : {$diffList[$workout->difficulty_type]}
+{$workout->count} repCount : {$diffList[$workout->difficulty_type]}
  !!";
         $paramString = [$workout->menu_master_id, $workout->step_master_id, $workout->count, $workout->difficulty_type];
 

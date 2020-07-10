@@ -14,6 +14,16 @@
             </v-toolbar-items>
         </v-app-bar>
         <v-content>
+            <v-alert
+                    v-model="alert"
+                    border="left"
+                    close-text="Close Alert"
+                    color="deep-purple accent-4"
+                    dark
+                    dismissible
+            >
+                {{alertMessage}}
+            </v-alert>
             <router-view />
         </v-content>
     </v-app>
@@ -21,12 +31,14 @@
 
 <script>
     import {mapState} from 'vuex';
-    import { INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } from "./util";
+    import { INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } from "./util";
 
 
     export default {
         data(){
             return{
+                alert: false,
+                alertMessage: ""
             }
         },
         computed: {
@@ -55,20 +67,30 @@
         watch: {
             errorCode: {
                 async handler (val) {
-                    if (val === INTERNAL_SERVER_ERROR) {
-                        this.$router.push('/500')
-                    } else if (val === UNAUTHORIZED) {
+                    if (val === UNAUTHORIZED) {
                         // トークンをリフレッシュ
                         await axios.get('/api/refresh-token')
                         // ストアのuserをクリア
                         this.$store.commit('auth/setUser', null)
                         // ログイン画面へ
                         this.$router.push('/login')
-                    } else if (val === NOT_FOUND){
-                        this.$router.push('/not-found')
+                    //TODO isProductの実装
+                    }else if(false){
+                        if (val === INTERNAL_SERVER_ERROR) {
+                            this.$router.push('/500')
+                        } else if (val === BAD_REQUEST){
+                            this.$router.push('/400')
+                        } else if (val === NOT_FOUND){
+                            this.$router.push('/not-found')
+                        }
+                    }else if (val !== null){
+                        this.alertMessage = "found " + val;
+                        this.alert = true;
+                        this.$store.commit('error/setCode', null)
+                        this.$store.commit('error/setMessage', null)
                     }
                 },
-                immediate: true
+                immediate: false
             },
             $route () {
                 this.$store.commit('error/setCode', null)

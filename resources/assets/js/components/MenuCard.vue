@@ -28,20 +28,20 @@
             <div class="menu-card__form_training_set__input">
                 <div class="count_box">
                     <div class="count">
-                        {{selectedWorkoutSet.reps}}
+                        {{selectedWorkoutSet.repCount}}
                     </div>
                     <div class="count_label">
-                        reps
+                        repCount
                     </div>
                 </div>
                 <div class="button_up_down">
                     <div class="button_up_down__up">
-                        <v-btn icon small @click="selectedWorkoutSet.reps +=1">
+                        <v-btn icon small @click="selectedWorkoutSet.repCount +=1">
                             <v-icon small>mdi-arrow-up-bold</v-icon>
                         </v-btn>
                     </div>
                     <div class="button_up_down__down">
-                        <v-btn icon small @click="selectedWorkoutSet.reps -=1">
+                        <v-btn icon small @click="selectedWorkoutSet.repCount -=1">
                             <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
                     </div>
@@ -49,7 +49,7 @@
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="count_box">
                     <div class="count">
-                        {{selectedWorkoutSet.set}}
+                        {{selectedWorkoutSet.setCount}}
                     </div>
                     <div class="count_label">
                         set
@@ -57,12 +57,12 @@
                 </div>
                 <div class="button_up_down">
                     <div class="button_up_down__up">
-                        <v-btn icon small @click="selectedWorkoutSet.set +=1">
+                        <v-btn icon small @click="selectedWorkoutSet.setCount +=1">
                             <v-icon small>mdi-arrow-up-bold</v-icon>
                         </v-btn>
                     </div>
                     <div class="button_up_down__down">
-                        <v-btn icon small @click="selectedWorkoutSet.set -=1">
+                        <v-btn icon small @click="selectedWorkoutSet.setCount -=1">
                             <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
                     </div>
@@ -102,7 +102,7 @@
                 <div class="level_box__card"
                     v-for="step in menu.step_l" :key=step.number
                 >
-                    <div class="level_box__card__step_name">S{{step.number}} {{step.name}}</div>
+                    <div class="level_box__card__step_name">{{step.name}}</div>
                     <ul>
                         <li v-for="level in step.levelInfo" :key="level.level">
                             Lv{{level.level}} : {{level.repCount}} × {{level.setCount}}
@@ -116,7 +116,7 @@
                 </div>
                 <div class="history_box__card">
                     <div class="history_box__card__step_name">{{historyInfo.best.step.name}}</div>
-                    <div class="history_box__card__count">{{historyInfo.best.rep}} × {{historyInfo.best.set}}</div>
+                    <div class="history_box__card__count">{{historyInfo.best.repCount}} × {{historyInfo.best.setCount}}</div>
                     <div class="history_box__card__time">{{historyInfo.best.date}}</div>
                 </div>
                 <div class="history_box__title">
@@ -132,7 +132,7 @@
                      v-for="recent in historyInfo.recentList"
                 >
                     <div class="history_box__card__step_name">{{recent.step.name}}</div>
-                    <div class="history_box__card__count">{{recent.rep}} × {{recent.set}}</div>
+                    <div class="history_box__card__count">{{recent.repCount}} × {{recent.setCount}}</div>
                     <div class="history_box__card__time">{{recent.date}}</div>
                 </div>
             </div>
@@ -150,16 +150,16 @@ export default{
                     name: '',
                     number: 0,
                 },
-                reps: 0,
-                set: 0,
+                repCount: 0,
+                setCount: 0,
             },
             historyInfo: {
                 'best': {
                     step: {
                         name: '',
                     },
-                    rep: 0,
-                    set: 0,
+                    repCount: 0,
+                    setCount: 0,
                     date: '',
                 },
                 'recentList':[
@@ -167,8 +167,8 @@ export default{
                         step:{
                             name: '',
                         },
-                        rep: 0,
-                        set: 0,
+                        repCount: 0,
+                        setCount: 0,
                         date: '',
                     },
                 ]

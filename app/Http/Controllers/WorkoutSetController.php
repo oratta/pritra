@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Model\UserData\WorkoutSet;
 use Illuminate\Database\Eloquent\Collection;
+use App\Model\UserData\WorkoutSet as WorkoutSetResource;
 
 class WorkoutSetController extends Controller
 {
@@ -38,41 +39,57 @@ class WorkoutSetController extends Controller
     public function setPlan(Request $request)
     {
         try{
-            $planedWorkoutSet_l = $this->__inputSetPlan($request);
+            $plannedWorkoutSet_l = $this->__inputSetPlan($request);
         }
         catch(BadRequestException $e) {
-            return abort($e->getCode(), $e->getMessage());
+            return $this->responseBadRequest($e);
         }
 
-        foreach ($planedWorkoutSet_l as $planedWorkoutSet){
-            $planedWorkoutSet->save();
+        foreach ($plannedWorkoutSet_l as $plannedWorkoutSet){
+            $plannedWorkoutSet->save();
         }
         return response('plan create',Controller::HTTP_STATUS_CREATE);
     }
 
     public function showPlan(Request $request)
     {
-        $planedWorkoutSet_l = $this->user->getPlan_l();
-        if ($planedWorkoutSet_l->count() === 0){
+        $plannedWorkoutSet_l = $this->user->getPlan_l();
+        if ($plannedWorkoutSet_l->count() === 0){
             return abort(Controller::HTTP_STATUS_NO_CONTENT, "there is no plan");
         }
         else {
-            return $this->__getReturnShowPlan($planedWorkoutSet_l);
+            return $this->__getReturnShowPlan($plannedWorkoutSet_l);
         }
     }
 
-    private function __getReturnShowPlan(Collection $planedWorkoutSet_l)
+    private function __getReturnShowPlan(Collection $plannedWorkoutSet_l)
     {
-        $return_l = [];
-        foreach( $planedWorkoutSet_l as $planedWorkoutSet){
-            $return_l[$planedWorkoutSet->menu_master_id] = [];
-            $return_l[$planedWorkoutSet->menu_master_id]['menuName'] = $planedWorkoutSet->menu->name;
-            $return_l[$planedWorkoutSet->menu_master_id]['stepName'] = $planedWorkoutSet->step->name;
-            $return_l[$planedWorkoutSet->menu_master_id]['stepImageUrl'] = $planedWorkoutSet->step->getImageUrl();
-            $return_l[$planedWorkoutSet->menu_master_id]['planedRepCount'] = $planedWorkoutSet->planed_min_rep_count;
-            $return_l[$planedWorkoutSet->menu_master_id]['planedSetCount'] = $planedWorkoutSet->planed_set_count;
+        $planList = [];
+        foreach( $plannedWorkoutSet_l as $plannedWorkoutSet){
+            $id = $plannedWorkoutSet->id;
+            $planList[$id] = [];
+            $planList[$id]['id'] = $id;
+            $planList[$id]['menu'] = [];
+            $planList[$id]['menu']['name'] = $plannedWorkoutSet->menu->name;
+            $planList[$id]['menu']['id'] = $plannedWorkoutSet->menu->id;
+            $planList[$id]['step']['name'] = $plannedWorkoutSet->step->name;
+            $planList[$id]['step']['imageUrl'] = $plannedWorkoutSet->step->getImageUrl();
+            $planList[$id]['repCount'] = $plannedWorkoutSet->planned_min_rep_count;
+            $planList[$id]['setCount'] = $plannedWorkoutSet->planned_set_count;
         }
-        return $return_l;
+        $difficultyTypeList = [];
+        $tmpDifficultyList = config('pritra.DIFFICULTY_LIST');
+        foreach($tmpDifficultyList as $index => $text){
+            $difficulty = [];
+            $difficulty['text'] = $text;
+            $difficulty['value'] = $index;
+            $difficultyList[] = $difficulty;
+        }
+
+        return [
+            "planList" => $planList,
+            "difficultyList" => $difficultyList
+        ];
     }
 
     /***
@@ -96,7 +113,6 @@ class WorkoutSetController extends Controller
         if ($workoutSet_l->count()!==count($workoutSetId_l)){
             return abort(Controller::HTTP_STATUS_BAD_REQUEST, "bad request");
         }
-        $minRepCount = PHP_INT_MAX;
         foreach ($workoutSet_l as $id => $workoutSet){
             if ($workoutSet->user_id !== $this->user->id){
                 return abort(Controller::HTTP_STATUS_BAD_REQUEST, "bad request");
@@ -111,9 +127,29 @@ class WorkoutSetController extends Controller
         return response('workouts add and fix a workout set',Controller::HTTP_STATUS_CREATE);
     }
 
-    public function showHistory(Request $request)
+    /***
+     * @param Request $request
+     * [
+     *      workoutSetId => [
+     *          id
+     *          menu => [name]
+     *          step => [name]
+     *          plannedMinRepCount,
+     *          plannedSetCount,
+     *          setCount,
+     *          repCount,
+     *          workoutList => [
+     *              [
+     *                  repCount
+     *                  difficultyType
+     *              ],
+     *          ]
+     *      ]
+     * ]
+     */
+    public function showLatest(Request $request)
     {
-        return $this->responseNotImplemented();
+        return WorkoutSetResource::collection($this->user->getRecentWorkoutSetList());
     }
 
     public function index(Request $request)
@@ -137,14 +173,18 @@ class WorkoutSetController extends Controller
 
     private function __inputSetPlan($request)
     {
-        $planInfo = $request->input();
+        $planInfo = $request->get('planInfo');
         $workoutSet_l = [];
-        if (empty($planInfo)) throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
+        if (empty($planInfo)) {
+            throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
+        }
         foreach ($planInfo as $menuId => $workoutSetInfo){
-            if ($menuId <=0 or $menuId >= MenuMaster::MASTER_COUNT)throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
-            $workoutSet = $this->user->createPlanedWorkoutSet(
+            if ($menuId <=0 or $menuId > MenuMaster::MASTER_COUNT){
+                throw new BadRequestException("Bad Request", Controller::HTTP_STATUS_BAD_REQUEST);
+            }
+            $workoutSet = $this->user->createplannedWorkoutSet(
                 $menuId,
-                $workoutSetInfo['stepId'],
+                $workoutSetInfo['step']['id'],
                 $workoutSetInfo['repCount'],
                 $workoutSetInfo['setCount']
             );

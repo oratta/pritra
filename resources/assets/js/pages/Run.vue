@@ -3,12 +3,13 @@
         <h1>Run</h1>
         <v-row>
             <v-col lg="4" md="4" sm="6" cols="12"
-                   v-for="menuCard in menuCardInfo"
-                   :key="menuCard.menuId"
+                   v-for="(planInfo, id) in planInfoList"
+                   :key="id"
             >
                 <MenuCardRun
-                        :menu-name="menuCard.menuName"
-                        :step-name="menuCard.stepName"
+                        :plan-info="planInfo"
+                        :difficulty-list="difficultyList"
+                        v-on:finish-workout="finishWorkout(id, $event)"
                 ></MenuCardRun>
             </v-col>
         </v-row>
@@ -31,39 +32,62 @@
 
 <script>
 import MenuCardRun from '../components/MenuCardRun.vue'
+import {OK} from "../util";
 export default {
     components: {
         MenuCardRun,
     },
     data(){
         return {
-            menuCard: {
-                'menuName': 'Push Up',
-                'stepName': 'Full Push Up'
-            },
-            menuCardInfo: [
-                {
-                    'menuName': 'Push Up',
-                    'stepName': 'Full Push Up'
-                },
-                {
-                    'menuName': 'Pull Up',
-                    'stepName': 'Half Pull Up'
-                },
-            ],
+            planInfoList: [],
+            executeList: {}
         }
     },
     methods:{
+        async init() {
+            await this.fetch();
+            for (let id in this.planInfoList){
+                this.executeList[id] = [];
+            }
+        },
+        async fetch() {
+            this.isLoading = true;
+            const response = await axios.get("/api/plan");
+            this.isLoading = false;
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status)
+                return false
+            }
+            this.planInfoList = response.data.planList;
+            this.difficultyList = response.data.difficultyList;
+        },
+        finishWorkout: function(id, workout){
+            var info = {};
+            info['repCount'] = workout.repCount;
+            info['difficultyType'] = workout.difficultyType;
+            this.executeList[id].push(info);
+            console.log('add workout');
+            console.log(this.executeList);
+        },
         async finish(){
-            // const formData = new FormData();
-            // formData.append('selectedWorkoutSets', this.miniCardInfo);
-            // console.log('send request');
-            // const response = await axios.post('/api/plan', formData);
-            // console.log('get response');
-            // console.log(response);
-            // //TODO エラー処理
+            console.log('send request');
+            const response = await axios.post('/api/workout_set', this.executeList);
+            if(response.status == 201){
+                this.$router.push('plan');
+            }
+            else {
+                console.log('get response error');
+                console.log(response);
+            }
 
-            this.$router.push('finish');
+        },
+    },
+    watch: {
+        $route: {
+            async handler () {
+                await this.init()
+            },
+            immediate: true
         }
     },
 }

@@ -88,14 +88,14 @@ class WorkoutSet extends Model
         $this->relations['workouts'] = $workouts;
     }
 
-    public static function createPlanedWorkoutSet($menuMasterId,$stepMasterId, $planedRepCount, $planedSetCount)
+    public static function createplannedWorkoutSet($menuMasterId,$stepMasterId, $plannedRepCount, $plannedSetCount)
     {
         $workoutSet = new WorkoutSet;
         $workoutSet->menu_master_id         = $menuMasterId;
         $workoutSet->min_step_master_id     = $stepMasterId;
         $workoutSet->is_plan                = true;
-        $workoutSet->planed_min_rep_count   = $planedRepCount;
-        $workoutSet->planed_set_count       = $planedSetCount;
+        $workoutSet->planned_min_rep_count   = $plannedRepCount;
+        $workoutSet->planned_set_count       = $plannedSetCount;
         $workoutSet->step_level             = 0;
         $workoutSet->setLevel(true);
 
@@ -273,7 +273,7 @@ class WorkoutSet extends Model
     public function setLevel($isPlan=false)
     {
         if ($isPlan){
-            $columnPrefix = "planed_";
+            $columnPrefix = "planned_";
         }else {
             $columnPrefix = "";
         }

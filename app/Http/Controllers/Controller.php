@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 class Controller extends BaseController
 {
@@ -21,12 +22,25 @@ class Controller extends BaseController
 
     protected function responseNotImplemented()
     {
-        $trace = debug_backtrace();
-        $class = get_called_class();
-        $method = $trace[1]['function'];
-        $where = "$method@$class";
+        $where = $this->_calledFrom();
         Log::debug("not Implemented at $where");
         return response("test",self::HTTP_STATUS_NOT_IMPLEMENTED);
+    }
+
+    protected function responseBadRequest(Exception $e)
+    {
+        $where = $this->_calledFrom();
+        Log::debug("bad request at $where");
+        return abort($e->getCode(), $e->getMessage());
+    }
+
+    private function _calledFrom()
+    {
+        $trace = debug_backtrace();
+        $file = $trace[1]['file'];
+        $method = $trace[2]['function'];
+        $line = $trace[1]['line'];
+        return "$method@$file:$line";
     }
 
 }

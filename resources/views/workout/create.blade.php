@@ -171,7 +171,7 @@
 
                 var targetMenuId = $(this).data('menu');
                 var targetStepId = $(this).data('step');
-                var targetRepCount = $(this).data('reps');
+                var targetRepCount = $(this).data('repCount');
                 var targetDifficulty = $(this).data('difficulty');
 
                 $('#menu_select').children('option[value="' + targetMenuId + '"]').attr('selected', 'selected');

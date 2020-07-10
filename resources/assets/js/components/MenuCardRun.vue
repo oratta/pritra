@@ -1,29 +1,29 @@
 <template>
     <v-card class="menu-card">
         <v-card-subtitle>
-            {{menuName}}
+            {{planInfo.menu.name}}
         </v-card-subtitle>
         <div class="menu-card__img__box">
             <img class="menu-card__img"
-                    src="https://hercules-beetle.com/wp-content/uploads/2017/03/full-pushup-01.png"
+                    :src="planInfo.step.imageUrl"
             ></img>
         </div>
         <div class="step_name center">
-            {{stepName}}
+            {{planInfo.step.name}}
         </div>
         <div class="menu-card__objective center">
             <div class="count_box">
                 <div class="count blue--text">
-                    20
+                    {{planInfo.repCount}}
                 </div>
                 <div class="count_label">
-                    reps
+                    repCount
                 </div>
             </div>
             <div class="menu-card__form_training_set__input__spacer"></div>
             <div class="count_box">
                 <div class="count blue--text">
-                    2
+                    {{planInfo.setCount}}
                 </div>
                 <div class="count_label">
                     set
@@ -33,7 +33,7 @@
         <div class="menu-card__form_training_set">
             <div
                     class="menu-card__form_training_set__input"
-                    v-for="workout in workout_s"
+                    v-for="workout in workoutList"
             >
                 <div class="set_number_label">
                     {{workout.label}}
@@ -41,7 +41,7 @@
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="count_box">
                     <div class="count">
-                        {{workout.rep}}
+                        {{workout.repCount}}
                     </div>
                     <div class="count_label">
                         reps
@@ -52,7 +52,7 @@
                         <v-btn
                                 icon
                                 small
-                                @click="workout.rep +=1"
+                                @click="workout.repCount +=1"
                                 :disabled="workout.isFinish"
                         >
                             <v-icon small>mdi-arrow-up-bold</v-icon>
@@ -62,7 +62,7 @@
                         <v-btn
                                 icon
                                 small
-                                @click="workout.rep -=1"
+                                @click="workout.repCount -=1"
                                 :disabled="workout.isFinish"
                         >
                             <v-icon small>mdi-arrow-down-bold</v-icon>
@@ -72,8 +72,8 @@
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="weight">
                     <v-select
-                            v-model="sampleValue"
-                            :items="sampleItems"
+                            v-model="workout.difficultyType"
+                            :items="difficultyList"
                             standard
                             :disabled="workout.isFinish"
                             label="training load..."
@@ -85,7 +85,7 @@
                             :disabled="workout.isFinish"
                             color="accent"
                             size="small"
-                            @click="workout.isFinish=true"
+                            @click="finishWorkout(workout)"
                     >
                         Fin
                     </v-btn>
@@ -105,44 +105,50 @@
 </template>
 <script>
 export default{
-    data(){
-        return {
-            objectiveWorkoutSet: {
-                rep: 20,
-                set: 2,
-            },
-            sampleValue: 0,
-            sampleItems: [
-                'banana', 'apple', 'orange'
-            ],
-            workout_s:[],
-            SET_NAME_LABEL: {
+    computed: {
+        SET_NAME_LABEL: function(){
+            return {
                 1: '1st',
                 2: '2nd',
                 3: '3rd',
             }
         }
     },
+    data(){
+        return {
+            workoutList:[],
+        }
+    },
     props: {
-        menuName: {
-            type:String,
+        planInfo: {
+            type:Object,
             required:true,
         },
-        stepName: {
-            type:String,
+        difficultyList: {
+            type:Array,
             required:true,
         }
     },
     methods: {
         init: function(){
-            this.workout_s.push({rep:20, label:"1st", isFinish:false});
+            this.workoutList.push({
+                repCount:this.planInfo.repCount,
+                label:"1st",
+                isFinish:false,
+                difficultyType: 3,
+            });
+        },
+        finishWorkout: function(workout){
+            workout.isFinish = true;
+            this.$emit('finish-workout', workout);
         },
         addWorkout: function(){
-            let label = this.getSetNameLabel(this.workout_s.length + 1)
-            this.workout_s.push({
-                rep: this.objectiveWorkoutSet.rep,
+            let label = this.getSetNameLabel(this.workoutList.length + 1)
+            this.workoutList.push({
+                repCount: this.planInfo.repCount,
                 label: label,
                 isFinish:false,
+                difficultyType: 3,
             });
         },
         getSetNameLabel: function(number){
