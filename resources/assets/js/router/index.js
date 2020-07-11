@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../pages/Home.vue';
 import SetMenu from '../pages/SetMenu.vue';
 import Login from '../pages/Login.vue';
 import Run from '../pages/Run.vue';
@@ -18,6 +17,10 @@ const routes = [
         component: SetMenu,
     },
     {
+        path: '/',
+        redirect: {name: 'set_menu'}
+    },
+    {
         path: '/training/run',
         name: 'run',
         component: Run,
@@ -31,11 +34,6 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login,
-    },
-    {
-        path: '/',
-        name: 'home',
-        component: Home
     },
     {
         path: '/400',
