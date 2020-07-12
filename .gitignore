@@ -1,7 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
-/public
+/public/js
+/public/css
 /storage/*.key
 /vendor
 /.idea
@@ -16,3 +17,4 @@ hosts.yml
 firebase-debug\.log
 /env_files
 .DS_Store
+.htaccess
