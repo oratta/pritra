@@ -5,7 +5,7 @@
         </v-card-subtitle>
         <div class="menu-card__img__box">
             <img class="menu-card__img"
-                    src="https://hercules-beetle.com/wp-content/uploads/2017/03/full-pushup-01.png"
+                 :src="selectedWorkoutSet.step.imageUrl"
             ></img>
             <img v-if="isAdd"
                    class="menu-card__img"
@@ -149,6 +149,7 @@ export default{
                 step: {
                     name: '',
                     number: 0,
+                    imageUrl: '',
                 },
                 repCount: 0,
                 setCount: 0,
