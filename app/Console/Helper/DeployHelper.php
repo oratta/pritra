@@ -30,7 +30,7 @@ class DeployHelper
 
     /**
      * Docker内のホストで実行するスクリプト
-     * @param Dockerホスト内のプロジェクトディレクリで実行するメインスクリプト
+     * @param $mainScript Dockerホスト内のプロジェクトディレクリで実行するメインスクリプト
      *
      */
     public function getInDockerScript($mainScript)

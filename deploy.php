@@ -26,18 +26,7 @@ set('allow_anonymous_stats', false);
 // Hosts
 inventory('env_files/deployer_hosts.yml');
 
-// [Optional] if deploy fails automatically unlock.
-after('deploy:failed', 'deploy:unlock');
-
-// shared/.envを.env.{stage}で上書きする
-after('deploy:shared', 'overwrite-env');
-
-// Migrate database before symlink new release.
-//before('deploy:symlink', 'artisan:migrate');
-
-
 // Tasks
-
 task('deploy', function () {
     // 本番への反映は確認を挟む
     if (input()->hasArgument('stage') && (input()->getArgument('stage') === 'production')) {
@@ -58,6 +47,26 @@ task('overwrite-env', function () {
     $destination = "${sharedPath}/env_files/${src}";
     upload("env_files/$src", $destination);
     run("cp -f $destination ${sharedPath}/.env");
+});
+
+desc('copy .htaccess');
+task('htaccess', function () {
+    $src = ".htaccess";
+    $deployPath = get('deploy_path');
+    $destination = "${$deployPath}/current/public/${src}";
+    upload("env_files/$src", $destination);
+});
+
+desc('nodeモジュールのインストールとコンパイル');
+task('npm:run', function (): void {
+    run('cd {{release_path}} && chmod 707 public');
+    run('cd {{release_path}} && npm install');
+
+    if (input()->getArgument('stage') === 'production') {
+        run('cd {{release_path}} && npm run production');
+    } else {
+        run('cd {{release_path}} && npm run development');
+    }
 });
 
 /**
@@ -85,3 +94,15 @@ task('deploy:laravel', [
     'deploy:unlock',
     'cleanup',
 ]);
+
+// [Optional] if deploy fails automatically unlock.
+after('deploy:failed', 'deploy:unlock');
+
+// shared/.envを.env.{stage}で上書きする
+after('deploy:shared', 'overwrite-env');
+
+// npm:runの実行
+after('deploy:shared', 'npm:run'); // deploy:sharedの後にTaskを実行
+
+// Migrate database before symlink new release.
+before('deploy:symlink', 'artisan:migrate');
