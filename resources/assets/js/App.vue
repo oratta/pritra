@@ -3,7 +3,7 @@
         <v-app-bar color="primary" dark app clippedLeft>
             <v-toolbar-title to="/">Pritra</v-toolbar-title>
             <v-btn text to="/training/plan">Training</v-btn>
-            <v-btn text to="/training/log">Log</v-btn>
+            <v-btn text to="/dashboard">Dashboard</v-btn>
             <v-spacer></v-spacer>
             <v-toolbar-items v-if="isLogin">
                 <v-btn text to="/profile">{{userName}}</v-btn>
