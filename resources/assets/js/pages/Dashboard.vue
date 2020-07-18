@@ -1,5 +1,115 @@
 <template>
-    <div class="container">
-        it is a dashboard
-    </div>
+    <v-container>
+        <v-row>
+            <v-col
+                    cols="12"
+                    sm="6"
+                    lg="3"
+            >
+                <v-card>
+                    <v-card-title>
+                        Monthly Sales
+                    </v-card-title>
+                    <v-card-text>
+                        actual: ¥10,030
+                    </v-card-text>
+                    <v-card-text>
+                        predict: ¥32,034
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col
+                    cols="12"
+                    sm="6"
+                    lg="3"
+            >
+                <v-card>
+                    <v-card-title>
+                        User Count
+                    </v-card-title>
+                    <v-card-text>
+                        1,934
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col
+                    cols="12"
+                    sm="6"
+                    lg="3"
+            >
+                <v-card>
+                    <v-card-title>
+                        CPとR/S期待値
+                    </v-card-title>
+                    <v-card-text>
+                        <ul>
+                            <li>現在のCP</li>
+                            <li>今月の期待値</li>
+                        </ul>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col
+                    cols="12"
+                    lg="4"
+            >
+                <v-card>
+                    <v-card-title>
+                        R/S期待値変化グラフ
+                    </v-card-title>
+                    <v-card-text>
+                        <ul>
+                            <li>売上変化</li>
+                            <li>自分の期待値変化</li>
+                        </ul>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col
+                    cols="12"
+                    lg="4"
+            >
+                <v-card>
+                    <v-card-title>bounty menu</v-card-title>
+                    <v-card-text>
+                        Issue List<br>
+                        and<br>
+                        Bounty UI
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col
+                    cols="12"
+                    lg="4"
+            >
+                <v-card>
+                    <v-card-title>Activity Log</v-card-title>
+                    <v-card-text>
+                        <ul>
+                            <li>サービスの活動履歴</li>
+                            <ul>
+                                <li>ver1.2がリリースされました</li>
+                                <li>◯◯さんが☓☓機能を完成させました</li>
+                            </ul>
+                        </ul>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col
+                    cols="12"
+                    lg="4"
+            >
+                <v-card>
+                    <v-card-title>Open Chat</v-card-title>
+                    <v-card-text>
+                        <ul>
+                            <li>もしもし</li>
+                            <li>かめひょ</li>
+                            <li>かめさんひょ</li>
+                        </ul>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
