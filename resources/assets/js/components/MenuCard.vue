@@ -5,7 +5,9 @@
         </v-card-subtitle>
         <div class="menu-card__img__box">
             <img class="menu-card__img"
-                 :src="selectedWorkoutSet.step.imageUrl"
+                 @mouseover="viewFinishImage"
+                 @mouseleave="viewStartImage"
+                 :src="selectedWorkoutSet.step.startImageUrl"
             ></img>
             <img v-if="isAdd"
                    class="menu-card__img"
@@ -191,6 +193,13 @@ export default{
             this.selectedWorkoutSet = this.menu.recommend;
             this.historyInfo = this.menu.historyInfo;
         },
+        viewFinishImage: function(e) {
+            e.target.setAttribute("src", this.selectedWorkoutSet.step.finishImageUrl)
+        },
+        // mouseleave時の処理
+        viewStartImage: function(e) {
+            e.target.setAttribute("src", this.selectedWorkoutSet.step.startImageUrl)
+        }
     },
     watch: {
         menu: {

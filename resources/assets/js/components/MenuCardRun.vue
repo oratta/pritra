@@ -5,7 +5,9 @@
         </v-card-subtitle>
         <div class="menu-card__img__box">
             <img class="menu-card__img"
-                    :src="planInfo.step.imageUrl"
+                 :src="planInfo.step.startImageUrl"
+                 @mouseover="viewFinishImage"
+                 @mouseleave="viewStartImage"
             ></img>
         </div>
         <div class="step_name center">
@@ -159,6 +161,13 @@ export default{
                 return number + "th";
             }
         },
+        viewFinishImage: function(e) {
+            e.target.setAttribute("src", this.planInfo.step.finishImageUrl)
+        },
+        // mouseleave時の処理
+        viewStartImage: function(e) {
+            e.target.setAttribute("src", this.planInfo.step.startImageUrl)
+        }
     },
     created () {
         // view が作られた時にデータを取得し、
