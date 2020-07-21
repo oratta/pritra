@@ -21,6 +21,14 @@ class StepMaster extends Model
     {
         return "/image/step/" . $this->menu_master_id . "/" . $this->menu_master_id . "-" . $this->step_number . "-" . "1.png";
     }
+    public function getFinishImageUrl()
+    {
+        return "/image/step/" . $this->menu_master_id . "/" . $this->menu_master_id . "-" . $this->step_number . "-" . "2.png";
+    }
+    public function getStartImageUrl()
+    {
+        return $this->getImageUrl();
+    }
 
     //TODO 表示する際のnameにnumberを付ける : S1:Wall Push Up
 

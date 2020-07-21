@@ -17,7 +17,8 @@ class Step extends JsonResource
         return [
             'name'  => $this->getViewName(),
             'id'    => $this->id,
-            'imageUrl' => $this->getImageUrl(),
+            'finishImageUrl' => $this->getFinishImageUrl(),
+            'startImageUrl' => $this->getStartImageUrl(),
             'levelInfo' => $this->getLevelInfo(),
         ];
     }

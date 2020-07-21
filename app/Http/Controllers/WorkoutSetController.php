@@ -73,7 +73,8 @@ class WorkoutSetController extends Controller
             $planList[$id]['menu']['name'] = $plannedWorkoutSet->menu->name;
             $planList[$id]['menu']['id'] = $plannedWorkoutSet->menu->id;
             $planList[$id]['step']['name'] = $plannedWorkoutSet->step->name;
-            $planList[$id]['step']['imageUrl'] = $plannedWorkoutSet->step->getImageUrl();
+            $planList[$id]['step']['startImageUrl'] = $plannedWorkoutSet->step->getStartImageUrl();
+            $planList[$id]['step']['finishImageUrl'] = $plannedWorkoutSet->step->getFinishImageUrl();
             $planList[$id]['repCount'] = $plannedWorkoutSet->planned_min_rep_count;
             $planList[$id]['setCount'] = $plannedWorkoutSet->planned_set_count;
         }
