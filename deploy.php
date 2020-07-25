@@ -35,7 +35,14 @@ task('deploy', function () {
             return;
         }
     }
+    //ここで入ってもダメかもしれない
+//    invoke('login:laradock');
     invoke('deploy:laravel');
+});
+
+desc('laradockに入る');
+task('login:laradock', function(){
+
 });
 
 desc('shared/.envを.env.{stage}で上書き');
@@ -59,6 +66,7 @@ task('htaccess', function () {
 
 desc('nodeモジュールのインストールとコンパイル');
 task('npm:run', function (): void {
+    //TODO Laradockに入る必要がある
     run('cd {{release_path}} && chmod 707 public');
     run('cd {{release_path}} && npm install');
 
@@ -84,11 +92,14 @@ task('deploy:laravel', [
     'deploy:update_code',
     'deploy:shared',
 //    'deploy:vendors',
+    # deployerが動かないのでartisanで独自実装
+//    'artisan:deploy:composer ' . get('deploy_path'), #動かない
+    //TODO 自作のartisanコマンドを呼び出せるように
     'deploy:writable',
 //    'artisan:storage:link',
-//    'artisan:view:clear',
-//    'artisan:cache:clear',
-//    'artisan:config:cache',
+    'artisan:view:clear',
+    'artisan:cache:clear',
+    'artisan:config:cache',
 //    'artisan:optimize',
     'deploy:symlink',//この前にmigration
     'deploy:unlock',
@@ -102,7 +113,9 @@ after('deploy:failed', 'deploy:unlock');
 after('deploy:shared', 'overwrite-env');
 
 // npm:runの実行
-after('deploy:shared', 'npm:run'); // deploy:sharedの後にTaskを実行
+//TODO 動かない
+//after('deploy:shared', 'npm:run'); // deploy:sharedの後にTaskを実行
 
+//TODO 動かない
 // Migrate database before symlink new release.
-before('deploy:symlink', 'artisan:migrate');
+//before('deploy:symlink', 'artisan:migrate');

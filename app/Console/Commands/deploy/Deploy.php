@@ -41,9 +41,11 @@ class Deploy extends Command
         $stage = $this->argument('stage');
         $command = "./vendor/bin/dep deploy $stage";
         dump('exec' . $command);
-        $return = system($command, $status);
+//        $return = system($command, $status);
+        $return = exec($command, $arr, $arr2);
         dump($return);
-        dump($status);
+        dump($arr);
+        dump($arr2);
 
         //composer install(option)
         $this->call("deploy:composer", ["stage" => $stage]);
