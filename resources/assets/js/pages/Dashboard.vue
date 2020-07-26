@@ -8,11 +8,11 @@
             >
                 <dashboard-material-stats-card
                         color="success"
-                        icon="mdi-store"
-                        title="Revenue"
-                        value="$ 34,245"
+                        icon="mdi-cash-usd-outline"
+                        title="Revenue Forcasting"
+                        value="¥ 343,245"
                         sub-icon="mdi-calendar"
-                        sub-text="Last 24 Hours"
+                        sub-text="July 2020"
                 />
             </v-col>
             <v-col
@@ -20,48 +20,70 @@
                     sm="6"
                     lg="3"
             >
-                <v-card>
-                    <v-card-title>
-                        Monthly Sales
-                    </v-card-title>
-                    <v-card-text>
-                        actual: ¥10,030
-                    </v-card-text>
-                    <v-card-text>
-                        predict: ¥32,034
-                    </v-card-text>
-                </v-card>
+                <dashboard-material-stats-card
+                        color="success"
+                        icon="mdi-star-four-points-outline"
+                        title="Revenue share Forcasting"
+                        value="¥ 1,122"
+                        sub-icon="mdi-calendar"
+                        sub-text="July 2020"
+                />
             </v-col>
             <v-col
                     cols="12"
                     sm="6"
                     lg="3"
             >
-                <v-card>
-                    <v-card-title>
-                        User Count
-                    </v-card-title>
-                    <v-card-text>
-                        1,934
-                    </v-card-text>
-                </v-card>
+                <dashboard-material-stats-card
+                        color="info"
+                        icon="mdi-cash-usd-outline"
+                        title="Revenue (actual)"
+                        value="¥ 23,490"
+                        sub-icon="mdi-calendar"
+                        sub-text="2020-07-26"
+                />
             </v-col>
             <v-col
                     cols="12"
                     sm="6"
                     lg="3"
             >
-                <v-card>
-                    <v-card-title>
-                        CPとR/S期待値
-                    </v-card-title>
-                    <v-card-text>
-                        <ul>
-                            <li>現在のCP</li>
-                            <li>今月の期待値</li>
-                        </ul>
-                    </v-card-text>
-                </v-card>
+                <dashboard-material-stats-card
+                        color="info"
+                        icon="mdi-cash-usd-outline"
+                        title="Revenue (actual)"
+                        value="¥ 233,490"
+                        sub-icon="mdi-calendar"
+                        sub-text="July 2020"
+                />
+            </v-col>
+            <v-col
+                    cols="12"
+                    sm="6"
+                    lg="3"
+            >
+                <dashboard-material-stats-card
+                        color="info"
+                        icon="mdi-account-outline"
+                        title="Monthly Active User"
+                        value="2,403"
+                        sub-icon="mdi-calendar"
+                        sub-text="July 2020"
+                />
+            </v-col>
+            <v-col
+                    cols="12"
+                    sm="6"
+                    lg="3"
+            >
+                <dashboard-material-stats-card
+                        color="info"
+                        icon="mdi-cursor-pointer"
+                        title="Contribution Point"
+                        value="34,223"
+                        sub-icon="mdi-calendar"
+                        sub-text="July 2020"
+                />
             </v-col>
             <v-col
                     cols="12"
