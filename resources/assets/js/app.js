@@ -6,6 +6,7 @@ import App from './App.vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import './plugins/dashboard'
+import './plugins/chartist'
 Vue.use(Vuetify)
 
 const createApp = async () =>{
