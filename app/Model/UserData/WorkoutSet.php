@@ -148,6 +148,7 @@ class WorkoutSet extends Model
     {
         $workoutSet_l = WorkoutSet::where('user_id', '=', $userId)
             ->where('menu_master_id', '=', $menuId)
+            ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();
         return $workoutSet_l;
@@ -208,6 +209,7 @@ class WorkoutSet extends Model
         $workoutSet = WorkoutSet::where('user_id', '=', $userId)
             ->where('menu_master_id', '=', $menuId)
             ->orderBy('step_level', 'desc')
+            ->orderBy('min_rep_count', 'desc')
             ->first();
         if(!$workoutSet) {
             return new WorkoutSet(

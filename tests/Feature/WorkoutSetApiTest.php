@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\WorkoutSet as WorkoutSetResource;
 use App\Model\Master\MenuMaster;
 use App\Model\Master\StepMaster;
 use App\Model\UserData\User;
@@ -87,7 +88,11 @@ class WorkoutSetApiTest extends TestCase
          * ベストの情報が返ってくる
          */
         $bestWorkout = $this->user->getBestWorkoutSet(1);
-        $bestWorkoutArray = $bestWorkout->toArray();
+        $bestWorkoutArray = [
+            "id" => $bestWorkout->id,
+            "plannedMinRepCount" => $bestWorkout->planned_min_rep_count,
+            "plannedSetCount" => $bestWorkout->planned_set_count,
+        ];
         $expect = [
             'data' => [
                 1 => [
@@ -102,11 +107,21 @@ class WorkoutSetApiTest extends TestCase
         /*
          * 最近のログが3つ返ってくる
          */
+        $expectRecent = $this->user->getRecentWorkoutSetList(3)[1][0];
         $expect = [
             "data" => [
                 1 => [
                     'historyInfo' => [
-                        'recentList' => $this->user->getRecentWorkoutSetList(3)->toArray()[1],
+                        'recentList' => [
+                            [
+                                'id' => $expectRecent->id,
+                                'step' => [
+                                    'name' => $expectRecent->step->getViewName()
+                                ],
+                                'plannedMinRepCount' => $expectRecent->planned_min_rep_count,
+                                'repCount' => $expectRecent->min_rep_count,
+                            ]
+                        ],
                     ]
                 ]
             ]
@@ -263,7 +278,6 @@ class WorkoutSetApiTest extends TestCase
             ];
             $step = [
                 'name'      => $plan->step->name,
-                'imageUrl'  => $plan->step->getImageUrl(),
             ];
             $expected[$plan->id] = [
                 'menu' => $menu,
