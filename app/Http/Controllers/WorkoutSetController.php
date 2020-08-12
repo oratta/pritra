@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Model\UserData\WorkoutSet;
 use Illuminate\Database\Eloquent\Collection;
 use App\Model\UserData\WorkoutSet as WorkoutSetResource;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class WorkoutSetController extends Controller
 {
@@ -108,23 +110,29 @@ class WorkoutSetController extends Controller
      */
     public function add(Request $request)
     {
-        $executeWorkoutInfo_l = $request->input();
-        $workoutSetId_l = array_keys($executeWorkoutInfo_l);
-        $workoutSet_l = WorkoutSet::whereIn('id', $workoutSetId_l)->get()->keyBy('id');
-        if ($workoutSet_l->count()!==count($workoutSetId_l)){
-            return abort(Controller::HTTP_STATUS_BAD_REQUEST, "bad request");
+        $executeWorkoutInfoList = $request->input();
+        $workoutSetIdList = array_keys($executeWorkoutInfoList);
+        $workoutSetList = WorkoutSet::whereIn('id', $workoutSetIdList)->get()->keyBy('id');
+        if ($workoutSetList->count()!==count($workoutSetIdList)){
+            return $this->responseBadRequest(new Exception("bad request", Controller::HTTP_STATUS_BAD_REQUEST));
         }
-        foreach ($workoutSet_l as $id => $workoutSet){
+
+        DB::beginTransaction();
+        foreach ($workoutSetList as $id => $workoutSet){
             if ($workoutSet->user_id !== $this->user->id){
-                return abort(Controller::HTTP_STATUS_BAD_REQUEST, "bad request");
+                return $this->responseBadRequest(new Exception("bad request", Controller::HTTP_STATUS_BAD_REQUEST));
             }
             else if($workoutSet->is_plan !== 1){
-                return abort(Controller::HTTP_STATUS_BAD_REQUEST, "this workout already done");
+                return $this->responseBadRequest(new Exception("this workout is already finished", Controller::HTTP_STATUS_BAD_REQUEST));
             }
-            $workoutSet->addWorkoutBulk($executeWorkoutInfo_l[$id]);
-            $workoutSet->is_plan = false;
-            $workoutSet->save();
+            if($workoutSet->addWorkoutBulk($executeWorkoutInfoList[$id])){
+                $workoutSet->is_plan = false;
+                $workoutSet->save();
+            }else {
+                $workoutSet->delete();
+            }
         }
+        DB::commit();
         return response('workouts add and fix a workout set',Controller::HTTP_STATUS_CREATE);
     }
 

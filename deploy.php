@@ -97,10 +97,10 @@ task('deploy:laravel', [
     //TODO 自作のartisanコマンドを呼び出せるように
     'deploy:writable',
 //    'artisan:storage:link',
-    'artisan:view:clear',
-    'artisan:cache:clear',
-    'artisan:config:cache',
-//    'artisan:optimize',
+//    'artisan:view:clear', //TODO 本番環境の管理サーバでphpが動いていない
+//    'artisan:cache:clear', //TODO 本番環境の管理サーバでphpが動いていない
+//    'artisan:config:cache', //TODO 本番環境の管理サーバでphpが動いていない
+//    'artisan:optimize',//TODO 本番環境の管理サーバでphpが動いていない
     'deploy:symlink',//この前にmigration
     'deploy:unlock',
     'cleanup',

@@ -237,22 +237,32 @@ class WorkoutSet extends Model
         $this->setWorkoutSetInfo();
     }
 
-    public function addWorkoutBulk(array $workoutInfo_l)
+    /**
+     * @param array $workoutInfoList
+     * @return bool workoutを追加出来なかった場合に false, 追加できた時にtrueを返す
+     * @throws \Exception
+     */
+    public function addWorkoutBulk(array $workoutInfoList)
     {
-        $minCount = PHP_INT_MAX;
-        $workoutList = $this->workouts;
-        foreach ($workoutInfo_l as $workoutInfo){
-            $workout = new Workout();
-            $workout->workout_set_id    = $this->id;
-            $workout->user_id           = $this->user_id;
-            $workout->menu_master_id    = $this->menu_master_id;
-            $workout->step_master_id    = $this->min_step_master_id;
-            $workout->count             = $workoutInfo['repCount'];
-            $workout->difficulty_type   = $workoutInfo['difficultyType'];
-            $workoutList->add($workout);
+        if(empty($workoutInfoList)){
+            return false;
         }
-        $this->workouts = $workoutList;
-        $this->setWorkoutSetInfo();
+        else {
+            $workoutList = $this->workouts;
+            foreach ($workoutInfoList as $workoutInfo){
+                $workout = new Workout();
+                $workout->workout_set_id    = $this->id;
+                $workout->user_id           = $this->user_id;
+                $workout->menu_master_id    = $this->menu_master_id;
+                $workout->step_master_id    = $this->min_step_master_id;
+                $workout->count             = $workoutInfo['repCount'];
+                $workout->difficulty_type   = $workoutInfo['difficultyType'];
+                $workoutList->add($workout);
+            }
+            $this->workouts = $workoutList;
+            $this->setWorkoutSetInfo();
+            return true;
+        }
     }
 
     /***********************************
