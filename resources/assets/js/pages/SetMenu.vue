@@ -18,13 +18,15 @@
         </div>
         <div class="cart" v-show="isShowCart">
             <div class="mini_menu_card" v-for="(miniCard, menuId) in miniCardInfo">
-                <v-card>
+                <v-card style="margin-top:10px">
                     <v-card-title>{{miniCard.menuName}}</v-card-title>
-                    <v-card-text>{{miniCard.step.name}}</v-card-text>
-                    <v-card-text>{{miniCard.repCount}}×{{miniCard.set}}</v-card-text>
-                    <div class="remove_btn">
+                    <v-card-text>
+                        {{miniCard.step.name}}<br>
+                        {{miniCard.repCount}}×{{miniCard.setCount}}
+                    </v-card-text>
+                    <v-card-actions>
                         <v-btn small @click="removeMenu(menuId)">Remove</v-btn>
-                    </div>
+                    </v-card-actions>
                 </v-card>
             </div>
             <div class="training_start_btn">
