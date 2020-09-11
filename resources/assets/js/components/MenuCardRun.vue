@@ -13,7 +13,7 @@
         <div class="step_name center">
             {{planInfo.step.name}}
         </div>
-        
+
         <div class="menu-card__form_training_set">
             <div
                     class="menu-card__form_training_set__input"
@@ -52,16 +52,6 @@
                             <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
                     </div>
-                </div>
-                <div class="menu-card__form_training_set__input__spacer"></div>
-                <div class="weight">
-                    <v-select
-                            v-model="workout.difficultyType"
-                            :items="difficultyList"
-                            standard
-                            :disabled="workout.isFinish"
-                            label="training load..."
-                    ></v-select>
                 </div>
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="fin_button">
