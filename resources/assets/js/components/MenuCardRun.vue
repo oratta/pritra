@@ -13,25 +13,7 @@
         <div class="step_name center">
             {{planInfo.step.name}}
         </div>
-        <div class="menu-card__objective center">
-            <div class="count_box">
-                <div class="count blue--text">
-                    {{planInfo.repCount}}
-                </div>
-                <div class="count_label">
-                    repCount
-                </div>
-            </div>
-            <div class="menu-card__form_training_set__input__spacer"></div>
-            <div class="count_box">
-                <div class="count blue--text">
-                    {{planInfo.setCount}}
-                </div>
-                <div class="count_label">
-                    set
-                </div>
-            </div>
-        </div>
+        
         <div class="menu-card__form_training_set">
             <div
                     class="menu-card__form_training_set__input"
