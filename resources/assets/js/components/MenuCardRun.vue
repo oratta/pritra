@@ -111,6 +111,9 @@ export default{
                 isFinish:false,
                 difficultyType: 3,
             });
+            for (let i=0; i<this.planInfo.setCount-1;i++){
+                this.addWorkout();
+            }
         },
         finishWorkout: function(workout){
             workout.isFinish = true;
