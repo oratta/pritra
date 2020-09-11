@@ -13,25 +13,7 @@
         <div class="step_name center">
             {{planInfo.step.name}}
         </div>
-        <div class="menu-card__objective center">
-            <div class="count_box">
-                <div class="count blue--text">
-                    {{planInfo.repCount}}
-                </div>
-                <div class="count_label">
-                    repCount
-                </div>
-            </div>
-            <div class="menu-card__form_training_set__input__spacer"></div>
-            <div class="count_box">
-                <div class="count blue--text">
-                    {{planInfo.setCount}}
-                </div>
-                <div class="count_label">
-                    set
-                </div>
-            </div>
-        </div>
+
         <div class="menu-card__form_training_set">
             <div
                     class="menu-card__form_training_set__input"
@@ -70,16 +52,6 @@
                             <v-icon small>mdi-arrow-down-bold</v-icon>
                         </v-btn>
                     </div>
-                </div>
-                <div class="menu-card__form_training_set__input__spacer"></div>
-                <div class="weight">
-                    <v-select
-                            v-model="workout.difficultyType"
-                            :items="difficultyList"
-                            standard
-                            :disabled="workout.isFinish"
-                            label="training load..."
-                    ></v-select>
                 </div>
                 <div class="menu-card__form_training_set__input__spacer"></div>
                 <div class="fin_button">
@@ -139,6 +111,9 @@ export default{
                 isFinish:false,
                 difficultyType: 3,
             });
+            for (let i=0; i<this.planInfo.setCount-1;i++){
+                this.addWorkout();
+            }
         },
         finishWorkout: function(workout){
             workout.isFinish = true;
