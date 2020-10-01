@@ -1,7 +1,11 @@
 <template>
     <v-app>
-        <v-app-bar color="primary" app clippedLeft>
-            <v-toolbar-title to="/">Pritra</v-toolbar-title>
+        <v-app-bar app clippedLeft>
+            <v-img
+                    src="/image/logo/header_logo.png"
+                    max-height="100%"
+                    max-width="155px">
+            </v-img>
             <v-btn text to="/training/plan">Training</v-btn>
             <v-btn text to="/training/history">History</v-btn>
             <v-spacer></v-spacer>
