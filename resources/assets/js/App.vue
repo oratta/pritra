@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-app-bar color="primary" dark app clippedLeft>
+        <v-app-bar color="primary" app clippedLeft>
             <v-toolbar-title to="/">Pritra</v-toolbar-title>
             <v-btn text to="/training/plan">Training</v-btn>
             <v-btn text to="/training/history">History</v-btn>
