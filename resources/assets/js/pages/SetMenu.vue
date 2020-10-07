@@ -25,7 +25,13 @@
                         {{miniCard.repCount}}×{{miniCard.setCount}}
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn small @click="removeMenu(menuId)">Remove</v-btn>
+                        <v-btn
+                                small
+                                @click="removeMenu(menuId)"
+                                color="info"
+                        >
+                            Remove
+                        </v-btn>
                     </v-card-actions>
                 </v-card>
             </div>

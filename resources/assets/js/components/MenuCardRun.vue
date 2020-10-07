@@ -57,7 +57,7 @@
                 <div class="fin_button">
                     <v-btn
                             :disabled="workout.isFinish"
-                            color="accent"
+                            color="primary"
                             size="small"
                             @click="finishWorkout(workout)"
                     >
@@ -68,7 +68,9 @@
             <div class="add_set_button center">
                 <v-btn
                         class="mx-2"
-                        fab dark color="indigo"
+                        fab
+                        dark
+                        color="info"
                         @click="addWorkout"
                 >
                     <v-icon dark>mdi-plus</v-icon>

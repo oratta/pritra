@@ -19,7 +19,7 @@
             <div class="spacer"></div>
             <v-card-actions>
                 <v-btn
-                        color="accent"
+                        color="primary"
                         size="small"
                         @click="finish"
                 >

@@ -75,6 +75,7 @@
                     <v-btn
                             size="small"
                             @click="isInfoBox=!isInfoBox"
+                            dark
                     >
                         Info
                     </v-btn>
@@ -82,7 +83,7 @@
                 <div class="spacer"></div>
                 <v-card-actions>
                     <v-btn v-if="!isAdd"
-                            color="accent"
+                            color="primary"
                             size="small"
                             @click="$emit('set-menu', selectedWorkoutSet)"
                     >

@@ -45,7 +45,7 @@
                 ></v-text-field>
 
                 <v-btn
-                        color="accent"
+                        color="primary"
                         :disabled="!validLogin"
                         class="mr-4"
                         type="submit"
@@ -53,8 +53,10 @@
                     submit
                 </v-btn>
                 <v-btn
+                        color="info"
                         class="mr-4"
                         @click="reset"
+                        dark
                 >
                     Reset Form
                 </v-btn>
