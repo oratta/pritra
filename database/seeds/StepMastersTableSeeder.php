@@ -16,6 +16,7 @@ class StepMastersTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('step_masters')->truncate();
         $this->insertFromCsv();
     }
 }

@@ -11,6 +11,7 @@ class MenuMastersTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('menu_masters')->truncate();
         DB::table('menu_masters')->insert([
             [
                 'id'    => 1,
