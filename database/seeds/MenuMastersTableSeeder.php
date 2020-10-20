@@ -14,32 +14,32 @@ class MenuMastersTableSeeder extends Seeder
         DB::table('menu_masters')->insert([
             [
                 'id'    => 1,
-                'name'  => 'プッシュアップ',
+                'name'  => 'Push up',
                 'description' => '',
             ],
             [
                 'id'    => 2,
-                'name'  => 'スクワット',
+                'name'  => 'Squat',
                 'description' => '',
             ],
             [
                 'id'    => 3,
-                'name'  => 'プルアップ',
+                'name'  => 'Pull up',
                 'description' => '',
             ],
             [
                 'id'    => 4,
-                'name'  => 'レッグレイズ',
+                'name'  => 'Leg Raise',
                 'description' => '',
             ],
             [
                 'id'    => 5,
-                'name'  => 'ブリッジ',
+                'name'  => 'Bridge',
                 'description' => '',
             ],
             [
                 'id'    => 6,
-                'name'  => 'ハンドスタンドプッシュアップ',
+                'name'  => 'Hand Stand Push up',
                 'description' => '',
             ],
         ]);
