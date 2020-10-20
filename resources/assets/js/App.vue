@@ -7,11 +7,11 @@
                     max-width="155px">
             </v-img>
             <v-btn text to="/training/plan">Training</v-btn>
-            <v-btn text to="/training/history">History</v-btn>
+<!--            <v-btn text to="/training/history">History</v-btn>-->
             <v-spacer></v-spacer>
             <v-toolbar-items v-if="isLogin">
                 <v-btn text to="/profile">{{userName}}</v-btn>
-                <v-btn text to="/dashboard">Dashboard</v-btn>
+<!--                <v-btn text to="/dashboard">Dashboard</v-btn>-->
                 <v-btn text @click="logout">logout</v-btn>
             </v-toolbar-items>
             <v-toolbar-items v-else>
